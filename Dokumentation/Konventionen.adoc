@@ -1,6 +1,6 @@
 C# Code-Konventionen
 ====================
-Alain Keller, Pascal Honegger, Seraphin Rihm 
+Alain Keller, Pascal Honegger und Seraphin Rihm 
 Version 1.0, 15.12.2015
 === Namensgebung
     * CamelCase 

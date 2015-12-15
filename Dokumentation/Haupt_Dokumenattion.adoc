@@ -1,6 +1,6 @@
 Dokumentation
 =============
-Alain Keller, Pascal Honegger & Seraphin Rihm
+Alain Keller, Pascal Honegger und Seraphin Rihm
 Version 1.0, 15.12.2015
 
 == Inhaltsverzeichnis
@@ -15,7 +15,7 @@ Wir werden C#6 / .net 4.5.2 verwenden.
 == Datenstruktur
 
 === Aufbau des Projektordner
-Die Files werden in verschieden Ordnern unterteilt. Diese werden nach Überthemen des Projektes geordnet. Die Ordner sind doppelt vorhanden, einmal im LePrAtos und einmal im LePrAtos_Test Projekt.
+Die Files werden in verschieden Ordnern unterteilt. Diese werden nach Überthemen des Projektes geordnet. Die Ordner sind doppelt vorhanden, einmal im SpaceInvaders und einmal im SpaceInvaders_Test Projekt.
 
 == Code-Analysen
 
