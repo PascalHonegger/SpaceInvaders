@@ -1,0 +1,8 @@
+Random
+======
+Alain Keller, Pascal Honegger und Seraphin Rihm
+Version 1.0, 15.12.2015
+
+=== 29.12.2015 Problem Invader|Player
+Pascal und Seraphin sassen vor dem Probelm, dass unser Invader und der Spieler beides von der gleichen abstraketen Klasse (IShip Base) abgeleitet sind. Es gibt verschiedene Methoden welche in beiden Objekten verwendet werden. Um redundaten Code zu verhindern haben wir die abstrakte Klasse. Um die Klassen (Ship/Invader) von einander zu unterscheiden hatte der Spieler/Invader noch ein IPlayer/IInvader implementiert. Dies gab jedoch Mehrmachimplemenatationen auf das IShip Interface. Deshalb haben wir den IPlayer und den IInvader gelöscht was das Problem löste. Jedoch konnte man elegant unterscheiden. Deshalb haben wir einen Enum erstellt welcher aussagt von welchen Type Schiff diese Klasse ist.
+
