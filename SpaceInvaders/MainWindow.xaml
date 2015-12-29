@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpaceInvaders"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        Title="Space Invaders" Height="666" Width="666"
+        d:DataContext="{d:DesignInstance local:SpaceInvadersViewModel}">
+	<Grid KeyDown="UIElement_OnKeyDown">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="400" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition Height="300" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<Button Content="Spiel starten" Click="button_Click" Margin="140,70,130,28" RenderTransformOrigin="0.5,0.5"
+		        Grid.Column="1" />
+		<TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Score}" Margin="10,26,4,70" />
+		<Canvas Background="Black" Grid.Row="1" Grid.Column="1" x:Name="PlayArea" Focusable="True" />
+	</Grid>
 </Window>
