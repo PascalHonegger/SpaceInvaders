@@ -1,7 +1,7 @@
 Dokumentation
 =============
 Alain Keller, Pascal Honegger und Seraphin Rihm
-Version 1.0, 15.12.2015
+Version 1.1, 30.12.2015
 
 == Inhaltsverzeichnis
 
@@ -10,7 +10,7 @@ Version 1.0, 15.12.2015
 == Framework
 
 === C#
-Wir werden C#6 / .net 4.5.2 verwenden.
+Wir werden C#6 / .Net 4.6 verwenden.
 
 == Datenstruktur
 
@@ -33,34 +33,34 @@ link:https://github.com/PascalHonegger/LePrAtos_Client[C# Client]
 * Der Spieler
 ** Hat einen Benutzernamen
 ** Hat eine gespeicherte Höchstpunktzahl
-** Hat eine gespeicherte Höchstpunktzahl
-** Kann zwischen verschiedenen Raumschiffen auswählen
-** Geschwindigkeit
-** Schussgeschwindigkeit
-** Leben
+** Kann zwischen verschiedenen Schiffen auswählen
+** Hat eine Geschwindigkeit
+** Hat einen Schuss
+*** Geschwindigkeit
+*** Grösse
+*** Schaden
+** Hat Leben (wie viele Schüsse bis zum Tod)
+** Hat Respawns (wie oft wieder auftauchen nach Tod)
 ** Aussehen
-** Schneller schiessen
-** Temporär unsterblich
-** Temporär schnellen
-** Der Invader
+
+* Der Invader
 ** Gibt beim Tod verschiedene Punkte
 ** Kann zurückschiessen
 ** Kann sich nach links und rechts bewegen
-** Bewegt sich nach unten sobald eine Wand berührtnwird
+** Bewegt sich nach unten sobald eine Wand berührt
 ** Hat verschiedene Schwierigkeiten
 ** Hat anderes Aussehen
 
 * Der Boss
-** Hat mehr als ein Leben
+** Hat viele Leben
 ** Gibt viele Punkte
-** Schiesst viele Schüsse zurück, ist schwer
+** Schiesst viele Schüsse zurück
 ** Ist grösser als ein normaler Invader
 
 * Das Spielfeld
 ** Hat einen Spiel-starten Knopf
-** Hat einen Spiel-beenden / neustarten Knopf,
-** während das Spiel am Laufen ist
+** Hat einen Spiel-beenden / neustarten Knopf, während das Spiel am Laufen ist
 ** Das Spiel endet, sobald der Spieler keine Leben mehr hat
-** Zeigt den Benutzernamen, aktuelle Punktzahl und
-** Höchstpunktzahl an
+** Zeigt den Benutzernamen, aktuelle Punktzahl und Höchstpunktzahl an
 ** Zeigt, in welcher Runde man sich befindet
+** Zeigt eine Auswahl an Schiffen an

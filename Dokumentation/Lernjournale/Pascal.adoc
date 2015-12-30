@@ -1,4 +1,7 @@
 Pascal Lernjournal
 ==================
 Alain Keller, Pascal Honegger und Seraphin Rihm
-Version 1.0, 15.12.2015
+Version 1.1, 30.12.2015
+
+=== 30.12.2015
+Gestern haben Seraphin und ich uns den Kopf über das Problem mit dem Spieler, Invader und allgemein Schiffen zerbrochen. Momentan bin ich immer noch mit dem Erstellen des Klassendiagramms beschäftigt. Ich gehe dabei jedoch nicht konventionell vor. 

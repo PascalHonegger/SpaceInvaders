@@ -43,7 +43,7 @@
 <NamespaceSummaryItem name="SpaceInvaders" isDocumented="True">Das allgemeine Projekt</NamespaceSummaryItem>
 <NamespaceSummaryItem name="SpaceInvaders.Control" isDocumented="True">Alle Controls für das GUI</NamespaceSummaryItem>
 <NamespaceSummaryItem name="SpaceInvaders.Enums" isDocumented="True">Alle verwendeten Enums</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SpaceInvaders.EventArgs" isDocumented="True">Alle EventArgs-Klassen TEST</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders.EventArgs" isDocumented="True">Alle EventArgs-Klassen</NamespaceSummaryItem>
 <NamespaceSummaryItem name="SpaceInvaders.ExtensionMethods" isDocumented="True">Alle ExtensionMethods unabhängig davon, wo diese verwendet werden</NamespaceSummaryItem>
 <NamespaceSummaryItem name="SpaceInvaders.Ship" isDocumented="True">Alle Schiffe inklusive Texturen</NamespaceSummaryItem>
 <NamespaceSummaryItem name="SpaceInvaders.Shot" isDocumented="True">Alle Schüsse inklusive Texturen</NamespaceSummaryItem></NamespaceSummaries>
