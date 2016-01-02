@@ -23,6 +23,8 @@ namespace SpaceInvaders
 			};
 		}
 
+		private SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
+
 		private void UIElement_OnKeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.A || e.Key == Key.Left)
@@ -43,7 +45,5 @@ namespace SpaceInvaders
 		{
 			ViewModel.StartGame();
 		}
-
-		SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
 	}
 }

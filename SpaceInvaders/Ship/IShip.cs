@@ -58,8 +58,13 @@ namespace SpaceInvaders.Ship
 		int Points { get; }
 
 		/// <summary>
-		/// Der Schifftyp, welcher darüber entscheided ob dieses Schiff durch den Spieler gelenkt wird
+		///     Der Schifftyp, welcher darüber entscheided ob dieses Schiff durch den Spieler gelenkt wird
 		/// </summary>
 		ShipType ShipType { get; }
+
+		/// <summary>
+		///     Das Leben eines Schiffes. Wird bei einem Treffer reduziert. Unabhängig von den Respawns des Spielers!
+		/// </summary>
+		double Health { get; }
 	}
 }

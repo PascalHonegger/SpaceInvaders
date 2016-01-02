@@ -15,7 +15,7 @@ namespace SpaceInvaders
 	/// <summary>
 	///     Das ViewModel des gesamten SpaceInvaders
 	/// </summary>
-	public class SpaceInvadersViewModel
+	public class SpaceInvadersViewModel : IDisposable
 	{
 		private const int MaximumPlayerShotsAtTheSameTime = 3;
 
@@ -27,7 +27,6 @@ namespace SpaceInvaders
 		private Direction _invaderDirection = Direction.Left;
 		private DateTime _invaderLastMoved = DateTime.MinValue;
 		private List<IShip> _invaders = new List<IShip>();
-		private DateTime? _playerDied = null;
 
 		/// <summary>
 		///     Der jetzige Spieler
@@ -49,7 +48,15 @@ namespace SpaceInvaders
 		/// </summary>
 		public bool GameOver { get; set; }
 
-		private bool PlayerDying => _playerDied.HasValue;
+		/// <summary>
+		///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
+		/// <filterpriority>2</filterpriority>
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 
 		/// <summary>
 		///     Schiesst einen Schuss vom dem mitgegebenen Schiff
@@ -123,6 +130,10 @@ namespace SpaceInvaders
 			_invaderShots.Clear();
 
 			//TODO ShipChangedEventHandler += Player.OnShipChanged;
+
+
+			//TODO ShipChangedEventHandler += GUI;
+			//TODO ShotMovedEventHandler += GUI
 			OnShipChangedEventHandler(new ShipChangedEventArgs(Player, false));
 
 			Wave = 0;
@@ -177,7 +188,7 @@ namespace SpaceInvaders
 		/// <param name="direction">Die Richtung, in welche sich der <see cref="Player" /> bewegt</param>
 		public void MovePlayer(Direction direction)
 		{
-			if (PlayerDying)
+			if (Player.Health <= 0)
 			{
 				return;
 			}
@@ -192,7 +203,7 @@ namespace SpaceInvaders
 				NextWave();
 			}
 
-			if (PlayerDying)
+			if (Player.Health <= 0)
 			{
 				OnShipChangedEventHandler(new ShipChangedEventArgs(Player, true));
 			}
@@ -224,7 +235,7 @@ namespace SpaceInvaders
 			var overlappingRect = Rect.Intersect(_playArea, rect);
 
 			// Das komplette 'rect' überlappt sich mit dem Spielfeld
-			return Equals(overlappingRect, rect);
+			return !Equals(overlappingRect, rect);
 		}
 
 		private void MoveInvaders()
@@ -297,10 +308,11 @@ namespace SpaceInvaders
 				return;
 			}
 
-			if (Random.Next(10) < 10 - Wave)
+			//TODO Mehr Schüsse jede Wave
+			/*if (Random.Next(10) < 10 - Wave)
 			{
 				return;
-			}
+			}*/
 
 			var invader = _invaders.PickRandom();
 
@@ -319,6 +331,36 @@ namespace SpaceInvaders
 		public void FireShotPlayer()
 		{
 			FireShot(Player);
+		}
+
+		// Analysefehler
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "<UpdateTimer>k__BackingField")]
+		private void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				// Managed Resources
+				UpdateTimer.Dispose();
+				_invaderLastMoved = DateTime.MinValue;
+				_invaders = null;
+				Player = null;
+				ShipChangedEventHandler = null;
+				ShotMovedEventHandler = null;
+			}
+
+			// Unmanaged Resources
+
+			// Leer, da wir keine Serververbindung aufbauen
+		}
+
+		/// <summary>
+		///     Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage
+		///     collection.
+		/// </summary>
+		~SpaceInvadersViewModel()
+		{
+			// Useless
+			Dispose(false);
 		}
 	}
 }
