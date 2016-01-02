@@ -18,8 +18,8 @@ namespace SpaceInvaders
 	public class SpaceInvadersViewModel
 	{
 		private const int MaximumPlayerShotsAtTheSameTime = 3;
-		private const int PlayAreaWidth = 400;
-		private const int PlayAreaHeight = 300;
+
+		private Rect _playArea = new Rect(new Point(0, 0), new Size(400, 300));
 
 		private static readonly Random Random = new Random();
 		private readonly List<IShot> _invaderShots = new List<IShot>();
@@ -165,9 +165,9 @@ namespace SpaceInvaders
 
 			return new List<IShip>
 			{
-				new Ufo(),
-				new Ufo(),
-				new Ufo()
+				new Ufo(new Point()),
+				new Ufo(new Point()),
+				new Ufo(new Point())
 			};
 		}
 
@@ -201,12 +201,12 @@ namespace SpaceInvaders
 				foreach (var shot in _invaderShots)
 				{
 					shot.Move();
-					OnShotMovedEventHandler(new ShotMovedEventArgs(shot, IsOutOfBounds(shot.Location)));
+					OnShotMovedEventHandler(new ShotMovedEventArgs(shot, IsOutOfBounds(shot.Rect)));
 				}
 				foreach (var shot in _playerShots)
 				{
 					shot.Move();
-					OnShotMovedEventHandler(new ShotMovedEventArgs(shot, IsOutOfBounds(shot.Location)));
+					OnShotMovedEventHandler(new ShotMovedEventArgs(shot, IsOutOfBounds(shot.Rect)));
 				}
 			}
 
@@ -219,9 +219,12 @@ namespace SpaceInvaders
 			InvaderReturnFire();
 		}
 
-		private static bool IsOutOfBounds(Point point)
+		private bool IsOutOfBounds(Rect rect)
 		{
-			return Math.Abs(point.X - PlayAreaHeight) < 0.5 || Math.Abs(point.X) < 0.5;
+			var overlappingRect = Rect.Intersect(_playArea, rect);
+
+			// Das komplette 'rect' überlappt sich mit dem Spielfeld
+			return Equals(overlappingRect, rect);
 		}
 
 		private void MoveInvaders()
@@ -246,7 +249,7 @@ namespace SpaceInvaders
 				invader.Move(_invaderDirection);
 			}
 
-			if (_invaders.Any(invader => IsOutOfBounds(invader.Location)))
+			if (_invaders.Any(invader => IsOutOfBounds(invader.Rect)))
 			{
 				_invaderDirection = _invaderDirection == Direction.Left ? Direction.Right : Direction.Left;
 				foreach (var invader in _invaders)
@@ -263,32 +266,24 @@ namespace SpaceInvaders
 			{
 				foreach (var shot in _playerShots)
 				{
-					if (FindCollisions(invader, shot))
+					if (RectsOverlap(invader.Rect, shot.Rect))
 					{
 						OnShipChangedEventHandler(new ShipChangedEventArgs(invader, true));
 					}
 				}
 
-				if (FindCollisions(invader, Player))
+				if (RectsOverlap(invader.Rect, Player.Rect))
 				{
 					OnShipChangedEventHandler(new ShipChangedEventArgs(invader, true));
 				}
 			}
 		}
 
-		private bool FindCollisions(IShip ship, IShot shot)
-		{
-			var rect1 = new Rect(ship.Location, ship.Size);
-			var rect2 = new Rect(shot.Location, shot.Size);
-
-			return RectsOverlap(rect1, rect2);
-		}
-
 		private void CheckForPlayerCollision()
 		{
 			foreach (var shot in _invaderShots)
 			{
-				if (FindCollisions(Player, shot))
+				if (RectsOverlap(Player.Rect, shot.Rect))
 				{
 					OnShipChangedEventHandler(new ShipChangedEventArgs(Player, true));
 				}
@@ -307,14 +302,9 @@ namespace SpaceInvaders
 				return;
 			}
 
-			var invader = _invaders.OrderByDescending(i => i.Location.X).PickRandom();
+			var invader = _invaders.PickRandom();
 
 			FireShot(invader);
-		}
-
-		private static bool FindCollisions(IShip ship1, IShip ship2)
-		{
-			return RectsOverlap(new Rect(ship1.Location, ship1.Size), new Rect(ship2.Location, ship2.Size));
 		}
 
 		private static bool RectsOverlap(Rect rect1, Rect rect2)

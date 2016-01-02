@@ -77,6 +77,7 @@
     <Compile Include="Ship\Players\DefaultPlayer.cs" />
     <Compile Include="Ship\ShipBase.cs" />
     <Compile Include="Shot\DefaultShot.cs" />
+    <Compile Include="Shot\ShotBase.cs" />
     <Compile Include="SpaceInvadersViewModel.cs" />
     <Page Include="Control\AnimatedImageControl.xaml">
       <SubType>Designer</SubType>

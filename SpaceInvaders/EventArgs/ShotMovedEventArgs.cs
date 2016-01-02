@@ -3,7 +3,7 @@
 namespace SpaceInvaders.EventArgs
 {
 	/// <summary>
-	///     Die Eventargumente, wenn ein <see cref="IShot" /> seine <see cref="IShot.Location" /> geändert hat oder entweder
+	///     Die Eventargumente, wenn ein <see cref="IShot" /> seine <see cref="IShot.Rect" /> geändert hat oder entweder
 	///     eine Wand oder ein anderes Schiff getroffen hat
 	///     wurde
 	/// </summary>

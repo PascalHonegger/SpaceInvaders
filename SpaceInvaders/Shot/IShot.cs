@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using SpaceInvaders.Enums;
 using SpaceInvaders.Ship;
@@ -11,14 +12,9 @@ namespace SpaceInvaders.Shot
 	public interface IShot
 	{
 		/// <summary>
-		///     Die Grösse des Schussen in SpaceInvaders-Pixel
+		///     Die Textures des Schusses, welche im View angezeigt wird
 		/// </summary>
-		Size Size { get; }
-
-		/// <summary>
-		///     Die Textur des Schusses, welche im View angezeigt wird
-		/// </summary>
-		BitmapSource Texture { get; }
+		IEnumerable<BitmapSource> Textures { get; }
 
 		/// <summary>
 		///     Der Schaden, welcher der Schuss beim Aufprall mit einem <see cref="IShip" /> verursacht
@@ -36,9 +32,9 @@ namespace SpaceInvaders.Shot
 		Direction Direction { get; }
 
 		/// <summary>
-		///     Die Position des Schusses in SpaceInvaders-Pixel
+		///	Die Location <see cref="Point"/> (top-left corner) und die Grösse <see cref="Size"/> des Schiffes in SpaceInvaders-Pixel
 		/// </summary>
-		Point Location { get; }
+		Rect Rect { get; }
 
 		/// <summary>
 		///     Bewegt den Schuss in die <see cref="Direction" /> mit der Hilfe des <see cref="Speed" />

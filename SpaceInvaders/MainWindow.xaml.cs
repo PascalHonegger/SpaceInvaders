@@ -19,7 +19,7 @@ namespace SpaceInvaders
 
 			DataContext = new SpaceInvadersViewModel
 			{
-				Player = new DefaultPlayer()
+				Player = new DefaultPlayer(new Point())
 			};
 		}
 

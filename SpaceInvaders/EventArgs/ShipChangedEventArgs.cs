@@ -3,7 +3,7 @@
 namespace SpaceInvaders.EventArgs
 {
 	/// <summary>
-	///     Die Eventargumente, wenn ein <see cref="IShip" /> seine <see cref="IShip.Location" /> geändert hat oder er getötet
+	///     Die Eventargumente, wenn ein <see cref="IShip" /> seine <see cref="IShip.Rect" /> geändert hat oder er getötet
 	///     wurde
 	/// </summary>
 	public class ShipChangedEventArgs : System.EventArgs

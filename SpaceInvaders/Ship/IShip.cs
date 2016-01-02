@@ -17,14 +17,9 @@ namespace SpaceInvaders.Ship
 		IShot Shot { get; }
 
 		/// <summary>
-		///     Die Grösse des Schiffes in SpaceInvaders-Pixel für die Kollision
+		///	Die Location <see cref="Point"/> (top-left corner) und die Grösse <see cref="Size"/> des Schiffes in SpaceInvaders-Pixel
 		/// </summary>
-		Size Size { get; }
-
-		/// <summary>
-		///     Die Position des Schiffes in SpaceInvaders-Pixel
-		/// </summary>
-		Point Location { get; }
+		Rect Rect { get; }
 
 		/// <summary>
 		///     Die Textures des Schiffes, welche im View angezeigt wird
@@ -32,17 +27,12 @@ namespace SpaceInvaders.Ship
 		IEnumerable<BitmapSource> Textures { get; }
 
 		/// <summary>
-		///     Das Leben eines Schiffes. Wird bei einem Treffer reduziert. Unabhängig von den Respawns des Spielers!
-		/// </summary>
-		double Health { get; }
-
-		/// <summary>
 		///     Der Name des Schiffes. Beispielsweise 'The Destroyer'
 		/// </summary>
 		string Name { get; }
 
 		/// <summary>
-		///     Bewegt das Schiff in die gewünschte Richtung, indem es die <see cref="Location" /> verändert
+		///     Bewegt das Schiff in die gewünschte Richtung, indem es den <see cref="Rect" /> verändert
 		/// </summary>
 		/// <param name="direction">Die Richtung, in welche sich das Schiff bewegt</param>
 		void Move(Direction direction);

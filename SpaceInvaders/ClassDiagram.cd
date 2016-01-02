@@ -40,7 +40,7 @@
   <Class Name="SpaceInvaders.Ship.ShipBase" BaseTypeListCollapsed="true">
     <Position X="17.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAACAAAAIAAgABAAAIAAAQBAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEACAAAAIAAgABAAAAAAAQBACAMAAAAAAAABAAAAAA=</HashCode>
       <FileName>Ship\ShipBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -48,15 +48,14 @@
   <Class Name="SpaceInvaders.Shot.DefaultShot" BaseTypeListCollapsed="true">
     <Position X="20.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAACAAIAAgAAAACIAAAABAAAAAAAAgAIAAAAAAAA=</HashCode>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAEAA=</HashCode>
       <FileName>Shot\DefaultShot.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="SpaceInvaders.SpaceInvadersViewModel">
     <Position X="32" Y="0.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>ABUAgAAAhIBAIAgACAAAIIooBEEJDAAAhRAIAQARBBA=</HashCode>
+      <HashCode>ABUAgAAABIBAJAgACAAAIIooBEEJDAAAhRAAAQAQBBA=</HashCode>
       <FileName>SpaceInvadersViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -71,14 +70,14 @@
   <Interface Name="SpaceInvaders.Ship.IShip">
     <Position X="17.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEACAAAAIAAgABAAAIAAAQBAAAMAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AAEAAAAAAIAAgABAAAAAAAQAACAMAAAAAAAABAAAAAA=</HashCode>
       <FileName>Ship\IShip.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="SpaceInvaders.Shot.IShot">
     <Position X="20.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAACAAIAAgAAAACIAAAABAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <HashCode>AAAAAACAAIAAAABAACAAAAABACAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Shot\IShot.cs</FileName>
     </TypeIdentifier>
   </Interface>

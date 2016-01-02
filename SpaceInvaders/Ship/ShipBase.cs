@@ -13,96 +13,139 @@ namespace SpaceInvaders.Ship
 	public abstract class ShipBase : IShip
 	{
 		/// <summary>
-		///     Der Schuss des Schiffes, welcher beim Schiessen geschossen wird
+		///     Der Base-Konstruktor für alle Invader.
 		/// </summary>
-		public abstract IShot Shot { get; }
+		/// <param name="shot">Ändert den <see cref="Shot" /></param>
+		/// <param name="health">Ändert das <see cref="Health" /></param>
+		/// <param name="name">Ändert den <see cref="Name" /></param>
+		/// <param name="textures">Ändert die <see cref="Textures" /></param>
+		/// <param name="speed">Ändert den <see cref="Speed" /></param>
+		/// <param name="points">Ändert die <see cref="Points" /></param>
+		/// <param name="rect">Ändert die <see cref="Rect" /></param>
+		public ShipBase(int points, IShot shot, double health, string name, IEnumerable<BitmapSource> textures, int speed, Rect rect)
+		{
+			Shot = shot;
+			Health = health;
+			Name = name;
+			Textures = textures;
+			Speed = speed;
+			ShipType = ShipType.Invader;
+			Points = points;
+			CurrentLives = TotalLives = 0;
+			Rect = rect;
+		}
 
 		/// <summary>
-		///     Die Grösse des Schiffes in SpaceInvaders-Pixel
+		///     Der Base-Konstruktor für alle Player.
 		/// </summary>
-		public abstract Size Size { get; }
-
-		/// <summary>
-		///     Die Position des Schiffes in SpaceInvaders-Pixel
-		/// </summary>
-		public abstract Point Location { get; protected set; }
-
-		/// <summary>
-		///     Die Textures des Schiffes, welche im View angezeigt wird
-		/// </summary>
-		public abstract IEnumerable<BitmapSource> Textures { get; }
+		/// <param name="shot">Ändert den <see cref="Shot" /></param>
+		/// <param name="health">Ändert das <see cref="Health" /></param>
+		/// <param name="name">Ändert den <see cref="Name" /></param>
+		/// <param name="textures">Ändert die <see cref="Textures" /></param>
+		/// <param name="totalLives">Ändert die <see cref="TotalLives" /> und <see cref="CurrentLives" /></param>
+		/// <param name="speed">Ändert den <see cref="Speed" /></param>
+		/// <param name="rect">Ändert die <see cref="Rect" /></param>
+		public ShipBase(IShot shot, double health, string name, IEnumerable<BitmapSource> textures, int totalLives, int speed, Rect rect)
+		{
+			Shot = shot;
+			Health = health;
+			Name = name;
+			Textures = textures;
+			Speed = speed;
+			ShipType = ShipType.Player;
+			Points = 0;
+			CurrentLives = TotalLives = totalLives;
+			Rect = rect;
+		}
 
 		/// <summary>
 		///     Das Leben eines Schiffes. Wird bei einem Treffer reduziert. Unabhängig von den Respawns des Spielers!
 		/// </summary>
-		public abstract double Health { get; }
+		public double Health { get; }
+
+		/// <summary>
+		///     Die Geschwindigkeit, mit welcher das Schiff sich vortbewegt. Wird in SpaceInvaders-Pixel / Tick angegeben
+		/// </summary>
+		private int Speed { get; }
+
+		/// <summary>
+		///     Der Schuss des Schiffes, welcher beim Schiessen geschossen wird
+		/// </summary>
+		public IShot Shot { get; }
+
+		/// <summary>
+		///     Die Location <see cref="Point" /> (top-left corner) und die Grösse <see cref="Size" /> des Schiffes in
+		///     SpaceInvaders-Pixel
+		/// </summary>
+		public Rect Rect { get; private set; }
+
+		/// <summary>
+		///     Die Textures des Schiffes, welche im View angezeigt wird
+		/// </summary>
+		public IEnumerable<BitmapSource> Textures { get; }
 
 		/// <summary>
 		///     Der Name des Schiffes. Beispielsweise 'The Destroyer'
 		/// </summary>
-		public abstract string Name { get; }
+		public string Name { get; }
 
 		/// <summary>
-		///     Bewegt das Schiff in die gewünschte Richtung, indem es den <see cref="IShip.Location" /> verändert
+		///     Bewegt das Schiff in die gewünschte Richtung, indem es den <see cref="IShip.Rect" /> verändert. Kann beliebig oft
+		///     aufgerufen werden (kein Cooldown)
 		/// </summary>
 		/// <param name="direction">Die Richtung, in welche sich das Schiff bewegt</param>
 		public void Move(Direction direction)
 		{
-			var oldX = Location.X;
-			var oldY = Location.Y;
-
 			double newX = 0;
 			double newY = 0;
 
 			switch (direction)
 			{
 				case Direction.Left:
-					newX = oldX - Speed;
+					newX = Rect.X - Speed;
 					break;
 				case Direction.Right:
-					newX = oldX + Speed;
+					newX = Rect.X + Speed;
 					break;
 				case Direction.Up:
-					newY = oldY + Speed;
+					newY = Rect.Y + Speed;
 					break;
 				case Direction.Down:
-					newY = oldY - Speed;
+					newY = Rect.Y - Speed;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
 			}
+			// TODO eleganter wäre 
+			// Rect.X = newX;
+			// Rect.Y = newY;
 
-			Location = new Point(newX, newY);
+			Rect = new Rect(new Point(newX, newY), Rect.Size);
 		}
 
 		/// <summary>
 		///     Die totalen Respawns des Spielers
 		/// </summary>
-		public abstract int TotalLives { get; }
+		public int TotalLives { get; }
 
 		/// <summary>
 		///     Die Respawns des Spielers
 		/// </summary>
-		public abstract int CurrentLives { get; set; }
+		public int CurrentLives { get; set; }
 
 		/// <summary>
 		///     Der Name des Menschen, welcher das Schiff steuert
 		/// </summary>
-		public abstract string PlayerName { get; set; }
+		public string PlayerName { get; set; }
 
 		/// <summary>
 		///     Die Punkte, welche beim Tod
 		/// </summary>
-		public abstract int Points { get; }
+		public int Points { get; }
 
 		/// <summary>
-		/// Der Schifftyp, welcher darüber entscheided ob dieses Schiff durch den Spieler gelenkt wird
+		///     Der Schifftyp, welcher darüber entscheided ob dieses Schiff durch den Spieler gelenkt wird
 		/// </summary>
-		public abstract ShipType ShipType { get; }
-
-		/// <summary>
-		///     Die Geschwindigkeit, mit welcher das Schiff sich vortbewegt. Wird in SpaceInvaders-Pixel / Tick angegeben
-		/// </summary>
-		public abstract int Speed { get; }
+		public ShipType ShipType { get; }
 	}
 }
