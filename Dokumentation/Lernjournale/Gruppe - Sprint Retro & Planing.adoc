@@ -1,0 +1,26 @@
+Initial Sprint
+==============
+
+.Retro
+
+* Gute Planung
+
+* Wurde durch unerwartete Ereignisse (Frey Input)
+trotzdem nicht erreicht
+
+* Allgemein guter Sprint
+
+* Wenig Programmieren da Planung wichtiger ist
+
+* Mehr Arbeit zuhause erledigen
+
+Sprint 01
+========
+
+.Planung
+
+* Alain finalisiert das Design
+
+* Pascal & Seraphin erstellen UseCases
+
+* Alle bestehen den Basic Test B in diesem Sprint

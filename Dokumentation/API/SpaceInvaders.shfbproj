@@ -18,7 +18,7 @@
     <HtmlHelpName>Documentation</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\..\SpaceInvaders\SpaceInvaders.sln" xmlns="" />
+      <DocumentationSource sourceFile="..\..\SpaceInvaders.sln" />
     </DocumentationSources>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
@@ -26,6 +26,27 @@
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
+    <HelpFileVersion>1.0.0.0</HelpFileVersion>
+    <MaximumGroupParts>2</MaximumGroupParts>
+    <NamespaceGrouping>False</NamespaceGrouping>
+    <SyntaxFilters>C#, XAML Usage</SyntaxFilters>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <PresentationStyle>VS2013</PresentationStyle>
+    <Preliminary>False</Preliminary>
+    <NamingMethod>Guid</NamingMethod>
+    <HelpTitle>A Sandcastle Documented Class Library</HelpTitle>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="SpaceInvaders_Test" isDocumented="True">Das allgemeine Testprojekt</NamespaceSummaryItem>
+<NamespaceSummaryItem name="(global)" isDocumented="True">SpaceInvaders</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders" isDocumented="True">Das allgemeine Projekt</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders.Control" isDocumented="True">Alle Controls für das GUI</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders.Enums" isDocumented="True">Alle verwendeten Enums</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders.EventArgs" isDocumented="True">Alle EventArgs-Klassen</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders.ExtensionMethods" isDocumented="True">Alle ExtensionMethods unabhängig davon, wo diese verwendet werden</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders.Ship" isDocumented="True">Alle Schiffe inklusive Texturen</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders.Shot" isDocumented="True">Alle Schüsse inklusive Texturen</NamespaceSummaryItem></NamespaceSummaries>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->

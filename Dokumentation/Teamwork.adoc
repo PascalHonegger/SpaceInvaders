@@ -1,0 +1,7 @@
+Teamwork
+========
+Alain Keller, Pascal Honegger und Seraphin Rihm
+Version 1.1, 30.12.2015
+
+=== 29.12.2015 Problem Invader|Player
+Pascal und Seraphin sassen vor dem Probelm, dass unser Invader und der Spieler beide von der selben abstrakten Klasse (ShipBase) ableiten. Der Spieler und der Invader werden intern beide gleich als IShip behandelt. Um redundaten Code zu verhindern, haben wir die abstrakte Klasse erstellt und dort beispielsweise die Methode 'Move()' implementiert. Um die Klassen Ship & Invader voneinander zu unterscheiden, realisierten der Spieler das IPlayer-Interface und der Invader noch ein IInvader-Interface. Dies gab jedoch Probleme und eine Klasse implementierte das IShip-Interface mehrmals => etwas war falsch. Nach einer Diskusion kame wir zur Schlussfolgerung, dass es den IPlayer und IInvader nicht mehr braucht. Diese bieden Interfaces hatten beinahe keinen Inhalt und sorgten nur dafür, dass ein Spieler von einem Invader unterschieden werden konnte. Da nun der Spieler und der Invader beide ein normales IShip sind, sind diese nicht mehr zu unterscheiden. Dies müssen wir aber können, da Invader beispielsweise mit ihren schüssen andere Invader nicht verletzen. Die Lösung auf dieses Problem: ShipType. Dieser neu erstellte Enum wurde dem IShip-Interface hinzugefügt und sagt aus, ob ein Schiff ein Player, Invader oder Boss ist. Mit dieser Implementation sollte alle unsere Probleme gelöst sein.
