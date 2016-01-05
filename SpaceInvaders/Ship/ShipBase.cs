@@ -31,7 +31,7 @@ namespace SpaceInvaders.Ship
 			Speed = speed;
 			ShipType = ShipType.Invader;
 			Points = points;
-			CurrentLives = TotalLives = 0;
+			Lives = 0;
 			Rect = rect;
 		}
 
@@ -42,7 +42,7 @@ namespace SpaceInvaders.Ship
 		/// <param name="health">Ändert das <see cref="Health" /></param>
 		/// <param name="name">Ändert den <see cref="Name" /></param>
 		/// <param name="textures">Ändert die <see cref="Textures" /></param>
-		/// <param name="totalLives">Ändert die <see cref="TotalLives" /> und <see cref="CurrentLives" /></param>
+		/// <param name="totalLives">Ändert die <see cref="Lives"/></param>
 		/// <param name="speed">Ändert den <see cref="Speed" /></param>
 		/// <param name="rect">Ändert die <see cref="Rect" /></param>
 		public ShipBase(IShot shot, double health, string name, IEnumerable<BitmapSource> textures, int totalLives, int speed, Rect rect)
@@ -54,7 +54,7 @@ namespace SpaceInvaders.Ship
 			Speed = speed;
 			ShipType = ShipType.Player;
 			Points = 0;
-			CurrentLives = TotalLives = totalLives;
+			Lives = totalLives;
 			Rect = rect;
 		}
 
@@ -126,12 +126,7 @@ namespace SpaceInvaders.Ship
 		/// <summary>
 		///     Die totalen Respawns des Spielers
 		/// </summary>
-		public int TotalLives { get; }
-
-		/// <summary>
-		///     Die Respawns des Spielers
-		/// </summary>
-		public int CurrentLives { get; set; }
+		public int Lives { get; }
 
 		/// <summary>
 		///     Der Name des Menschen, welcher das Schiff steuert

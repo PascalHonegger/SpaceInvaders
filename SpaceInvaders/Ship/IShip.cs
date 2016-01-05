@@ -40,12 +40,7 @@ namespace SpaceInvaders.Ship
 		/// <summary>
 		///     Die totalen Respawns des Spielers
 		/// </summary>
-		int TotalLives { get; }
-
-		/// <summary>
-		///     Die Respawns des Spielers
-		/// </summary>
-		int CurrentLives { get; set; }
+		int Lives { get; }
 
 		/// <summary>
 		///     Der Name des Menschen, welcher das Schiff steuert

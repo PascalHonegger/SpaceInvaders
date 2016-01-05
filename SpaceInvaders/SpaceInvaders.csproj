@@ -73,6 +73,7 @@
     <Compile Include="EventArgs\ShotMovedEventArgs.cs" />
     <Compile Include="Enums\Direction.cs" />
     <Compile Include="ExtensionMethods\ListExtensions.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Ship\Invaders\Ufo.cs" />
     <Compile Include="Ship\Players\DefaultPlayer.cs" />
     <Compile Include="Ship\ShipBase.cs" />

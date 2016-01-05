@@ -15,27 +15,27 @@ namespace SpaceInvaders.Shot
 		/// <summary>
 		///     Die Textures des Schusses, welche im View angezeigt wird
 		/// </summary>
-		public virtual IEnumerable<BitmapSource> Textures { get; }
+		public IEnumerable<BitmapSource> Textures { get; }
 
 		/// <summary>
 		///     Der Schaden, welcher der Schuss beim Aufprall mit einem <see cref="IShip" /> verursacht
 		/// </summary>
-		public virtual double Damage { get; }
+		public double Damage { get; }
 
 		/// <summary>
 		///     Die Geschwindigkeit des Schusses. Wird in SpaceInvaders-Pixel / Tick angegeben
 		/// </summary>
-		public virtual int Speed { get; }
+		public int Speed { get; }
 
 		/// <summary>
 		///     Die Richtung, in welche sich der Schuss bewegt
 		/// </summary>
-		public virtual Direction Direction { get; }
+		public Direction Direction { get; }
 
 		/// <summary>
 		///	Die Location <see cref="Point"/> (top-left corner) und die Grösse <see cref="Size"/> des Schiffes in SpaceInvaders-Pixel
 		/// </summary>
-		public virtual Rect Rect { get; private set; }
+		public Rect Rect { get; private set; }
 
 		/// <summary>
 		///     Bewegt den Schuss in die <see cref="IShot.Direction" /> mit der Hilfe des <see cref="IShot.Speed" />

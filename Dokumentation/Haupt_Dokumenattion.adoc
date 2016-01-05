@@ -27,29 +27,38 @@ link:https://ci.appveyor.com/project/PascalHonegger/lepratos-client[AppVeyor] un
 == VCS-Server
 link:https://github.com/PascalHonegger/LePrAtos_Client[C# Client]
 
+== Pflichtenheft
 
-== SpaceInvaders Regeln
+=== SpaceInvaders Regeln
 
-* Der Spieler
-** Hat einen Benutzernamen
-** Hat eine gespeicherte Höchstpunktzahl
-** Kann zwischen verschiedenen Schiffen auswählen
-** Hat eine Geschwindigkeit
-** Hat einen Schuss
-*** Geschwindigkeit
-*** Grösse
-*** Schaden
-** Hat Leben (wie viele Schüsse bis zum Tod)
-** Hat Respawns (wie oft wieder auftauchen nach Tod)
+* Das Schiff
+** Geschwindigkeit
+** Grösse
 ** Aussehen
+** Schuss
 
-* Der Invader
-** Gibt beim Tod verschiedene Punkte
-** Kann zurückschiessen
-** Kann sich nach links und rechts bewegen
-** Bewegt sich nach unten sobald eine Wand berührt
-** Hat verschiedene Schwierigkeiten
-** Hat anderes Aussehen
+*** Der Invader
+**** Gibt beim Tod verschiedene Punkte
+**** Kann zurückschiessen
+**** Kann sich nach links und rechts bewegen
+**** Bewegt sich nach unten sobald eine Wand berührt
+**** Hat verschiedene Schwierigkeiten
+**** Hat anderes Aussehen
+
+*** Der Spieler
+**** Hat einen Benutzernamen
+**** Hat eine gespeicherte Höchstpunktzahl
+**** Kann zwischen verschiedenen Schiffen auswählen
+**** Hat einen Schuss
+**** Hat Leben (wie viele Schüsse bis zum Tod)
+**** Hat Respawns (wie oft wieder auftauchen nach Tod)
+**** Aussehen
+
+* Der Schuss
+** Geschwindigkeit
+** Grösse
+** Schaden
+** Aussehen
 
 * Der Boss
 ** Hat viele Leben

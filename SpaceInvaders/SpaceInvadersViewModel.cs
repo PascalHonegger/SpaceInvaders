@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Timers;
 using System.Windows;
 using SpaceInvaders.Enums;
 using SpaceInvaders.EventArgs;
 using SpaceInvaders.ExtensionMethods;
+using SpaceInvaders.Properties;
 using SpaceInvaders.Ship;
 using SpaceInvaders.Ship.Invaders;
 using SpaceInvaders.Shot;
@@ -15,18 +19,33 @@ namespace SpaceInvaders
 	/// <summary>
 	///     Das ViewModel des gesamten SpaceInvaders
 	/// </summary>
-	public class SpaceInvadersViewModel : IDisposable
+	public sealed class SpaceInvadersViewModel : IDisposable, INotifyPropertyChanged
 	{
 		private const int MaximumPlayerShotsAtTheSameTime = 3;
 
-		private Rect _playArea = new Rect(new Point(0, 0), new Size(400, 300));
-
 		private static readonly Random Random = new Random();
 		private readonly List<IShot> _invaderShots = new List<IShot>();
+
+		private readonly Rect _playArea = new Rect(new Point(0, 0), new Size(1074, 587));
 		private readonly List<IShot> _playerShots = new List<IShot>();
+		private int _currentLives;
 		private Direction _invaderDirection = Direction.Left;
 		private DateTime _invaderLastMoved = DateTime.MinValue;
 		private List<IShip> _invaders = new List<IShip>();
+
+		/// <summary>
+		///     Die aktuellen Respawns des Spielers
+		/// </summary>
+		private int CurrentLives
+		{
+			get { return _currentLives; }
+			set
+			{
+				if (value == _currentLives) return;
+				_currentLives = value;
+				OnPropertyChanged();
+			}
+		}
 
 		/// <summary>
 		///     Der jetzige Spieler
@@ -43,7 +62,7 @@ namespace SpaceInvaders
 		private int Wave { get; set; }
 
 		/// <summary>
-		///     True, wenn das jetzige Spiel fertig ist => der <see cref="Player" /> keine <see cref="IShip.CurrentLives" /> übrig
+		///     True, wenn das jetzige Spiel fertig ist =>f der <see cref="Player" /> keine <see cref="CurrentLives" /> übrig
 		///     hat
 		/// </summary>
 		public bool GameOver { get; set; }
@@ -59,6 +78,11 @@ namespace SpaceInvaders
 		}
 
 		/// <summary>
+		///     OnPropertyChanged Event
+		/// </summary>
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		/// <summary>
 		///     Schiesst einen Schuss vom dem mitgegebenen Schiff
 		/// </summary>
 		/// <param name="ship">Das Schiff, welches einen <see cref="IShot" /> schiesst</param>
@@ -70,7 +94,7 @@ namespace SpaceInvaders
 
 				OnShotMovedEventHandler(new ShotMovedEventArgs(ship.Shot, false));
 			}
-			else if (ship.ShipType == ShipType.Invader)
+			else if (ship.ShipType == ShipType.Invader || ship.ShipType == ShipType.Boss)
 			{
 				_invaderShots.Add(ship.Shot);
 			}
@@ -109,7 +133,7 @@ namespace SpaceInvaders
 		{
 			GameOver = false;
 
-			Player.CurrentLives = Player.TotalLives;
+			CurrentLives = Player.Lives;
 
 			foreach (var invader in _invaders)
 			{
@@ -129,11 +153,37 @@ namespace SpaceInvaders
 			}
 			_invaderShots.Clear();
 
-			//TODO ShipChangedEventHandler += Player.OnShipChanged;
+			ShipChangedEventHandler += (sender, e) =>
+			{
+				if (!e.GotShot) return;
 
+				switch (e.Ship.ShipType)
+				{
+					case ShipType.Player:
+						CurrentLives--;
+						if (CurrentLives <= 0)
+						{
+							EndGame();
+						}
+						break;
+					case ShipType.Invader:
+					case ShipType.Boss:
+						_invaders.Remove(e.Ship);
+						break;
+				}
+			};
+
+			ShotMovedEventHandler += (sender, e) =>
+			{
+				if (e.Disappeared)
+				{
+					_invaderShots.Remove(e.Shot);
+					_invaderShots.Remove(e.Shot);
+				}
+			};
 
 			//TODO ShipChangedEventHandler += GUI;
-			//TODO ShotMovedEventHandler += GUI
+			//TODO ShotMovedEventHandler += GUI;
 			OnShipChangedEventHandler(new ShipChangedEventArgs(Player, false));
 
 			Wave = 0;
@@ -292,12 +342,10 @@ namespace SpaceInvaders
 
 		private void CheckForPlayerCollision()
 		{
-			foreach (var shot in _invaderShots)
+			foreach (var shot in _invaderShots.Where(shot => RectsOverlap(Player.Rect, shot.Rect)))
 			{
-				if (RectsOverlap(Player.Rect, shot.Rect))
-				{
-					OnShipChangedEventHandler(new ShipChangedEventArgs(Player, true));
-				}
+				OnShipChangedEventHandler(new ShipChangedEventArgs(Player, true));
+				OnShotMovedEventHandler(new ShotMovedEventArgs(shot, true));
 			}
 		}
 
@@ -334,7 +382,8 @@ namespace SpaceInvaders
 		}
 
 		// Analysefehler
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "<UpdateTimer>k__BackingField")]
+		[SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed",
+			MessageId = "<UpdateTimer>k__BackingField")]
 		private void Dispose(bool disposing)
 		{
 			if (disposing)
@@ -361,6 +410,16 @@ namespace SpaceInvaders
 		{
 			// Useless
 			Dispose(false);
+		}
+
+		/// <summary>
+		///     Notifies the GUI, that the Porperty changed
+		/// </summary>
+		/// <param name="propertyName">The name of the Property, which got changed</param>
+		[NotifyPropertyChangedInvocator]
+		private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

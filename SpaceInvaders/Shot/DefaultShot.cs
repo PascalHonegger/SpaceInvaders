@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using SpaceInvaders.Enums;
-using SpaceInvaders.Ship;
 
 namespace SpaceInvaders.Shot
 {
