@@ -5,22 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpaceInvaders"
         mc:Ignorable="d"
-        Title="Space Invaders" Height="666" Width="666"
-        d:DataContext="{d:DesignInstance local:SpaceInvadersViewModel}">
+        Title="Space Invaders" Height="785" Width="1366"
+		>
 	<Grid KeyDown="UIElement_OnKeyDown">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="400" />
-			<ColumnDefinition Width="*" />
-		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition />
-			<RowDefinition Height="300" />
-			<RowDefinition />
+			<RowDefinition Height="5"/>
+			<RowDefinition Height="124"/>
+			<RowDefinition Height="25"/>
+			<RowDefinition Height="587"/>
+			<RowDefinition Height="10"/>
 		</Grid.RowDefinitions>
-		<Button Content="Spiel starten" Click="button_Click" Margin="140,70,130,28" RenderTransformOrigin="0.5,0.5"
-		        Grid.Column="1" />
-		<TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Score}" Margin="10,26,4,70" />
-		<Canvas Background="Black" Grid.Row="1" Grid.Column="1" x:Name="PlayArea" Focusable="True" />
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="10"/>
+			<ColumnDefinition Width="1074"/>
+			<ColumnDefinition Width="17"/>
+			<ColumnDefinition Width="240"/>
+			<ColumnDefinition Width="10"/>
+		</Grid.ColumnDefinitions>
+		<Canvas Grid.Column="1" HorizontalAlignment="Left" 
+				Height="124" Margin="0" Grid.Row="1" VerticalAlignment="Top" 
+				Width="1330" Background="Black" Grid.ColumnSpan="3"/>
+		<Canvas Grid.Column="1" HorizontalAlignment="Left" 
+				Height="587" Margin="0" Grid.Row="3" VerticalAlignment="Top" 
+				Width="1074" Background="Black"/>
+		<StackPanel Grid.Column="3" HorizontalAlignment="Left" 
+					Height="587" Margin="0" Grid.Row="3" VerticalAlignment="Top" 
+					Width="240" Background="#FF686868">
+			<StackPanel Height="100" Orientation="Horizontal">
+				<Button x:Name="button1" Content="Ship one" Width="120" FontSize="24"/>
+				<Button x:Name="button2" Content="Ship Two" Width="120" FontSize="24"/>
+			</StackPanel>
+			<TextBlock x:Name="textBlock" TextWrapping="Wrap" Text="Score: " Height="75" FontSize="24" TextAlignment="Center"/>
+			<TextBlock x:Name="textBlock1" TextWrapping="Wrap" Text="Player" Height="75" FontSize="24" TextAlignment="Center"/>
+			<Button x:Name="button" Content="Start Game" Height="100" Panel.ZIndex="3"/>
+		</StackPanel>
+
 	</Grid>
 </Window>
