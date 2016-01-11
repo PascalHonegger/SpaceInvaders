@@ -96,30 +96,26 @@ namespace SpaceInvaders.Ship
 		/// <param name="direction">Die Richtung, in welche sich das Schiff bewegt</param>
 		public void Move(Direction direction)
 		{
-			double newX = 0;
-			double newY = 0;
+			var newX = Rect.X;
+			var newY = Rect.Y;
 
 			switch (direction)
 			{
 				case Direction.Left:
-					newX = Rect.X - Speed;
+					newX -= Speed;
 					break;
 				case Direction.Right:
-					newX = Rect.X + Speed;
+					newX += Speed;
 					break;
 				case Direction.Up:
-					newY = Rect.Y + Speed;
+					newY += Speed;
 					break;
 				case Direction.Down:
-					newY = Rect.Y - Speed;
+					newY -= Speed;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
 			}
-			// TODO eleganter wäre 
-			// Rect.X = newX;
-			// Rect.Y = newY;
-
 			Rect = new Rect(new Point(newX, newY), Rect.Size);
 		}
 

@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SpaceInvaders_Test</RootNamespace>
     <AssemblyName>SpaceInvaders_Test</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -57,6 +57,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -71,11 +72,22 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Example.cs" />
+    <Compile Include="Ship\Players\DefaultPlayerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestBases\IntegrationTestBase.cs" />
+    <Compile Include="TestBases\UnitTestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Ship\Invaders\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SpaceInvaders\SpaceInvaders.csproj">
+      <Project>{C35FC806-C262-46AE-AD23-422EE41EB467}</Project>
+      <Name>SpaceInvaders</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -2,14 +2,24 @@ Richtlinien Dokumentation
 =========================
 Alain Keller, Pascal Honegger und Seraphin Rihm 
 Version 1.0, 15.12.2015
+:toc:
 
 == Was wird dokumentiert
 === Verwendete Software
-    Die verschieden Tools von Drittanbietern werden aufgelistet und kurz erläutert. Dazu folgt ein Link zum Anbieter und evtl. ein Cheat Sheet zum Tool.
+Die verschieden Tools von Drittanbietern werden aufgelistet und kurz erläutert. Dazu folgt ein Link zum Anbieter und evtl. ein Cheat Sheet zum Tool.
+
 
 === Code
-    Der Code wird so wenig wie möglich in der Haupt-Dokumentation erläutert. Die erklärung des Codes befindet sich in der API-Beschreibung.
+Der Code wird so wenig wie möglich in der Haupt-Dokumentation erläutert. Die erklärung des Codes befindet sich in der API-Beschreibung.
+
+== Wie wird dokumentiert
+Alle Dokumentations-Dateien verfügen über den selben Header und sind durch den Titel voneinander getrennt. Ausser den individuellen Lernjournals wird alles zusammen geschreiben.
+
+=== AsciiDoc
+Unsere AsciiDoc Dokumentation wird mit link:http://asciidocfx.com/[AsciidocFX] geschrieben und für die Abgabe als HTML exportiert.
+
+=== Code
+Die API-Beschreibung wird mit Sandcastle generiert.
 
 == Architektur
-    Die Architecktur wird in der Haupt-Dokumentation ausführlich erklärt.
-    Es werden die UML-Diagramme eingefügt und je nach dem zusätzlich in Textform beschrieben. Dazu gehören Use-Cases, Sequenzdiagramme und das Klassandiagramm.
+Die Architecktur wird in der Haupt-Dokumentation ausführlich erklärt. Es werden die UML-Diagramme eingefügt und je nach dem zusätzlich in Textform beschrieben. Dazu gehören Use-Cases, Sequenzdiagramme und das Klassandiagramm.
