@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -12,6 +13,7 @@ using SpaceInvaders.ExtensionMethods;
 using SpaceInvaders.Properties;
 using SpaceInvaders.Ship;
 using SpaceInvaders.Ship.Invaders;
+using SpaceInvaders.Ship.Players;
 using SpaceInvaders.Shot;
 
 namespace SpaceInvaders
@@ -32,6 +34,21 @@ namespace SpaceInvaders
 		private Direction _invaderDirection = Direction.Left;
 		private DateTime _invaderLastMoved = DateTime.MinValue;
 		private List<IShip> _invaders = new List<IShip>();
+		private bool _gameOver = true;
+
+		private Point PlayerSpawn => new Point(_playArea.Width/2, 20);
+
+		/// <summary>
+		///     Alle Player-Schiffe, welche selektiert werden können
+		/// </summary>
+		public ObservableCollection<IShip> PlayerSelection => new ObservableCollection<IShip>
+		{
+			new DefaultPlayer(PlayerSpawn),
+			new DefaultPlayer(PlayerSpawn),
+			new DefaultPlayer(PlayerSpawn),
+			new DefaultPlayer(PlayerSpawn),
+			new DefaultPlayer(PlayerSpawn)
+		};
 
 		/// <summary>
 		///     Die aktuellen Respawns des Spielers
@@ -62,10 +79,19 @@ namespace SpaceInvaders
 		private int Wave { get; set; }
 
 		/// <summary>
-		///     True, wenn das jetzige Spiel fertig ist =>f der <see cref="Player" /> keine <see cref="CurrentLives" /> übrig
+		///     True, wenn das jetzige Spiel fertig ist => der <see cref="Player" /> keine <see cref="CurrentLives" /> übrig
 		///     hat
 		/// </summary>
-		public bool GameOver { get; set; }
+		public bool GameOver
+		{
+			get { return _gameOver; }
+			set
+			{
+				if (value == _gameOver) return;
+				_gameOver = value;
+				OnPropertyChanged();
+			}
+		}
 
 		/// <summary>
 		///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -110,10 +136,15 @@ namespace SpaceInvaders
 		/// </summary>
 		public event EventHandler<ShotMovedEventArgs> ShotMovedEventHandler;
 
-		private void EndGame()
+		/// <summary>
+		///     Beendet das Spiel
+		/// </summary>
+		public void EndGame()
 		{
 			GameOver = true;
 			UpdateTimer.Stop();
+			//TODO  Save Highscore
+			DestroyEverything();
 		}
 
 		private void OnShipChangedEventHandler(ShipChangedEventArgs e)
@@ -135,23 +166,7 @@ namespace SpaceInvaders
 
 			CurrentLives = Player.Lives;
 
-			foreach (var invader in _invaders)
-			{
-				OnShipChangedEventHandler(new ShipChangedEventArgs(invader, true));
-			}
-			_invaders.Clear();
-
-			foreach (var shot in _playerShots)
-			{
-				OnShotMovedEventHandler(new ShotMovedEventArgs(shot, true));
-			}
-			_playerShots.Clear();
-
-			foreach (var shot in _invaderShots)
-			{
-				OnShotMovedEventHandler(new ShotMovedEventArgs(shot, true));
-			}
-			_invaderShots.Clear();
+			DestroyEverything();
 
 			ShipChangedEventHandler += (sender, e) =>
 			{
@@ -170,6 +185,8 @@ namespace SpaceInvaders
 					case ShipType.Boss:
 						_invaders.Remove(e.Ship);
 						break;
+					default:
+						throw new ArgumentOutOfRangeException(nameof(ShipType));
 				}
 			};
 
@@ -193,6 +210,24 @@ namespace SpaceInvaders
 
 			UpdateTimer.Elapsed += (sender, args) => { Update(); };
 			UpdateTimer.Start();
+		}
+
+		private void DestroyEverything()
+		{
+			foreach (var invader in _invaders.ToList())
+			{
+				OnShipChangedEventHandler(new ShipChangedEventArgs(invader, true));
+			}
+
+			foreach (var shot in _playerShots.ToList())
+			{
+				OnShotMovedEventHandler(new ShotMovedEventArgs(shot, true));
+			}
+
+			foreach (var shot in _invaderShots.ToList())
+			{
+				OnShotMovedEventHandler(new ShotMovedEventArgs(shot, true));
+			}
 		}
 
 		private void NextWave()
@@ -259,12 +294,12 @@ namespace SpaceInvaders
 			}
 			else
 			{
-				foreach (var shot in _invaderShots)
+				foreach (var shot in _invaderShots.ToList())
 				{
 					shot.Move();
 					OnShotMovedEventHandler(new ShotMovedEventArgs(shot, IsOutOfBounds(shot.Rect)));
 				}
-				foreach (var shot in _playerShots)
+				foreach (var shot in _playerShots.ToList())
 				{
 					shot.Move();
 					OnShotMovedEventHandler(new ShotMovedEventArgs(shot, IsOutOfBounds(shot.Rect)));
