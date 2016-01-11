@@ -131,7 +131,36 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\invader1_animation_one.png" />
+    <Resource Include="Resources\invader1_animation_two.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\invader2_animation_one.png" />
+    <Resource Include="Resources\invader2_animation_two.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\invader3_animation_one.png" />
+    <Resource Include="Resources\Invader3_animation_two.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\invaderboss_animation_1.png" />
+    <Resource Include="Resources\invaderboss_animation_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\basicship.png" />
+    <Resource Include="Resources\speedship.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\shot1_animation_one.png" />
+    <Resource Include="Resources\shot1_animation_two.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\player_shot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bossshot.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
