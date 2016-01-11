@@ -6,7 +6,10 @@ using SpaceInvaders.Shot;
 
 namespace SpaceInvaders.Ship.Invaders
 {
-	internal class Ufo : ShipBase
+	/// <summary>
+	/// Der Ufo-Invader
+	/// </summary>
+	public class Ufo : ShipBase
 	{
 		private static readonly Size DefaultSize = new Size(20, 10);
 
@@ -22,6 +25,10 @@ namespace SpaceInvaders.Ship.Invaders
 
 		private const int DefaultSpeed = 30;
 
+		/// <summary>
+		/// Der Konstruktor für <see cref="Ufo"/>
+		/// </summary>
+		/// <param name="location">Die Location, an welcher das Ufo auftaucht</param>
 		public Ufo(Point location) : base(DefaultPoints, new DefaultShot(location, Direction.Down), DefaultHealth, DefaultName, DefaultTextures, DefaultSpeed, new Rect(location, DefaultSize))
 		{
 

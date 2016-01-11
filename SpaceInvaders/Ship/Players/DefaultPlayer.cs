@@ -6,7 +6,10 @@ using SpaceInvaders.Shot;
 
 namespace SpaceInvaders.Ship.Players
 {
-	internal class DefaultPlayer : ShipBase
+	/// <summary>
+	///     Der Standard-Spieler
+	/// </summary>
+	public class DefaultPlayer : ShipBase
 	{
 		private const int DefaultSpeed = 20;
 		private const int DefaultLives = 2;
@@ -16,9 +19,12 @@ namespace SpaceInvaders.Ship.Players
 
 		private static readonly List<BitmapSource> DefaultTextures = new List<BitmapSource>();
 
+		/// <summary>
+		///     Der Konstruktor für den <see cref="DefaultPlayer" />
+		/// </summary>
+		/// <param name="location">Die Location, an welcher der Spieler startet</param>
 		public DefaultPlayer(Point location)
-			: base(
-				DefaultSpeed, new DefaultShot(location, Direction.Down), DefaultHealth, DefaultName, DefaultTextures, DefaultLives,
+			: base(new DefaultShot(location, Direction.Down), DefaultHealth, DefaultName, DefaultTextures, DefaultLives, DefaultSpeed,
 				new Rect(location, DefaultSize))
 		{
 		}

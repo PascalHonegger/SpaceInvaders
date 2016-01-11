@@ -1,31 +1,26 @@
 Dokumentation
 =============
 Alain Keller, Pascal Honegger und Seraphin Rihm
-Version 1.1, 30.12.2015
-
-== Inhaltsverzeichnis
-
+Version 1.2, 11.01.2016
 :toc:
 
 == Framework
 
 === C#
-Wir werden C#6 / .Net 4.6 verwenden.
+Wir werden C#6 / .Net 4.6.1 verwenden.
 
 == Datenstruktur
 
 === Aufbau des Projektordner
 Die Files werden in verschieden Ordnern unterteilt. Diese werden nach Überthemen des Projektes geordnet. Die Ordner sind doppelt vorhanden, einmal im SpaceInvaders und einmal im SpaceInvaders_Test Projekt.
 
-== Code-Analysen
+== Continous Integration
 
-=== Continous Integration
-
-==== C#
-link:https://ci.appveyor.com/project/PascalHonegger/lepratos-client[AppVeyor] unterstützt als einzige CI neben Travis C#, benötigt aber weniger Konfigurationen.
+link:https://ci.appveyor.com/project/PascalHonegger/spaceinvaders[AppVeyor]
+unterstützt als einzige CI neben Travis C#, benötigt aber weniger Konfigurationen.
 
 == VCS-Server
-link:https://github.com/PascalHonegger/LePrAtos_Client[C# Client]
+link:https://github.com/PascalHonegger/SpaceInvaders[Github]
 
 == Pflichtenheft
 
