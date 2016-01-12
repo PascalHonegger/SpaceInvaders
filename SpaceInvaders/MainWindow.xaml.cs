@@ -27,15 +27,26 @@ namespace SpaceInvaders
 			{
 				Player = new DefaultPlayer(new Point())
 			};
+
+			ViewModel.ShipChangedEventHandler += (sender, e) => Animationes(e.Ship);
 		}
 
 		private SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
 
-		public void animationes(IShip ship)
+		/// <summary>
+		/// TODO
+		/// </summary>
+		/// <param name="ship"></param>
+		public void Animationes(IShip ship)
 		{
 			Storyboard moveInvaders = new Storyboard();
 			var control = ViewModel.InvadersWithControls.First(kvp => kvp.Key.Equals(ship)).Value;
 
+			if (control == null) return;
+			if (!PlayArea51.Children.Contains(control))
+			{
+				PlayArea51.Children.Add(control);
+			}
 			DoubleAnimation moveAnimationX = new DoubleAnimation();
 			moveAnimationX.Duration = new Duration(new TimeSpan(0, 0, 1));
 			moveAnimationX.To = ship.Rect.Location.X;
