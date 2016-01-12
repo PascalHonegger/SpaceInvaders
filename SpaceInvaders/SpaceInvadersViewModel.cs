@@ -25,8 +25,7 @@ namespace SpaceInvaders
 	public sealed class SpaceInvadersViewModel : IDisposable, INotifyPropertyChanged
 	{
 		private const int MaximumPlayerShotsAtTheSameTime = 3;
-
-		private static readonly Random Random = new Random();
+		
 		private readonly List<IShot> _invaderShots = new List<IShot>();
 
 		private readonly Rect _playArea = new Rect(new Point(0, 0), new Size(1074, 587));
@@ -34,9 +33,10 @@ namespace SpaceInvaders
 		private int _currentLives;
 		private Direction _invaderDirection = Direction.Left;
 		private DateTime _invaderLastMoved = DateTime.MinValue;
+		private DateTime _invaderLastFired = DateTime.MinValue;
 		private List<IShip> _invaders = new List<IShip>();
-		private Dictionary<IShip, ShipControl> _invadersAndControls =  new Dictionary<IShip, ShipControl>();
-		private bool _gameOver;
+		private readonly Dictionary<IShip, ShipControl> _invadersAndControls =  new Dictionary<IShip, ShipControl>();
+		private bool _gameOver = true;
 
 		/// <summary>
 		/// Das <see cref="Dictionary{TKey,TValue}"/> mit dem Schiff und dem dazugehörigen Dictionary
@@ -359,7 +359,7 @@ namespace SpaceInvaders
 				timeToWait = 0;
 			}
 
-			if (_invaderLastMoved <= DateTime.Now.AddSeconds(-timeToWait))
+			if (_invaderLastMoved >= DateTime.Now.AddSeconds(-timeToWait))
 			{
 				return;
 			}
@@ -412,16 +412,20 @@ namespace SpaceInvaders
 
 		private void InvaderReturnFire()
 		{
-			if (_invaderShots.Count > Wave + 1)
+			// ReSharper disable once PossibleLossOfFraction
+			var timeToWait = 2 - Wave / 20;
+
+			if (timeToWait < 0)
+			{
+				timeToWait = 0;
+			}
+
+			if (_invaderLastFired >= DateTime.Now.AddSeconds(-timeToWait))
 			{
 				return;
 			}
 
-			//TODO Mehr Schüsse jede Wave
-			/*if (Random.Next(10) < 10 - Wave)
-			{
-				return;
-			}*/
+			_invaderLastFired = DateTime.Now;
 
 			var invader = _invaders.PickRandom();
 
