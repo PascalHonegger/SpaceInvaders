@@ -37,6 +37,9 @@ namespace SpaceInvaders
 		private List<IShip> _invaders = new List<IShip>();
 		private readonly Dictionary<IShip, ShipControl> _invadersAndControls =  new Dictionary<IShip, ShipControl>();
 		private bool _gameOver = true;
+		private string _playerName = "Player1";
+		private int _score;
+		private int _wave;
 
 		/// <summary>
 		/// Das <see cref="Dictionary{TKey,TValue}"/> mit dem Schiff und dem dazugehörigen Dictionary
@@ -100,9 +103,28 @@ namespace SpaceInvaders
 		/// <summary>
 		///     Die aktuelle Punktzahl des Spielers
 		/// </summary>
-		public int Score { get; set; }
+		public int Score
+		{
+			get { return _score; }
+			set
+			{
+				_score = value;
+				OnPropertyChanged();
+			}
+		}
 
-		private int Wave { get; set; }
+		/// <summary>
+		/// Die jetzige Wave des Spieler, beeinflusst die Schwierigkeit
+		/// </summary>
+		public int Wave
+		{
+			get { return _wave; }
+			set
+			{
+				_wave = value;
+				OnPropertyChanged();
+			}
+		}
 
 		/// <summary>
 		///     True, wenn das jetzige Spiel fertig ist => der <see cref="Player" /> keine <see cref="CurrentLives" /> übrig
@@ -115,6 +137,20 @@ namespace SpaceInvaders
 			{
 				if (value == _gameOver) return;
 				_gameOver = value;
+				OnPropertyChanged();
+			}
+		}
+
+		/// <summary>
+		/// Der ausgewählte Name des Spielers, wird für den Highscore verwendet
+		/// </summary>
+		/// <exception cref="NotImplementedException"></exception>
+		public string PlayerName
+		{
+			get { return _playerName; }
+			set
+			{
+				_playerName = value;
 				OnPropertyChanged();
 			}
 		}
