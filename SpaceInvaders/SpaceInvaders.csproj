@@ -65,6 +65,7 @@
     <Compile Include="Control\AnimatedImageControl.xaml.cs">
       <DependentUpon>AnimatedImageControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\Converter\InvertBoolConverter.cs" />
     <Compile Include="Control\ShipControl.xaml.cs">
       <DependentUpon>ShipControl.xaml</DependentUpon>
     </Compile>
@@ -161,6 +162,7 @@
   <ItemGroup>
     <Resource Include="Resources\bossshot.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

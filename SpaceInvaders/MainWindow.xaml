@@ -4,9 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpaceInvaders"
+        xmlns:converter="clr-namespace:SpaceInvaders.Control.Converter"
         mc:Ignorable="d"
         Title="Space Invaders" Height="785" Width="1366"
-		>
+		d:DataContext="{d:DesignInstance local:SpaceInvadersViewModel}">
+	<Window.Resources>
+		<converter:InvertBoolConverter x:Key="InvertBoolConverter" />
+	</Window.Resources>
+	
 	<Grid KeyDown="UIElement_OnKeyDown">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="5"/>
@@ -28,17 +33,21 @@
 		<Canvas Grid.Column="1" HorizontalAlignment="Left" 
 				Height="587" Margin="0" Grid.Row="3" VerticalAlignment="Top" 
 				Width="1074" Background="Black"/>
-		<StackPanel Grid.Column="3" HorizontalAlignment="Left" 
-					Height="587" Margin="0" Grid.Row="3" VerticalAlignment="Top" 
-					Width="240" Background="#FF686868">
-			<StackPanel Height="100" Orientation="Horizontal">
-				<Button x:Name="button1" Content="Ship one" Width="120" FontSize="24"/>
-				<Button x:Name="button2" Content="Ship Two" Width="120" FontSize="24"/>
-			</StackPanel>
-			<TextBlock x:Name="textBlock" TextWrapping="Wrap" Text="Score: " Height="75" FontSize="24" TextAlignment="Center"/>
-			<TextBlock x:Name="textBlock1" TextWrapping="Wrap" Text="Player" Height="75" FontSize="24" TextAlignment="Center"/>
-			<Button x:Name="button" Content="Start Game" Height="100" Panel.ZIndex="3"/>
+		<StackPanel Grid.Column="2" HorizontalAlignment="Left" 
+					Height="587" Margin="15,0,0,0" Grid.Row="3" VerticalAlignment="Top" 
+					Width="240" Background="#FF686868" Grid.ColumnSpan="2">
+			<ListBox IsEnabled="{Binding GameOver}" ItemsSource="{Binding PlayerSelection}" SelectionMode="Single" SelectedIndex="0" SelectionChanged="Selector_OnSelectionChanged">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Name}"></TextBlock>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+			<TextBlock x:Name="textBlock1" TextWrapping="Wrap" Text="PlayerName" Height="75" FontSize="24" TextAlignment="Center"/>
+			<TextBlock x:Name="textBlock" TextWrapping="Wrap" Text="Score:" Height="75" FontSize="24" TextAlignment="Center"/>
+			<TextBlock x:Name="textBlock2" TextWrapping="Wrap" Text="Wave" Height="75" FontSize="24" TextAlignment="Center"/>
+			<Button x:Name="StartButton" Content="Start Game" Height="100" Click="StartGame_Click" IsDefault="True"/>
+			<Button x:Name="StopButton" Content="Stop current Game" Height="100" Click="StopButton_OnClick" Visibility="Collapsed"/>
 		</StackPanel>
-
 	</Grid>
 </Window>
