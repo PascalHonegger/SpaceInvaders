@@ -3,6 +3,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using SpaceInvaders.Enums;
 using SpaceInvaders.Ship;
 using SpaceInvaders.Ship.Players;
@@ -29,6 +31,32 @@ namespace SpaceInvaders
 
 		private SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
 
+		public void animationes(IShip ship)
+		{
+			Storyboard moveInvaders = new Storyboard();
+			var control = ViewModel.InvadersWithControls.First(kvp => kvp.Key.Equals(ship)).Value;
+
+			DoubleAnimation moveAnimationX = new DoubleAnimation();
+			moveAnimationX.Duration = new Duration(new TimeSpan(0, 0, 1));
+			moveAnimationX.To = ship.Rect.Location.X;
+			moveAnimationX.AutoReverse = false;
+
+			DoubleAnimation moveAnimationY = new DoubleAnimation();
+			moveAnimationY.Duration = new Duration(new TimeSpan(0, 0, 1));
+			moveAnimationY.To = ship.Rect.Location.Y;
+			moveAnimationY.AutoReverse = false;
+
+			Storyboard.SetTarget(moveAnimationY, control);
+			Storyboard.SetTargetProperty(moveAnimationY, new PropertyPath(Canvas.TopProperty));
+			Storyboard.SetTarget(moveAnimationX, control);
+			Storyboard.SetTargetProperty(moveAnimationX, new PropertyPath(Canvas.LeftProperty));
+			moveInvaders.Children.Add(moveAnimationX);
+			moveInvaders.Children.Add(moveAnimationY);
+			moveInvaders.Begin();
+			control.startAnimation();
+
+
+		}
 		private void UIElement_OnKeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.A || e.Key == Key.Left)
