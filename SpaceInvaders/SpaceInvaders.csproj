@@ -73,9 +73,11 @@
     <Compile Include="EventArgs\ShipChangedEventArgs.cs" />
     <Compile Include="EventArgs\ShotMovedEventArgs.cs" />
     <Compile Include="Enums\Direction.cs" />
+    <Compile Include="ExtensionMethods\ImageExtensions.cs" />
     <Compile Include="ExtensionMethods\ListExtensions.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Ship\Invaders\Ufo.cs" />
+    <Compile Include="Ship\Players\FastPlayer.cs" />
     <Compile Include="Ship\Players\DefaultPlayer.cs" />
     <Compile Include="Ship\ShipBase.cs" />
     <Compile Include="Shot\DefaultShot.cs" />
@@ -133,34 +135,62 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\invader1_animation_one.png" />
-    <Resource Include="Resources\invader1_animation_two.png" />
+    <Resource Include="Resources\invader1_animation_one.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\invader1_animation_two.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\invader2_animation_one.png" />
-    <Resource Include="Resources\invader2_animation_two.png" />
+    <Resource Include="Resources\invader2_animation_one.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\invader2_animation_two.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\invader3_animation_one.png" />
-    <Resource Include="Resources\Invader3_animation_two.png" />
+    <Resource Include="Resources\invader3_animation_one.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Invader3_animation_two.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\invaderboss_animation_1.png" />
-    <Resource Include="Resources\invaderboss_animation_2.png" />
+    <Resource Include="Resources\invaderboss_animation_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\invaderboss_animation_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\basicship.png" />
-    <Resource Include="Resources\speedship.png" />
+    <Resource Include="Resources\basicship.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\speedship.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\shot1_animation_one.png" />
-    <Resource Include="Resources\shot1_animation_two.png" />
+    <Resource Include="Resources\shot1_animation_one.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\shot1_animation_two.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\player_shot.png" />
+    <Resource Include="Resources\player_shot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\bossshot.png" />
+    <Resource Include="Resources\bossshot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

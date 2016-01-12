@@ -50,7 +50,7 @@ namespace SpaceInvaders
 			{
 				var hasControl = _shipWithControls.Where(kvp => _invaders.Contains(kvp.Key)).ToList();
 
-				var hasNoControl = _invaders.Where(inv=> _shipWithControls.Select(kvp => kvp.Key).Contains(inv));
+				var hasNoControl = _invaders.Where(inv => !_shipWithControls.Select(kvp => kvp.Key).Contains(inv));
 
 				hasControl.AddRange(hasNoControl.Select(ship => new KeyValuePair<IShip, ShipControl>(ship, new ShipControl(ship))));
 
@@ -78,10 +78,7 @@ namespace SpaceInvaders
 		public IEnumerable<IShip> PlayerSelection => new ObservableCollection<IShip>
 		{
 			new DefaultPlayer(PlayerSpawn),
-			new DefaultPlayer(PlayerSpawn),
-			new DefaultPlayer(PlayerSpawn),
-			new DefaultPlayer(PlayerSpawn),
-			new DefaultPlayer(PlayerSpawn)
+			new FastPlayer(PlayerSpawn)
 		};
 
 		/// <summary>
@@ -300,6 +297,11 @@ namespace SpaceInvaders
 			Wave++;
 			_invaders.Clear();
 			_invaders.AddRange(CreateNewAttackWave());
+
+			foreach (var invader in _invaders)
+			{
+				OnShipChangedEventHandler(new ShipChangedEventArgs(invader, false));
+			}
 		}
 
 		private IEnumerable<IShip> CreateNewAttackWave()
@@ -312,7 +314,6 @@ namespace SpaceInvaders
 			{
 				var invader = new Ufo(new Point(currentX, currentY));
 				attackers.Add(invader);
-				OnShipChangedEventHandler(new ShipChangedEventArgs(invader, false));
 				currentX += 60;
 				currentY -= 60;
 			}

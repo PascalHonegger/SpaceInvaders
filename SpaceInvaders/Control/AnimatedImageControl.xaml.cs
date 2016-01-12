@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
@@ -37,13 +38,21 @@ namespace SpaceInvaders.Control
 		/// <param name="interval">Die Zeit in Milisekunden, welche das jeweilige Bild angezeigt wird</param>
 		public void StartAnimation(IEnumerable<BitmapSource> images, TimeSpan interval)
 		{
+			var bitmapSources = images as IList<BitmapSource> ?? images.ToList();
+			if (!bitmapSources.Any())
+			{
+				return;
+			}
+
+			bitmapSources.Add(bitmapSources.First());
+
 			var storyboard = new Storyboard();
 			var animation = new ObjectAnimationUsingKeyFrames();
 			Storyboard.SetTarget(animation, Image);
 			Storyboard.SetTargetProperty(animation, new PropertyPath("Source"));
 
 			var currentInterval = TimeSpan.FromMilliseconds(0);
-			foreach (var image in images)
+			foreach (var image in bitmapSources)
 			{
 				var keyFrame = new DiscreteObjectKeyFrame
 				{
@@ -54,7 +63,8 @@ namespace SpaceInvaders.Control
 				currentInterval = currentInterval.Add(interval);
 			}
 			storyboard.RepeatBehavior = RepeatBehavior.Forever;
-			storyboard.AutoReverse = true;
+			//TODO maybe true
+			storyboard.AutoReverse = false;
 			storyboard.Children.Add(animation);
 			storyboard.Begin();
 		}

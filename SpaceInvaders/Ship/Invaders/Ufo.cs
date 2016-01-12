@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Media.Imaging;
 using SpaceInvaders.Enums;
+using SpaceInvaders.ExtensionMethods;
+using SpaceInvaders.Properties;
 using SpaceInvaders.Shot;
 
 namespace SpaceInvaders.Ship.Invaders
@@ -13,7 +15,11 @@ namespace SpaceInvaders.Ship.Invaders
 	{
 		private static readonly Size DefaultSize = new Size(20, 10);
 
-		private static readonly IEnumerable<BitmapSource> DefaultTextures = new List<BitmapSource>();
+		private static readonly IEnumerable<BitmapSource> DefaultTextures = new List<BitmapSource>
+		{
+			Resources.invaderboss_animation_1.ToBitmapSource(),
+			Resources.invaderboss_animation_2.ToBitmapSource()
+		};
 
 		private const double DefaultHealth = 30;
 

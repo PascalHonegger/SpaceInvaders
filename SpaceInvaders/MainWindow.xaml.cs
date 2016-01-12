@@ -70,7 +70,7 @@ namespace SpaceInvaders
 
 
 			// Begin
-			moveInvaders.Begin();
+			// moveInvaders.Begin();
 			//TODO control.StartAnimation();
 		}
 		private void UIElement_OnKeyDown(object sender, KeyEventArgs e)

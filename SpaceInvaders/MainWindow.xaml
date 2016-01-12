@@ -30,7 +30,7 @@
 		</Grid.ColumnDefinitions>
 		<TextBlock Grid.Column="1" HorizontalAlignment="Left" 
 				Height="124" Margin="0" Grid.Row="1" VerticalAlignment="Top" 
-				Width="1330" Background="#FF2B2B2B" Grid.ColumnSpan="3" Text="SPACEINVADURS" Foreground="#FF86FF62" FontFamily="Showcard Gothic" FontSize="96" TextAlignment="Center" FontWeight="Bold" TextDecorations="{x:Null}"/>
+				Width="1330" Background="#FF2B2B2B" Grid.ColumnSpan="3" Text="SPACEINVADERS 1.0" Foreground="#FF86FF62" FontFamily="Showcard Gothic" FontSize="96" TextAlignment="Center" FontWeight="Bold" TextDecorations="{x:Null}"/>
 		<Canvas x:Name="PlayArea51" Grid.Column="1" HorizontalAlignment="Left" 
 				Height="587" Margin="0" Grid.Row="3" VerticalAlignment="Top" 
 				Width="1074" Background="LightBlue"/>
