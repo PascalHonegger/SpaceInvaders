@@ -20,5 +20,17 @@ namespace SpaceInvaders.Control
 
 			AnimatedImageControl.StartAnimation(ship?.Textures, TimeSpan.FromSeconds(1));
 		}
+
+		/// <summary>
+		///     Constructor for MainWindow
+		/// </summary>
+		public ShipControl(IShip datacontext)
+		{
+			InitializeComponent();
+
+			DataContext = datacontext;
+
+			AnimatedImageControl.StartAnimation(datacontext.Textures, TimeSpan.FromSeconds(1));
+		}
 	}
 }

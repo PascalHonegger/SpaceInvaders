@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Timers;
 using System.Windows;
+using SpaceInvaders.Control;
 using SpaceInvaders.Enums;
 using SpaceInvaders.EventArgs;
 using SpaceInvaders.ExtensionMethods;
@@ -32,6 +33,31 @@ namespace SpaceInvaders
 		private Direction _invaderDirection = Direction.Left;
 		private DateTime _invaderLastMoved = DateTime.MinValue;
 		private List<IShip> _invaders = new List<IShip>();
+		private Dictionary<IShip, ShipControl> _invadersAndControls =  new Dictionary<IShip, ShipControl>();
+
+		/// <summary>
+		/// Das <see cref="Dictionary{TKey,TValue}"/> mit dem Schiff und dem dazugehörigen Dictionary
+		/// </summary>
+		public Dictionary<IShip, ShipControl> InvadersWithControls
+		{
+			get
+			{
+				var hasControl = _invadersAndControls.Where(kvp => _invaders.Contains(kvp.Key)).ToList();
+
+				var hasNoControl = _invaders.Where(inv=> _invadersAndControls.Select(kvp => kvp.Key).Contains(inv));
+
+				hasControl.AddRange(hasNoControl.Select(ship => new KeyValuePair<IShip, ShipControl>(ship, new ShipControl(ship))));
+
+				_invadersAndControls.Clear();
+
+				foreach (var kvp in hasControl)
+				{
+					_invadersAndControls.Add(kvp.Key, kvp.Value);
+				}
+
+				return _invadersAndControls;
+			}
+		}
 
 		/// <summary>
 		///     Die aktuellen Respawns des Spielers
@@ -291,7 +317,7 @@ namespace SpaceInvaders
 		private void MoveInvaders()
 		{
 			// ReSharper disable once PossibleLossOfFraction
-			var timeToWait = 2.1 - Wave/10;
+			var timeToWait = 2 - Wave/20;
 
 			if (timeToWait < 0)
 			{

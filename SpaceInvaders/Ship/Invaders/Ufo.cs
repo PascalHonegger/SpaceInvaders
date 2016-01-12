@@ -19,17 +19,13 @@ namespace SpaceInvaders.Ship.Invaders
 
 		private const string DefaultName = "Ufo of Doom";
 		
-
-		private const ShipType DefaultShipType = ShipType.Invader;
 		private const int DefaultPoints = 50;
-
-		private const int DefaultSpeed = 30;
 
 		/// <summary>
 		/// Der Konstruktor für <see cref="Ufo"/>
 		/// </summary>
 		/// <param name="location">Die Location, an welcher das Ufo auftaucht</param>
-		public Ufo(Point location) : base(DefaultPoints, new DefaultShot(location, Direction.Down), DefaultHealth, DefaultName, DefaultTextures, DefaultSpeed, new Rect(location, DefaultSize))
+		public Ufo(Point location) : base(DefaultPoints, new DefaultShot(location, Direction.Down), DefaultHealth, DefaultName, DefaultTextures, new Rect(location, DefaultSize))
 		{
 
 		}
