@@ -35,7 +35,7 @@ namespace SpaceInvaders
 		private DateTime _invaderLastMoved = DateTime.MinValue;
 		private DateTime _invaderLastFired = DateTime.MinValue;
 		private List<IShip> _invaders = new List<IShip>();
-		private readonly Dictionary<IShip, ShipControl> _invadersAndControls =  new Dictionary<IShip, ShipControl>();
+		private readonly Dictionary<IShip, ShipControl> _shipWithControls =  new Dictionary<IShip, ShipControl>();
 		private bool _gameOver = true;
 		private string _playerName = "Player1";
 		private int _score;
@@ -44,33 +44,38 @@ namespace SpaceInvaders
 		/// <summary>
 		/// Das <see cref="Dictionary{TKey,TValue}"/> mit dem Schiff und dem dazugehörigen Dictionary
 		/// </summary>
-		public Dictionary<IShip, ShipControl> InvadersWithControls
+		public Dictionary<IShip, ShipControl> ShipWithControls
 		{
 			get
 			{
-				var hasControl = _invadersAndControls.Where(kvp => _invaders.Contains(kvp.Key)).ToList();
+				var hasControl = _shipWithControls.Where(kvp => _invaders.Contains(kvp.Key)).ToList();
 
-				var hasNoControl = _invaders.Where(inv=> _invadersAndControls.Select(kvp => kvp.Key).Contains(inv));
+				var hasNoControl = _invaders.Where(inv=> _shipWithControls.Select(kvp => kvp.Key).Contains(inv));
 
 				hasControl.AddRange(hasNoControl.Select(ship => new KeyValuePair<IShip, ShipControl>(ship, new ShipControl(ship))));
 
-				_invadersAndControls.Clear();
+				_shipWithControls.Clear();
 
 				foreach (var kvp in hasControl)
 				{
-					_invadersAndControls.Add(kvp.Key, kvp.Value);
+					_shipWithControls.Add(kvp.Key, kvp.Value);
 				}
 
-				return _invadersAndControls;
+				if (!_shipWithControls.Select(kvp => kvp.Key).Contains(Player))
+				{
+					_shipWithControls.Add(Player, new ShipControl(Player));
+				}
+
+				return _shipWithControls;
 			}
 		}
 
-		private Point PlayerSpawn => new Point(_playArea.Width/2, 20);
+		private Point PlayerSpawn => new Point(_playArea.Width/2, 20-_playArea.Height);
 
 		/// <summary>
 		///     Alle Player-Schiffe, welche selektiert werden können
 		/// </summary>
-		public ObservableCollection<IShip> PlayerSelection => new ObservableCollection<IShip>
+		public IEnumerable<IShip> PlayerSelection => new ObservableCollection<IShip>
 		{
 			new DefaultPlayer(PlayerSpawn),
 			new DefaultPlayer(PlayerSpawn),
@@ -261,8 +266,6 @@ namespace SpaceInvaders
 				}
 			};
 
-			//TODO ShipChangedEventHandler += GUI;
-			//TODO ShotMovedEventHandler += GUI;
 			OnShipChangedEventHandler(new ShipChangedEventArgs(Player, false));
 
 			Wave = 0;
@@ -295,38 +298,26 @@ namespace SpaceInvaders
 		private void NextWave()
 		{
 			Wave++;
-			_invaders = CreateNewAttackWave().ToList();
+			_invaders.Clear();
+			_invaders.AddRange(CreateNewAttackWave());
 		}
 
 		private IEnumerable<IShip> CreateNewAttackWave()
 		{
-			/*
-			IList<IInvader> attackers = new List<IInvader>();
+			IList<IShip> attackers = new List<IShip>();
 
-			var currentX = Invader.Height*1.4;
-			var currentY = Invader.Width*1.4;
+			var currentX = 20;
+			var currentY = -20;
 			for (var i = 0; i < 16; i++)
 			{
-				var invader = new Invader(new Point(currentX, currentY), GetInvaderType(), new BitmapImage());
-				ShipChangedEventHandler += invader.OnShipChanged;
+				var invader = new Ufo(new Point(currentX, currentY));
 				attackers.Add(invader);
-				currentX += Invader.Width*2.4;
-				if (IsOutOfBounds(new Point(currentX*2.4, currentY)))
-				{
-					currentX = Invader.Height*1.4;
-					currentY += Invader.Height + Invader.Height*1.4;
-				}
+				OnShipChangedEventHandler(new ShipChangedEventArgs(invader, false));
+				currentX += 60;
+				currentY -= 60;
 			}
 
 			return attackers;
-			*/
-
-			return new List<IShip>
-			{
-				new Ufo(new Point()),
-				new Ufo(new Point()),
-				new Ufo(new Point())
-			};
 		}
 
 		/// <summary>

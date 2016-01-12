@@ -33,9 +33,9 @@ namespace SpaceInvaders.Control
 			AnimatedImageControl.StartAnimation(datacontext.Textures, TimeSpan.FromSeconds(1));
 		}
 
-		internal void startAnimation()
+		internal void StartAnimation()
 		{
-			throw new NotImplementedException();
+			AnimatedImageControl.StartAnimation((DataContext as IShip)?.Textures, TimeSpan.Zero);
 		}
 	}
 }

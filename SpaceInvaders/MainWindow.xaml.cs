@@ -28,7 +28,7 @@ namespace SpaceInvaders
 				Player = new DefaultPlayer(new Point())
 			};
 
-			ViewModel.ShipChangedEventHandler += (sender, e) => Animationes(e.Ship);
+			ViewModel.ShipChangedEventHandler += (sender, e) => Animate(e.Ship);
 		}
 
 		private SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
@@ -37,36 +37,41 @@ namespace SpaceInvaders
 		/// TODO
 		/// </summary>
 		/// <param name="ship"></param>
-		public void Animationes(IShip ship)
+		private void Animate(IShip ship)
 		{
-			Storyboard moveInvaders = new Storyboard();
-			var control = ViewModel.InvadersWithControls.First(kvp => kvp.Key.Equals(ship)).Value;
+			var moveInvaders = new Storyboard();
+			var control = ViewModel.ShipWithControls.FirstOrDefault(kvp => kvp.Key.Equals(ship)).Value;
 
 			if (control == null) return;
 			if (!PlayArea51.Children.Contains(control))
 			{
 				PlayArea51.Children.Add(control);
 			}
-			DoubleAnimation moveAnimationX = new DoubleAnimation();
-			moveAnimationX.Duration = new Duration(new TimeSpan(0, 0, 1));
-			moveAnimationX.To = ship.Rect.Location.X;
-			moveAnimationX.AutoReverse = false;
 
-			DoubleAnimation moveAnimationY = new DoubleAnimation();
-			moveAnimationY.Duration = new Duration(new TimeSpan(0, 0, 1));
-			moveAnimationY.To = ship.Rect.Location.Y;
-			moveAnimationY.AutoReverse = false;
-
+			// Y
+			var moveAnimationY = new DoubleAnimation
+			{
+				Duration = new Duration(TimeSpan.FromSeconds(1)),
+				To = ship.Rect.Location.Y
+			};
 			Storyboard.SetTarget(moveAnimationY, control);
 			Storyboard.SetTargetProperty(moveAnimationY, new PropertyPath(Canvas.TopProperty));
+			moveInvaders.Children.Add(moveAnimationY);
+
+			// X
+			var moveAnimationX = new DoubleAnimation
+			{
+				Duration = new Duration(TimeSpan.FromSeconds(1)),
+				To = ship.Rect.Location.X
+			};
 			Storyboard.SetTarget(moveAnimationX, control);
 			Storyboard.SetTargetProperty(moveAnimationX, new PropertyPath(Canvas.LeftProperty));
 			moveInvaders.Children.Add(moveAnimationX);
-			moveInvaders.Children.Add(moveAnimationY);
+
+
+			// Begin
 			moveInvaders.Begin();
-			control.startAnimation();
-
-
+			//TODO control.StartAnimation();
 		}
 		private void UIElement_OnKeyDown(object sender, KeyEventArgs e)
 		{
