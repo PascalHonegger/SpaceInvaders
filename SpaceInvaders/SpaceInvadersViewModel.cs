@@ -26,14 +26,24 @@ namespace SpaceInvaders
 		private const int MaximumPlayerShotsAtTheSameTime = 3;
 
 		private static readonly Random Random = new Random();
-		private readonly List<IShot> _invaderShots = new List<IShot>();
+
+		/// <summary>
+		/// Liste aller aktiven Schüsse der Invader
+		/// </summary>
+		public List<IShot> InvaderShots { get; } = new List<IShot>();
 
 		private readonly Rect _playArea = new Rect(new Point(0, 0), new Size(1074, 587));
-		private readonly List<IShot> _playerShots = new List<IShot>();
+		/// <summary>
+		/// Liste aller aktiven Schüsse des Spielers
+		/// </summary>
+		public List<IShot> PlayerShots { get; } = new List<IShot>();
 		private int _currentLives;
 		private Direction _invaderDirection = Direction.Left;
 		private DateTime _invaderLastMoved = DateTime.MinValue;
-		private List<IShip> _invaders = new List<IShip>();
+		/// <summary>
+		/// Liste aller aktuell auf dem Spielfeld befindender Invaders
+		/// </summary>
+		public List<IShip> Invaders { get; }  = new List<IShip>();
 		private bool _gameOver = true;
 
 		private Point PlayerSpawn => new Point(_playArea.Width/2, 20);
@@ -53,14 +63,18 @@ namespace SpaceInvaders
 		/// <summary>
 		///     Die aktuellen Respawns des Spielers
 		/// </summary>
-		private int CurrentLives
+		public int CurrentLives
 		{
 			get { return _currentLives; }
 			set
 			{
 				if (value == _currentLives) return;
 				_currentLives = value;
-				OnPropertyChanged();
+                if (_currentLives <= 0)
+                {
+                    EndGame();
+                }
+                OnPropertyChanged();
 			}
 		}
 
@@ -112,18 +126,17 @@ namespace SpaceInvaders
 		///     Schiesst einen Schuss vom dem mitgegebenen Schiff
 		/// </summary>
 		/// <param name="ship">Das Schiff, welches einen <see cref="IShot" /> schiesst</param>
-		private void FireShot(IShip ship)
+		public void FireShot(IShip ship)
 		{
-			if (ship.ShipType == ShipType.Player && _playerShots.Count < MaximumPlayerShotsAtTheSameTime)
+			if (ship.ShipType == ShipType.Player && PlayerShots.Count < MaximumPlayerShotsAtTheSameTime)
 			{
-				_playerShots.Add(ship.Shot);
-
-				OnShotMovedEventHandler(new ShotMovedEventArgs(ship.Shot, false));
+				PlayerShots.Add(ship.Shot);
 			}
 			else if (ship.ShipType == ShipType.Invader || ship.ShipType == ShipType.Boss)
 			{
-				_invaderShots.Add(ship.Shot);
+				InvaderShots.Add(ship.Shot);
 			}
+			OnShotMovedEventHandler(new ShotMovedEventArgs(ship.Shot, false));
 		}
 
 		/// <summary>
@@ -176,14 +189,10 @@ namespace SpaceInvaders
 				{
 					case ShipType.Player:
 						CurrentLives--;
-						if (CurrentLives <= 0)
-						{
-							EndGame();
-						}
 						break;
 					case ShipType.Invader:
 					case ShipType.Boss:
-						_invaders.Remove(e.Ship);
+						Invaders.Remove(e.Ship);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException(nameof(ShipType));
@@ -194,8 +203,8 @@ namespace SpaceInvaders
 			{
 				if (e.Disappeared)
 				{
-					_invaderShots.Remove(e.Shot);
-					_invaderShots.Remove(e.Shot);
+					InvaderShots.Remove(e.Shot);
+					InvaderShots.Remove(e.Shot);
 				}
 			};
 
@@ -212,19 +221,22 @@ namespace SpaceInvaders
 			UpdateTimer.Start();
 		}
 
-		private void DestroyEverything()
+		/// <summary>
+		/// Zertört alle Einheiten auf dem Spielfeld
+		/// </summary>
+		public void DestroyEverything()
 		{
-			foreach (var invader in _invaders.ToList())
+			foreach (var invader in Invaders.ToList())
 			{
 				OnShipChangedEventHandler(new ShipChangedEventArgs(invader, true));
 			}
 
-			foreach (var shot in _playerShots.ToList())
+			foreach (var shot in PlayerShots.ToList())
 			{
 				OnShotMovedEventHandler(new ShotMovedEventArgs(shot, true));
 			}
 
-			foreach (var shot in _invaderShots.ToList())
+			foreach (var shot in InvaderShots.ToList())
 			{
 				OnShotMovedEventHandler(new ShotMovedEventArgs(shot, true));
 			}
@@ -233,7 +245,7 @@ namespace SpaceInvaders
 		private void NextWave()
 		{
 			Wave++;
-			_invaders = CreateNewAttackWave().ToList();
+			Invaders = CreateNewAttackWave().ToList();
 		}
 
 		private IEnumerable<IShip> CreateNewAttackWave()
@@ -277,184 +289,212 @@ namespace SpaceInvaders
 			{
 				return;
 			}
-			Player.Move(direction);
-			OnShipChangedEventHandler(new ShipChangedEventArgs(Player, false));
+
+            Player.Move(direction);
+
+            if (IsOutOfBounds(Player.Rect))
+		    {
+                Player.Move(InvertDirection(direction));
+            }
+
+            
+            OnShipChangedEventHandler(new ShipChangedEventArgs(Player, false));
 		}
 
-		private void Update()
-		{
-			if (_invaders.Count == 0)
-			{
-				NextWave();
-			}
+	    private Direction InvertDirection(Direction direction)
+	    {
+	        switch (direction)
+	        {
+	            case Direction.Left:
+                    return Direction.Right;
+	                break;
+	            case Direction.Right:
+                    return Direction.Left;
+	                break;
+	            case Direction.Up:
+                    return Direction.Down;
+	                break;
+	            case Direction.Down:
+                    return Direction.Up;
+	                break;
+	            default:
+	                throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+	        }
+	    }
 
-			if (Player.Health <= 0)
-			{
-				OnShipChangedEventHandler(new ShipChangedEventArgs(Player, true));
-			}
-			else
-			{
-				foreach (var shot in _invaderShots.ToList())
-				{
-					shot.Move();
-					OnShotMovedEventHandler(new ShotMovedEventArgs(shot, IsOutOfBounds(shot.Rect)));
-				}
-				foreach (var shot in _playerShots.ToList())
-				{
-					shot.Move();
-					OnShotMovedEventHandler(new ShotMovedEventArgs(shot, IsOutOfBounds(shot.Rect)));
-				}
-			}
+	    private void Update()
+	    {
+	        if (Invaders.Count == 0)
+	        {
+	            NextWave();
+	        }
 
-			CheckForInvaderCollision();
+	        if (Player.Health <= 0)
+	        {
+	            OnShipChangedEventHandler(new ShipChangedEventArgs(Player, true));
+	        }
+	        else
+	        {
+	            foreach (var shot in InvaderShots.ToList())
+	            {
+	                shot.Move();
+	                OnShotMovedEventHandler(new ShotMovedEventArgs(shot, IsOutOfBounds(shot.Rect)));
+	            }
+	            foreach (var shot in PlayerShots.ToList())
+	            {
+	                shot.Move();
+	                OnShotMovedEventHandler(new ShotMovedEventArgs(shot, IsOutOfBounds(shot.Rect)));
+	            }
+	        }
 
-			CheckForPlayerCollision();
+	        CheckForInvaderCollision();
 
-			MoveInvaders();
+	        CheckForPlayerCollision();
 
-			InvaderReturnFire();
-		}
+	        MoveInvaders();
 
-		private bool IsOutOfBounds(Rect rect)
-		{
-			var overlappingRect = Rect.Intersect(_playArea, rect);
+	        InvaderReturnFire();
+	    }
 
-			// Das komplette 'rect' überlappt sich mit dem Spielfeld
-			return !Equals(overlappingRect, rect);
-		}
+	    private bool IsOutOfBounds(Rect rect)
+	    {
+	        var overlappingRect = Rect.Intersect(_playArea, rect);
 
-		private void MoveInvaders()
-		{
-			// ReSharper disable once PossibleLossOfFraction
-			var timeToWait = 2.1 - Wave/10;
+	        // Das komplette 'rect' überlappt sich mit dem Spielfeld
+	        return !Equals(overlappingRect, rect);
+	    }
 
-			if (timeToWait < 0)
-			{
-				timeToWait = 0;
-			}
+	    private void MoveInvaders()
+	    {
+	        // ReSharper disable once PossibleLossOfFraction
+	        var timeToWait = 2.1 - Wave/10;
 
-			if (_invaderLastMoved <= DateTime.Now.AddSeconds(-timeToWait))
-			{
-				return;
-			}
+	        if (timeToWait < 0)
+	        {
+	            timeToWait = 0;
+	        }
 
-			_invaderLastMoved = DateTime.Now;
+	        if (_invaderLastMoved >= DateTime.Now.AddSeconds(-timeToWait))
+	        {
+	            return;
+	        }
 
-			foreach (var invader in _invaders)
-			{
-				invader.Move(_invaderDirection);
-			}
+	        _invaderLastMoved = DateTime.Now;
 
-			if (_invaders.Any(invader => IsOutOfBounds(invader.Rect)))
-			{
-				_invaderDirection = _invaderDirection == Direction.Left ? Direction.Right : Direction.Left;
-				foreach (var invader in _invaders)
-				{
-					invader.Move(_invaderDirection);
-					invader.Move(Direction.Down);
-				}
-			}
-		}
+	        foreach (var invader in Invaders)
+	        {
+	            invader.Move(_invaderDirection);
+	        }
 
-		private void CheckForInvaderCollision()
-		{
-			foreach (var invader in _invaders.ToList())
-			{
-				foreach (var shot in _playerShots)
-				{
-					if (RectsOverlap(invader.Rect, shot.Rect))
-					{
-						OnShipChangedEventHandler(new ShipChangedEventArgs(invader, true));
-					}
-				}
+	        if (Invaders.Any(invader => IsOutOfBounds(invader.Rect)))
+	        {
+	            _invaderDirection = InvertDirection(_invaderDirection);
+	            foreach (var invader in Invaders)
+	            {
+	                invader.Move(_invaderDirection);
+	                invader.Move(Direction.Down);
+	            }
+	        }
+	    }
 
-				if (RectsOverlap(invader.Rect, Player.Rect))
-				{
-					OnShipChangedEventHandler(new ShipChangedEventArgs(invader, true));
-				}
-			}
-		}
+	    private void CheckForInvaderCollision()
+	    {
+	        foreach (var invader in Invaders.ToList())
+	        {
+	            foreach (var shot in PlayerShots)
+	            {
+	                if (RectsOverlap(invader.Rect, shot.Rect))
+	                {
+	                    OnShipChangedEventHandler(new ShipChangedEventArgs(invader, true));
+	                }
+	            }
 
-		private void CheckForPlayerCollision()
-		{
-			foreach (var shot in _invaderShots.Where(shot => RectsOverlap(Player.Rect, shot.Rect)))
-			{
-				OnShipChangedEventHandler(new ShipChangedEventArgs(Player, true));
-				OnShotMovedEventHandler(new ShotMovedEventArgs(shot, true));
-			}
-		}
+	            if (RectsOverlap(invader.Rect, Player.Rect))
+	            {
+	                OnShipChangedEventHandler(new ShipChangedEventArgs(invader, true));
+	            }
+	        }
+	    }
 
-		private void InvaderReturnFire()
-		{
-			if (_invaderShots.Count > Wave + 1)
-			{
-				return;
-			}
+	    private void CheckForPlayerCollision()
+	    {
+	        foreach (var shot in InvaderShots.Where(shot => RectsOverlap(Player.Rect, shot.Rect)))
+	        {
+	            OnShipChangedEventHandler(new ShipChangedEventArgs(Player, true));
+	            OnShotMovedEventHandler(new ShotMovedEventArgs(shot, true));
+	        }
+	    }
 
-			//TODO Mehr Schüsse jede Wave
-			/*if (Random.Next(10) < 10 - Wave)
+	    private void InvaderReturnFire()
+	    {
+	        if (InvaderShots.Count > Wave + 1)
+	        {
+	            return;
+	        }
+
+	        //TODO Mehr Schüsse jede Wave
+	        /*if (Random.Next(10) < 10 - Wave)
 			{
 				return;
 			}*/
 
-			var invader = _invaders.PickRandom();
+	        var invader = Invaders.PickRandom();
 
-			FireShot(invader);
-		}
+	        FireShot(invader);
+	    }
 
-		private static bool RectsOverlap(Rect rect1, Rect rect2)
-		{
-			rect1.Intersect(rect2);
-			return rect1.Width > 0 || rect1.Height > 0;
-		}
+	    private static bool RectsOverlap(Rect rect1, Rect rect2)
+	    {
+	        rect1.Intersect(rect2);
+	        return rect1.Width > 0 || rect1.Height > 0;
+	    }
 
-		/// <summary>
-		///     Rufe die Methode <see cref="FireShot" /> mit dem Spieler aus
-		/// </summary>
-		public void FireShotPlayer()
-		{
-			FireShot(Player);
-		}
+	    /// <summary>
+	    ///     Rufe die Methode <see cref="FireShot" /> mit dem Spieler aus
+	    /// </summary>
+	    public void FireShotPlayer()
+	    {
+	        FireShot(Player);
+	    }
 
-		// Analysefehler
-		[SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed",
-			MessageId = "<UpdateTimer>k__BackingField")]
-		private void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				// Managed Resources
-				UpdateTimer.Dispose();
-				_invaderLastMoved = DateTime.MinValue;
-				_invaders = null;
-				Player = null;
-				ShipChangedEventHandler = null;
-				ShotMovedEventHandler = null;
-			}
+	    // Analysefehler
+	    [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "<UpdateTimer>k__BackingField")]
+	    private void Dispose(bool disposing)
+	    {
+	        if (disposing)
+	        {
+	            // Managed Resources
+	            UpdateTimer.Dispose();
+	            _invaderLastMoved = DateTime.MinValue;
+	            Invaders = null;
+	            Player = null;
+	            ShipChangedEventHandler = null;
+	            ShotMovedEventHandler = null;
+	        }
 
-			// Unmanaged Resources
+	        // Unmanaged Resources
 
-			// Leer, da wir keine Serververbindung aufbauen
-		}
+	        // Leer, da wir keine Serververbindung aufbauen
+	    }
 
-		/// <summary>
-		///     Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage
-		///     collection.
-		/// </summary>
-		~SpaceInvadersViewModel()
-		{
-			// Useless
-			Dispose(false);
-		}
+	    /// <summary>
+	    ///     Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage
+	    ///     collection.
+	    /// </summary>
+	    ~SpaceInvadersViewModel()
+	    {
+	        // Useless
+	        Dispose(false);
+	    }
 
-		/// <summary>
-		///     Notifies the GUI, that the Porperty changed
-		/// </summary>
-		/// <param name="propertyName">The name of the Property, which got changed</param>
-		[NotifyPropertyChangedInvocator]
-		private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
+	    /// <summary>
+	    ///     Notifies the GUI, that the Porperty changed
+	    /// </summary>
+	    /// <param name="propertyName">The name of the Property, which got changed</param>
+	    [NotifyPropertyChangedInvocator]
+	    private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+	    {
+	        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+	    }
 	}
 }

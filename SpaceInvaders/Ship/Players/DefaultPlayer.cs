@@ -24,7 +24,7 @@ namespace SpaceInvaders.Ship.Players
 		/// </summary>
 		/// <param name="location">Die Location, an welcher der Spieler startet</param>
 		public DefaultPlayer(Point location)
-			: base(new DefaultShot(location, Direction.Down), DefaultHealth, DefaultName, DefaultTextures, DefaultLives, DefaultSpeed,
+			: base(new DefaultShot(location, Direction.Up), DefaultHealth, DefaultName, DefaultTextures, DefaultLives, DefaultSpeed,
 				new Rect(location, DefaultSize))
 		{
 		}
