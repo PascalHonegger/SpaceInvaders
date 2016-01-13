@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Media.Imaging;
 using SpaceInvaders.Enums;
+using SpaceInvaders.ExtensionMethods;
+using SpaceInvaders.Properties;
 
 namespace SpaceInvaders.Shot
 {
@@ -25,7 +27,8 @@ namespace SpaceInvaders.Shot
 		private static readonly Size DefaultSize = new Size(2, 4);
 		private static readonly IEnumerable<BitmapSource> DefaultTextures = new List<BitmapSource>
 		{
-			//TODO Texturen
+			Resources.shot1_animation_one.ToBitmapSource(),
+			Resources.shot1_animation_two.ToBitmapSource()
 		};
 	}
 }

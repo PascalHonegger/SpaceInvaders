@@ -30,7 +30,6 @@ namespace SpaceInvaders
 
 		private readonly Rect _playArea = new Rect(new Point(0, 0), new Size(1074, 587));
 		private readonly List<IShot> _playerShots = new List<IShot>();
-		private int _currentLives;
 		private Direction _invaderDirection = Direction.Left;
 		private DateTime _invaderLastMoved = DateTime.MinValue;
 		private DateTime _invaderLastFired = DateTime.MinValue;
@@ -84,16 +83,7 @@ namespace SpaceInvaders
 		/// <summary>
 		///     Die aktuellen Respawns des Spielers
 		/// </summary>
-		private int CurrentLives
-		{
-			get { return _currentLives; }
-			set
-			{
-				if (value == _currentLives) return;
-				_currentLives = value;
-				OnPropertyChanged();
-			}
-		}
+		public int CurrentLives => Player.Lives;
 
 		/// <summary>
 		///     Der jetzige Spieler
@@ -182,7 +172,7 @@ namespace SpaceInvaders
 			{
 				_playerShots.Add(ship.Shot);
 
-				OnShotMovedEventHandler(new ShotMovedEventArgs(ship.Shot, false));
+				OnShotMovedEventHandler(new ShotMovedEventArgs(ship.Shot), IsOutOfBounds(ship.Rect));
 			}
 			else if (ship.ShipType == ShipType.Invader || ship.ShipType == ShipType.Boss)
 			{
@@ -211,13 +201,23 @@ namespace SpaceInvaders
 			DestroyEverything();
 		}
 
-		private void OnShipChangedEventHandler(ShipChangedEventArgs e)
+		private void OnShipChangedEventHandler(ShipChangedEventArgs e, bool removeInvader = false)
 		{
+			if (removeInvader && e.Ship.ShipType == ShipType.Invader)
+			{
+				_invaders.Remove(e.Ship);
+			}
 			ShipChangedEventHandler?.Invoke(this, e);
 		}
 
-		private void OnShotMovedEventHandler(ShotMovedEventArgs e)
+		private void OnShotMovedEventHandler(ShotMovedEventArgs e, bool removeShot = false)
 		{
+			if (removeShot)
+			{
+				_playerShots.Remove(e.Shot);
+				_invaderShots.Remove(e.Shot);
+			}
+
 			ShotMovedEventHandler?.Invoke(this, e);
 		}
 
@@ -227,43 +227,10 @@ namespace SpaceInvaders
 		public void StartGame()
 		{
 			GameOver = false;
-
-			CurrentLives = Player.Lives;
-
+			
 			DestroyEverything();
 
-			ShipChangedEventHandler += (sender, e) =>
-			{
-				if (!e.GotShot) return;
-
-				switch (e.Ship.ShipType)
-				{
-					case ShipType.Player:
-						CurrentLives--;
-						if (CurrentLives <= 0)
-						{
-							EndGame();
-						}
-						break;
-					case ShipType.Invader:
-					case ShipType.Boss:
-						_invaders.Remove(e.Ship);
-						break;
-					default:
-						throw new ArgumentOutOfRangeException(nameof(ShipType));
-				}
-			};
-
-			ShotMovedEventHandler += (sender, e) =>
-			{
-				if (e.Disappeared)
-				{
-					_invaderShots.Remove(e.Shot);
-					_invaderShots.Remove(e.Shot);
-				}
-			};
-
-			OnShipChangedEventHandler(new ShipChangedEventArgs(Player, false));
+			OnShipChangedEventHandler(new ShipChangedEventArgs(Player));
 
 			Wave = 0;
 			Score = 0;
@@ -278,29 +245,35 @@ namespace SpaceInvaders
 		{
 			foreach (var invader in _invaders.ToList())
 			{
-				OnShipChangedEventHandler(new ShipChangedEventArgs(invader, true));
+				OnShipChangedEventHandler(new ShipChangedEventArgs(invader), true);
 			}
 
 			foreach (var shot in _playerShots.ToList())
 			{
-				OnShotMovedEventHandler(new ShotMovedEventArgs(shot, true));
+				OnShotMovedEventHandler(new ShotMovedEventArgs(shot), true);
 			}
 
 			foreach (var shot in _invaderShots.ToList())
 			{
-				OnShotMovedEventHandler(new ShotMovedEventArgs(shot, true));
+				OnShotMovedEventHandler(new ShotMovedEventArgs(shot), true);
 			}
 		}
 
 		private void NextWave()
 		{
 			Wave++;
-			_invaders.Clear();
+
+			foreach (var invader in _invaders)
+			{
+				OnShipChangedEventHandler(new ShipChangedEventArgs(invader), true);
+			}
+
+
 			_invaders.AddRange(CreateNewAttackWave());
 
 			foreach (var invader in _invaders)
 			{
-				OnShipChangedEventHandler(new ShipChangedEventArgs(invader, false));
+				OnShipChangedEventHandler(new ShipChangedEventArgs(invader));
 			}
 		}
 
@@ -332,32 +305,30 @@ namespace SpaceInvaders
 				return;
 			}
 			Player.Move(direction);
-			OnShipChangedEventHandler(new ShipChangedEventArgs(Player, false));
+			OnShipChangedEventHandler(new ShipChangedEventArgs(Player));
 		}
 
 		private void Update()
 		{
+			if (Player.Lives == 0)
+			{
+				EndGame();
+			}
+
 			if (_invaders.Count == 0)
 			{
 				NextWave();
 			}
 
-			if (Player.Health <= 0)
+			foreach (var shot in _invaderShots.ToList())
 			{
-				OnShipChangedEventHandler(new ShipChangedEventArgs(Player, true));
+				shot.Move();
+				OnShotMovedEventHandler(new ShotMovedEventArgs(shot), IsOutOfBounds(shot.Rect));
 			}
-			else
+			foreach (var shot in _playerShots.ToList())
 			{
-				foreach (var shot in _invaderShots.ToList())
-				{
-					shot.Move();
-					OnShotMovedEventHandler(new ShotMovedEventArgs(shot, IsOutOfBounds(shot.Rect)));
-				}
-				foreach (var shot in _playerShots.ToList())
-				{
-					shot.Move();
-					OnShotMovedEventHandler(new ShotMovedEventArgs(shot, IsOutOfBounds(shot.Rect)));
-				}
+				shot.Move();
+				OnShotMovedEventHandler(new ShotMovedEventArgs(shot), IsOutOfBounds(shot.Rect));
 			}
 
 			CheckForInvaderCollision();
@@ -414,17 +385,17 @@ namespace SpaceInvaders
 		{
 			foreach (var invader in _invaders.ToList())
 			{
-				foreach (var shot in _playerShots)
+				foreach (var shot in _playerShots.Where(shot => RectsOverlap(invader.Rect, shot.Rect)))
 				{
-					if (RectsOverlap(invader.Rect, shot.Rect))
-					{
-						OnShipChangedEventHandler(new ShipChangedEventArgs(invader, true));
-					}
+					invader.Health -= shot.Damage;
+					OnShipChangedEventHandler(new ShipChangedEventArgs(invader), invader.Health <= 0);
 				}
 
 				if (RectsOverlap(invader.Rect, Player.Rect))
 				{
-					OnShipChangedEventHandler(new ShipChangedEventArgs(invader, true));
+					OnShipChangedEventHandler(new ShipChangedEventArgs(invader), true);
+					Player.Health -= invader.Health;
+					OnShipChangedEventHandler(new ShipChangedEventArgs(Player));
 				}
 			}
 		}
@@ -433,8 +404,9 @@ namespace SpaceInvaders
 		{
 			foreach (var shot in _invaderShots.Where(shot => RectsOverlap(Player.Rect, shot.Rect)))
 			{
-				OnShipChangedEventHandler(new ShipChangedEventArgs(Player, true));
-				OnShotMovedEventHandler(new ShotMovedEventArgs(shot, true));
+				Player.Health -= shot.Damage;
+				OnShipChangedEventHandler(new ShipChangedEventArgs(Player));
+				OnShotMovedEventHandler(new ShotMovedEventArgs(shot), true);
 			}
 		}
 

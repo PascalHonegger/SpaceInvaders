@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using SpaceInvaders.Control;
 using SpaceInvaders.Enums;
 using SpaceInvaders.Ship;
 using SpaceInvaders.Ship.Players;
@@ -28,35 +29,30 @@ namespace SpaceInvaders
 				Player = new DefaultPlayer(new Point())
 			};
 
-			ViewModel.ShipChangedEventHandler += (sender, e) => Animate(e.Ship);
+			ViewModel.ShipChangedEventHandler += (sender, e) =>
+			{
+				var control = ViewModel.ShipWithControls.First(kvp => kvp.Key.Equals(e.Ship)).Value;
+
+				if (PlayArea51.Children.Contains(control))
+				{
+					Animate(e.Ship, control);
+				}
+				else
+				{
+					PlayArea51.Children.Add(control);
+				}
+			};
 		}
 
 		private SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
 
 		/// <summary>
-		/// TODO
+		/// Animiert das Schiff an die neue Position
 		/// </summary>
-		/// <param name="ship"></param>
-		private void Animate(IShip ship)
+		/// <param name="ship">Das zu animierende <see cref="IShip"/></param>
+		private void Animate(IShip ship, ShipControl control)
 		{
 			var moveInvaders = new Storyboard();
-			var control = ViewModel.ShipWithControls.FirstOrDefault(kvp => kvp.Key.Equals(ship)).Value;
-
-			if (control == null) return;
-			if (!PlayArea51.Children.Contains(control))
-			{
-				PlayArea51.Children.Add(control);
-			}
-
-			// Y
-			var moveAnimationY = new DoubleAnimation
-			{
-				Duration = new Duration(TimeSpan.FromSeconds(1)),
-				To = ship.Rect.Location.Y
-			};
-			Storyboard.SetTarget(moveAnimationY, control);
-			Storyboard.SetTargetProperty(moveAnimationY, new PropertyPath(Canvas.TopProperty));
-			moveInvaders.Children.Add(moveAnimationY);
 
 			// X
 			var moveAnimationX = new DoubleAnimation
@@ -68,9 +64,19 @@ namespace SpaceInvaders
 			Storyboard.SetTargetProperty(moveAnimationX, new PropertyPath(Canvas.LeftProperty));
 			moveInvaders.Children.Add(moveAnimationX);
 
+			// Y
+			var moveAnimationY = new DoubleAnimation
+			{
+				Duration = new Duration(TimeSpan.FromSeconds(1)),
+				To = ship.Rect.Location.Y
+			};
+			Storyboard.SetTarget(moveAnimationY, control);
+			Storyboard.SetTargetProperty(moveAnimationY, new PropertyPath(Canvas.TopProperty));
+			moveInvaders.Children.Add(moveAnimationY);
+
 
 			// Begin
-			// moveInvaders.Begin();
+			moveInvaders.Begin();
 			//TODO control.StartAnimation();
 		}
 		private void UIElement_OnKeyDown(object sender, KeyEventArgs e)

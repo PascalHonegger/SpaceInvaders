@@ -76,6 +76,7 @@
     <Compile Include="ExtensionMethods\ImageExtensions.cs" />
     <Compile Include="ExtensionMethods\ListExtensions.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Ship\Invaders\Ufo.cs" />
     <Compile Include="Ship\Players\FastPlayer.cs" />
     <Compile Include="Ship\Players\DefaultPlayer.cs" />

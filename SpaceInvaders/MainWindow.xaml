@@ -47,6 +47,7 @@
 			<TextBox IsEnabled="{Binding GameOver}" TextWrapping="Wrap" Text="{Binding PlayerName}" Height="75" FontSize="24" TextAlignment="Center"/>
 			<TextBlock TextWrapping="Wrap" Text="{Binding Score}" Height="75" FontSize="24" TextAlignment="Center"/>
 			<TextBlock TextWrapping="Wrap" Text="{Binding Wave}" Height="75" FontSize="24" TextAlignment="Center"/>
+			<TextBlock TextWrapping="Wrap" Text="{Binding CurrentLives}" Height="75" FontSize="24" TextAlignment="Center"/>
 			<Button x:Name="StartButton" Content="Start Game" Height="100" Click="StartGame_Click" IsDefault="True"/>
 			<Button x:Name="StopButton" Content="Stop current Game" Height="100" Click="StopButton_OnClick" Visibility="Collapsed"/>
 		</StackPanel>

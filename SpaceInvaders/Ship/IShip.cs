@@ -38,14 +38,9 @@ namespace SpaceInvaders.Ship
 		void Move(Direction direction);
 
 		/// <summary>
-		///     Die totalen Respawns des Spielers
+		///     Die Respawns des Spielers
 		/// </summary>
 		int Lives { get; }
-
-		/// <summary>
-		///     Der Name des Menschen, welcher das Schiff steuert
-		/// </summary>
-		string PlayerName { get; set; }
 
 		/// <summary>
 		///     Die Punkte, welche dieses Schiff wert ist
@@ -60,6 +55,6 @@ namespace SpaceInvaders.Ship
 		/// <summary>
 		///     Das Leben eines Schiffes. Wird bei einem Treffer reduziert. Unabhängig von den Respawns des Spielers!
 		/// </summary>
-		double Health { get; }
+		double Health { get; set; }
 	}
 }

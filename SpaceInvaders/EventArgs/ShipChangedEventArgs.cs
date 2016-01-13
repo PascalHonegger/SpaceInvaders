@@ -12,21 +12,14 @@ namespace SpaceInvaders.EventArgs
 		///     Konstruktor für die <see cref="ShipChangedEventArgs" /> Klasse
 		/// </summary>
 		/// <param name="ship">Das <see cref="Ship" /></param>
-		/// <param name="gotShot">Der <see cref="GotShot" />-Status</param>
-		public ShipChangedEventArgs(IShip ship, bool gotShot)
+		public ShipChangedEventArgs(IShip ship)
 		{
 			Ship = ship;
-			GotShot = gotShot;
 		}
 
 		/// <summary>
 		///     Das <see cref="IShip" />, welches sich geändert hat
 		/// </summary>
 		public IShip Ship { get; private set; }
-
-		/// <summary>
-		///     True, wenn das <see cref="Ship" /> getötet wurde
-		/// </summary>
-		public bool GotShot { get; private set; }
 	}
 }

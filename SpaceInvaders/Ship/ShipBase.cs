@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using SpaceInvaders.Annotations;
 using SpaceInvaders.Enums;
 using SpaceInvaders.Shot;
 
@@ -10,8 +13,11 @@ namespace SpaceInvaders.Ship
 	/// <summary>
 	///     Die Grundimplementation des Schiffes
 	/// </summary>
-	public abstract class ShipBase : IShip
+	public abstract class ShipBase : IShip, INotifyPropertyChanged
 	{
+		private double _health;
+		private readonly double _totalHealth;
+
 		/// <summary>
 		///     Der Base-Konstruktor für alle Invader.
 		/// </summary>
@@ -22,10 +28,10 @@ namespace SpaceInvaders.Ship
 		/// <param name="speed">Ändert den <see cref="Speed" /></param>
 		/// <param name="points">Ändert die <see cref="Points" /></param>
 		/// <param name="rect">Ändert die <see cref="Rect" /></param>
-		public ShipBase(int points, IShot shot, double health, string name, IEnumerable<BitmapSource> textures, Rect rect)
+		protected ShipBase(int points, IShot shot, double health, string name, IEnumerable<BitmapSource> textures, Rect rect)
 		{
 			Shot = shot;
-			Health = health;
+			Health = _totalHealth  = health;
 			Name = name;
 			Textures = textures;
 			Speed = 30;
@@ -45,10 +51,10 @@ namespace SpaceInvaders.Ship
 		/// <param name="totalLives">Ändert die <see cref="Lives"/></param>
 		/// <param name="speed">Ändert den <see cref="Speed" /></param>
 		/// <param name="rect">Ändert die <see cref="Rect" /></param>
-		public ShipBase(IShot shot, double health, string name, IEnumerable<BitmapSource> textures, int totalLives, int speed, Rect rect)
+		protected ShipBase(IShot shot, double health, string name, IEnumerable<BitmapSource> textures, int totalLives, int speed, Rect rect)
 		{
 			Shot = shot;
-			Health = health;
+			Health = _totalHealth = health;
 			Name = name;
 			Textures = textures;
 			Speed = speed;
@@ -61,7 +67,20 @@ namespace SpaceInvaders.Ship
 		/// <summary>
 		///     Das Leben eines Schiffes. Wird bei einem Treffer reduziert. Unabhängig von den Respawns des Spielers!
 		/// </summary>
-		public double Health { get; }
+		public double Health
+		{
+			get { return _health; }
+			set
+			{
+				_health = value;
+
+				if (_health <= 0 && Lives < 0)
+				{
+					Lives--;
+					_health = _totalHealth;
+				}
+			}
+		}
 
 		/// <summary>
 		///     Die Geschwindigkeit, mit welcher das Schiff sich vortbewegt. Wird in SpaceInvaders-Pixel / Tick angegeben
@@ -120,14 +139,9 @@ namespace SpaceInvaders.Ship
 		}
 
 		/// <summary>
-		///     Die totalen Respawns des Spielers
+		///     Die Respawns des Spielers
 		/// </summary>
-		public int Lives { get; }
-
-		/// <summary>
-		///     Der Name des Menschen, welcher das Schiff steuert
-		/// </summary>
-		public string PlayerName { get; set; }
+		public int Lives { get; private set; }
 
 		/// <summary>
 		///     Die Punkte, welche beim Tod
@@ -138,5 +152,20 @@ namespace SpaceInvaders.Ship
 		///     Der Schifftyp, welcher darüber entscheided ob dieses Schiff durch den Spieler gelenkt wird
 		/// </summary>
 		public ShipType ShipType { get; }
+
+		/// <summary>
+		/// Tritt ein, wenn sich ein Eigenschaftswert ändert.
+		/// </summary>
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		/// <summary>
+		///     Notifies the GUI, that the Porperty changed
+		/// </summary>
+		/// <param name="propertyName">The name of the Property, which got changed</param>
+		[NotifyPropertyChangedInvocator]
+		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
 	}
 }
