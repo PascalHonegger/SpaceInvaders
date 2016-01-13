@@ -22,13 +22,13 @@ namespace SpaceInvaders.Ship
 		/// <param name="speed">Ändert den <see cref="Speed" /></param>
 		/// <param name="points">Ändert die <see cref="Points" /></param>
 		/// <param name="rect">Ändert die <see cref="Rect" /></param>
-		public ShipBase(int points, IShot shot, double health, string name, IEnumerable<BitmapSource> textures, int speed, Rect rect)
+		public ShipBase(int points, IShot shot, double health, string name, IEnumerable<BitmapSource> textures, Rect rect)
 		{
 			Shot = shot;
 			Health = health;
 			Name = name;
 			Textures = textures;
-			Speed = speed;
+			Speed = 30;
 			ShipType = ShipType.Invader;
 			Points = points;
 			Lives = 0;

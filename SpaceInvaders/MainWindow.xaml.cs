@@ -3,6 +3,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using SpaceInvaders.Enums;
 using SpaceInvaders.Ship;
 using SpaceInvaders.Ship.Players;
@@ -25,10 +27,52 @@ namespace SpaceInvaders
 			{
 				Player = new DefaultPlayer(new Point())
 			};
+
+			ViewModel.ShipChangedEventHandler += (sender, e) => Animate(e.Ship);
 		}
 
 		private SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
 
+		/// <summary>
+		/// TODO
+		/// </summary>
+		/// <param name="ship"></param>
+		private void Animate(IShip ship)
+		{
+			var moveInvaders = new Storyboard();
+			var control = ViewModel.ShipWithControls.FirstOrDefault(kvp => kvp.Key.Equals(ship)).Value;
+
+			if (control == null) return;
+			if (!PlayArea51.Children.Contains(control))
+			{
+				PlayArea51.Children.Add(control);
+			}
+
+			// Y
+			var moveAnimationY = new DoubleAnimation
+			{
+				Duration = new Duration(TimeSpan.FromSeconds(1)),
+				To = ship.Rect.Location.Y
+			};
+			Storyboard.SetTarget(moveAnimationY, control);
+			Storyboard.SetTargetProperty(moveAnimationY, new PropertyPath(Canvas.TopProperty));
+			moveInvaders.Children.Add(moveAnimationY);
+
+			// X
+			var moveAnimationX = new DoubleAnimation
+			{
+				Duration = new Duration(TimeSpan.FromSeconds(1)),
+				To = ship.Rect.Location.X
+			};
+			Storyboard.SetTarget(moveAnimationX, control);
+			Storyboard.SetTargetProperty(moveAnimationX, new PropertyPath(Canvas.LeftProperty));
+			moveInvaders.Children.Add(moveAnimationX);
+
+
+			// Begin
+			// moveInvaders.Begin();
+			//TODO control.StartAnimation();
+		}
 		private void UIElement_OnKeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.A || e.Key == Key.Left)
