@@ -66,6 +66,9 @@
       <DependentUpon>AnimatedImageControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\Converter\InvertBoolConverter.cs" />
+    <Compile Include="Control\ShotControl.xaml.cs">
+      <DependentUpon>ShotControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\ShipControl.xaml.cs">
       <DependentUpon>ShipControl.xaml</DependentUpon>
     </Compile>
@@ -77,16 +80,23 @@
     <Compile Include="ExtensionMethods\ListExtensions.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Annotations1.cs" />
+    <Compile Include="Ship\Invaders\Alien.cs" />
     <Compile Include="Ship\Invaders\Ufo.cs" />
     <Compile Include="Ship\Players\FastPlayer.cs" />
     <Compile Include="Ship\Players\DefaultPlayer.cs" />
     <Compile Include="Ship\ShipBase.cs" />
+    <Compile Include="Shot\WeakInvaderShot.cs" />
+    <Compile Include="Shot\StrongInvaderShot.cs" />
     <Compile Include="Shot\DefaultShot.cs" />
     <Compile Include="Shot\ShotBase.cs" />
     <Compile Include="SpaceInvadersViewModel.cs" />
     <Page Include="Control\AnimatedImageControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\ShotControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Control\ShipControl.xaml">
       <SubType>Designer</SubType>
@@ -124,6 +134,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ClassDiagram.cd" />
     <None Include="Properties\Settings.settings">

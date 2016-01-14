@@ -18,6 +18,8 @@ namespace SpaceInvaders.Ship
 		private double _health;
 		private readonly double _totalHealth;
 
+		private Guid Identification { get; } = Guid.NewGuid();
+
 		/// <summary>
 		///     Der Base-Konstruktor für alle Invader.
 		/// </summary>
@@ -166,6 +168,33 @@ namespace SpaceInvaders.Ship
 		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		/// <summary>
+		/// Bestimmt, ob das angegebene Objekt mit dem aktuellen Objekt identisch ist.
+		/// </summary>
+		/// <returns>
+		/// true, wenn das angegebene Objekt und das aktuelle Objekt gleich sind, andernfalls false.
+		/// </returns>
+		/// <param name="obj">Das Objekt, das mit dem aktuellen Objekt verglichen werden soll. </param><filterpriority>2</filterpriority>
+		public override bool Equals(object obj)
+		{
+			var shipBase = obj as ShipBase;
+			if (shipBase == null) return false;
+
+			return Equals(Identification, shipBase.Identification);
+		}
+
+		/// <summary>
+		/// Fungiert als die Standardhashfunktion. 
+		/// </summary>
+		/// <returns>
+		/// Ein Hashcode für das aktuelle Objekt.
+		/// </returns>
+		/// <filterpriority>2</filterpriority>
+		public override int GetHashCode()
+		{
+			return Identification.GetHashCode();
 		}
 	}
 }

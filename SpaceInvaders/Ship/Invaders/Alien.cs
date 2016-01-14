@@ -9,29 +9,29 @@ using SpaceInvaders.Shot;
 namespace SpaceInvaders.Ship.Invaders
 {
 	/// <summary>
-	/// Der Ufo-Invader
+	/// Der Alien-Invader
 	/// </summary>
-	public class Ufo : ShipBase
+	public class Alien : ShipBase
 	{
-		private static readonly Size DefaultSize = new Size(20, 10);
+		private static readonly Size DefaultSize = new Size(10, 20);
 
 		private static readonly IEnumerable<BitmapSource> DefaultTextures = new List<BitmapSource>
 		{
-			Resources.invaderboss_animation_1.ToBitmapSource(),
-			Resources.invaderboss_animation_2.ToBitmapSource()
+			Resources.invader1_animation_one.ToBitmapSource(),
+			Resources.invader1_animation_two.ToBitmapSource()
 		};
 
-		private const double DefaultHealth = 30;
+		private const double DefaultHealth = 20;
 
-		private const string DefaultName = "Ufo of Doom";
+		private const string DefaultName = "Player of Doom";
 		
-		private const int DefaultPoints = 50;
+		private const int DefaultPoints = 40;
 
 		/// <summary>
 		/// Der Konstruktor für <see cref="Ufo"/>
 		/// </summary>
 		/// <param name="location">Die Location, an welcher das Ufo auftaucht</param>
-		public Ufo(Point location) : base(DefaultPoints, new StrongInvaderShot(location, Direction.Down), DefaultHealth, DefaultName, DefaultTextures, new Rect(location, DefaultSize))
+		public Alien(Point location) : base(DefaultPoints, new StrongInvaderShot(location, Direction.Down), DefaultHealth, DefaultName, DefaultTextures, new Rect(location, DefaultSize))
 		{
 
 		}

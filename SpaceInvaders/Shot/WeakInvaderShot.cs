@@ -10,24 +10,25 @@ namespace SpaceInvaders.Shot
 	/// <summary>
 	/// Der Standard-Schuss
 	/// </summary>
-	public class DefaultShot : ShotBase
+	public class WeakInvaderShot : ShotBase
 	{
 		/// <summary>
 		/// Der Base-Konstruktor für alle Schüsse.
 		/// </summary>
 		/// <param name="location">Ändert die <see cref="IShot.Rect"/></param>
 		/// <param name="direction">Ändert die <see cref="IShot.Direction"/></param>
-		public DefaultShot(Point location, Direction direction) : base(new Rect(location, DefaultSize), direction, DefaultDamage, DefaultSpeed, DefaultTextures)
+		public WeakInvaderShot(Point location, Direction direction) : base(new Rect(location, DefaultSize), direction, DefaultDamage, DefaultSpeed, DefaultTextures)
 		{
 
 		}
 
-		private const double DefaultDamage = 20;
-		private const int DefaultSpeed = 30;
+		private const double DefaultDamage = 10;
+		private const int DefaultSpeed = 20;
 		private static readonly Size DefaultSize = new Size(2, 4);
 		private static readonly IEnumerable<BitmapSource> DefaultTextures = new List<BitmapSource>
 		{
-			Resources.player_shot.ToBitmapSource()
+			Resources.shot1_animation_one.ToBitmapSource(),
+			Resources.shot1_animation_two.ToBitmapSource()
 		};
 	}
 }

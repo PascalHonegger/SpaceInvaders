@@ -21,17 +21,6 @@ namespace SpaceInvaders.Control
 		}
 
 		/// <summary>
-		///     Konstruktor für die <see cref="AnimatedImageControl" /> Klasse, ruft <see cref="StartAnimation" /> mit den
-		///     Parametern auf
-		/// </summary>
-		/// <param name="images">Die Bilder, welche an <see cref="StartAnimation" /> übergeben werden</param>
-		/// <param name="interval">Der Intervall, welcher an <see cref="StartAnimation" /> übergeben wird</param>
-		public AnimatedImageControl(IEnumerable<BitmapSource> images, TimeSpan interval) : this()
-		{
-			StartAnimation(images, interval);
-		}
-
-		/// <summary>
 		///     Startet die Animation aller mitgegebenen Bilder
 		/// </summary>
 		/// <param name="images">Die Bilder, welche abgewechselt werden</param>
@@ -51,7 +40,7 @@ namespace SpaceInvaders.Control
 			Storyboard.SetTarget(animation, Image);
 			Storyboard.SetTargetProperty(animation, new PropertyPath("Source"));
 
-			var currentInterval = TimeSpan.FromMilliseconds(0);
+			var currentInterval = TimeSpan.Zero;
 			foreach (var image in bitmapSources)
 			{
 				var keyFrame = new DiscreteObjectKeyFrame
@@ -63,8 +52,8 @@ namespace SpaceInvaders.Control
 				currentInterval = currentInterval.Add(interval);
 			}
 			storyboard.RepeatBehavior = RepeatBehavior.Forever;
-			//TODO maybe true
-			storyboard.AutoReverse = false;
+			//TODO maybe true / fale
+			storyboard.AutoReverse = true;
 			storyboard.Children.Add(animation);
 			storyboard.Begin();
 		}

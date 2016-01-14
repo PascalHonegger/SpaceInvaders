@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="SpaceInvaders.Control.ShotControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:control="clr-namespace:SpaceInvaders.Control"
+             xmlns:shot="clr-namespace:SpaceInvaders.Shot"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance shot:ShotBase }">
+	<control:AnimatedImageControl x:Name="AnimatedImageControl" />
+</UserControl>

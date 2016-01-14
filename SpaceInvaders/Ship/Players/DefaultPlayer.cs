@@ -14,7 +14,7 @@ namespace SpaceInvaders.Ship.Players
 	public class DefaultPlayer : ShipBase
 	{
 		private const int DefaultSpeed = 20;
-		private const int DefaultLives = 2;
+		private const int DefaultLives = 3;
 		private const int DefaultHealth = 50;
 		private const string DefaultName = "Player01";
 		private static readonly Size DefaultSize = new Size(10, 20);
@@ -29,7 +29,7 @@ namespace SpaceInvaders.Ship.Players
 		/// </summary>
 		/// <param name="location">Die Location, an welcher der Spieler startet</param>
 		public DefaultPlayer(Point location)
-			: base(new DefaultShot(location, Direction.Down), DefaultHealth, DefaultName, DefaultTextures, DefaultLives, DefaultSpeed,
+			: base(new DefaultShot(location, Direction.Up), DefaultHealth, DefaultName, DefaultTextures, DefaultLives, DefaultSpeed,
 				new Rect(location, DefaultSize))
 		{
 		}
