@@ -27,7 +27,7 @@ namespace SpaceInvaders
 		private const int MaximumPlayerShotsAtTheSameTime = 3;
 		private const int InvaderRows = 5;
 		private const int InvaderColumns = 3;
-		private readonly Rect _playArea = new Rect(new Point(0, 0), new Size(1074, 587));
+		private readonly Rect _playArea = new Rect(new Size(1074, 587));
 		private readonly Dictionary<IShip, ShipControl> _shipWithControls = new Dictionary<IShip, ShipControl>();
 		private readonly Dictionary<IShot, ShotControl> _shotWithControls = new Dictionary<IShot, ShotControl>();
 		private bool _gameOver = true;
@@ -111,7 +111,7 @@ namespace SpaceInvaders
 			}
 		}
 
-		private Point PlayerSpawn => new Point(_playArea.Width / 2, 225 - _playArea.Height);
+		private Point PlayerSpawn => new Point(_playArea.Width / 2, _playArea.Height - 225);
 
 		/// <summary>
 		///     Alle Player-Schiffe, welche selektiert werden können
@@ -344,7 +344,7 @@ namespace SpaceInvaders
 				for (var column = 0; column < InvaderRows; column++)
 				{
 					var x = _playArea.Width/InvaderRows*row + 10;
-					var y = -_playArea.Height/InvaderColumns/3*column;
+					var y = _playArea.Height/InvaderColumns/3*column;
 					var invader = new Ufo(new Point(x, y));
 					attackers.Add(invader);
 				}
@@ -428,7 +428,6 @@ namespace SpaceInvaders
 
 		private bool IsOutOfBounds(Rect rect)
 		{
-			//TODO Fix
 			var overlappingRect = Rect.Intersect(_playArea, rect);
 
 			// Das komplette 'rect' überlappt sich mit dem Spielfeld

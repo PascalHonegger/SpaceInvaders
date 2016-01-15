@@ -149,7 +149,7 @@ namespace SpaceInvaders
 			var trans = new TranslateTransform();
 			control.RenderTransform = trans;
 			var anim1 = new DoubleAnimation(top, rect.X, TimeSpan.FromSeconds(animationSecond));
-			var anim2 = new DoubleAnimation(left, -rect.Y, TimeSpan.FromSeconds(animationSecond));
+			var anim2 = new DoubleAnimation(left, rect.Y, TimeSpan.FromSeconds(animationSecond));
 			trans.BeginAnimation(TranslateTransform.XProperty, anim1);
 			trans.BeginAnimation(TranslateTransform.YProperty, anim2);
 

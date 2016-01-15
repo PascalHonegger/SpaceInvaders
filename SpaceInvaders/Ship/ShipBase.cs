@@ -129,10 +129,10 @@ namespace SpaceInvaders.Ship
 					newX += Speed;
 					break;
 				case Direction.Up:
-					newY += Speed;
+					newY -= Speed;
 					break;
 				case Direction.Down:
-					newY -= Speed;
+					newY += Speed;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(direction), direction, null);

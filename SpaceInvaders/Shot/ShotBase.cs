@@ -51,18 +51,15 @@ namespace SpaceInvaders.Shot
 				case Direction.Right:
 					throw new ArgumentOutOfRangeException(nameof(Direction), Direction, null);
 				case Direction.Up:
-					newY = Rect.Y + Speed;
+					newY = Rect.Y - Speed;
 					break;
 				case Direction.Down:
-					newY = Rect.Y - Speed;
+					newY = Rect.Y + Speed;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(Direction), Direction, null);
 			}
 
-			// TODO eleganter wäre 
-			// Rect.X = Rect.X;
-			// Rect.Y = Rect.Y + distance;
 			Rect = new Rect(new Point(Rect.X, newY), Rect.Size);
 		}
 
