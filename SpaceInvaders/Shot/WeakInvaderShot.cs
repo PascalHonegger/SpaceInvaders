@@ -23,8 +23,8 @@ namespace SpaceInvaders.Shot
 		}
 
 		private const double DefaultDamage = 10;
-		private const int DefaultSpeed = 20;
-		private static readonly Size DefaultSize = new Size(2, 4);
+		private const int DefaultSpeed = 15;
+		private static readonly Size DefaultSize = new Size(20, 40);
 		private static readonly IEnumerable<BitmapSource> DefaultTextures = new List<BitmapSource>
 		{
 			Resources.shot1_animation_one.ToBitmapSource(),

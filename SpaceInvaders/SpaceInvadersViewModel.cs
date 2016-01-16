@@ -25,8 +25,8 @@ namespace SpaceInvaders
 	public sealed class SpaceInvadersViewModel : IDisposable, INotifyPropertyChanged
 	{
 		private const int MaximumPlayerShotsAtTheSameTime = 3;
-		private const int InvaderRows = 5;
-		private const int InvaderColumns = 3;
+		private const int InvaderColumns = 4;
+		private const int InvaderRows = 3;
 		private readonly Rect _playArea = new Rect(new Size(1074, 587));
 		private readonly Dictionary<IShip, ShipControl> _shipWithControls = new Dictionary<IShip, ShipControl>();
 		private readonly Dictionary<IShot, ShotControl> _shotWithControls = new Dictionary<IShot, ShotControl>();
@@ -74,10 +74,7 @@ namespace SpaceInvaders
 					_shipWithControls.Add(kvp.Key, kvp.Value);
 				}
 
-				if (!_shipWithControls.Select(kvp => kvp.Key).Contains(Player))
-				{
-					_shipWithControls.Add(Player, new ShipControl(Player));
-				}
+				_shipWithControls.Add(_playerWithControl.Key, _playerWithControl.Value);
 
 				return _shipWithControls;
 			}
@@ -111,7 +108,7 @@ namespace SpaceInvaders
 			}
 		}
 
-		private Point PlayerSpawn => new Point(_playArea.Width / 2, _playArea.Height - 225);
+		private Point PlayerSpawn => new Point(_playArea.Width / 2, _playArea.Height - 175);
 
 		/// <summary>
 		///     Alle Player-Schiffe, welche selektiert werden können
@@ -136,12 +133,15 @@ namespace SpaceInvaders
 			set
 			{
 				_player = value;
+				_playerWithControl = new KeyValuePair<IShip, ShipControl>(_player, new ShipControl(_player));
 				OnPropertyChanged();
 				// ReSharper disable once ExplicitCallerInfoArgument
 				OnPropertyChanged(nameof(CurrentLives));
 				OnShipChangedEventHandler(new ShipChangedEventArgs(_player));
 			}
 		}
+
+		private KeyValuePair<IShip, ShipControl> _playerWithControl;
 
 		private Timer UpdateTimer { get; } = new Timer(100);
 
@@ -339,12 +339,12 @@ namespace SpaceInvaders
 		{
 			IList<IShip> attackers = new List<IShip>();
 
-			for (var row = 0; row < InvaderRows; row++)
+			for (var row = 0; row < InvaderColumns; row++)
 			{
 				for (var column = 0; column < InvaderRows; column++)
 				{
-					var x = _playArea.Width/InvaderRows*row + 10;
-					var y = _playArea.Height/InvaderColumns/3*column;
+					var x = _playArea.Width/InvaderColumns*row + 10;
+					var y = _playArea.Height/InvaderRows/3*column;
 					var invader = new Ufo(new Point(x, y));
 					attackers.Add(invader);
 				}
@@ -476,19 +476,12 @@ namespace SpaceInvaders
 					invader.Health -= shot.Damage;
 					OnShipChangedEventHandler(new ShipChangedEventArgs(invader), invader.Health <= 0);
 				}
-
-				if (RectsOverlap(invader.Rect, Player.Rect))
-				{
-					OnShipChangedEventHandler(new ShipChangedEventArgs(invader), true);
-					Player.Health -= invader.Health;
-					OnShipChangedEventHandler(new ShipChangedEventArgs(Player));
-				}
 			}
 		}
 
 		private void CheckForPlayerCollision()
 		{
-			foreach (var shot in InvaderShots.Where(shot => RectsOverlap(Player.Rect, shot.Rect)))
+			foreach (var shot in InvaderShots.Where(shot => RectsOverlap(Player.Rect, shot.Rect)).ToList())
 			{
 				Player.Health -= shot.Damage;
 				OnShipChangedEventHandler(new ShipChangedEventArgs(Player));
@@ -521,7 +514,7 @@ namespace SpaceInvaders
 		private static bool RectsOverlap(Rect rect1, Rect rect2)
 		{
 			rect1.Intersect(rect2);
-			return rect1.Width > 0 || rect1.Height > 0;
+			return !rect1.IsEmpty;
 		}
 
 		/// <summary>

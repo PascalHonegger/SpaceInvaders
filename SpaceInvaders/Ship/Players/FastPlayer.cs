@@ -17,7 +17,7 @@ namespace SpaceInvaders.Ship.Players
 		private const int DefaultLives = 2;
 		private const int DefaultHealth = 50;
 		private const string DefaultName = "Speedy McLight";
-		private static readonly Size DefaultSize = new Size(10, 20);
+		private static readonly Size DefaultSize = new Size(150, 100);
 
 		private static readonly List<BitmapSource> DefaultTextures = new List<BitmapSource>
 		{

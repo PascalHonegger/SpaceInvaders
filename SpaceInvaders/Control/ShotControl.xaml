@@ -7,5 +7,5 @@
              xmlns:shot="clr-namespace:SpaceInvaders.Shot"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance shot:ShotBase }">
-	<control:AnimatedImageControl x:Name="AnimatedImageControl" />
+	<control:AnimatedImageControl x:Name="AnimatedImageControl" Width="{Binding Rect.Width}" Height="{Binding Rect.Height}"/>
 </UserControl>

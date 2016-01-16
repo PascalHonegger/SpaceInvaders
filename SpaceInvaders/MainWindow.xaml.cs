@@ -19,7 +19,8 @@ namespace SpaceInvaders
 	public partial class MainWindow : Window
 	{
 		private readonly IList<IShip> _ships = new List<IShip>(); 
-		private readonly IList<IShot> _shots = new List<IShot>(); 
+		private readonly IList<IShot> _shots = new List<IShot>();
+		private DateTime _lastKeyInput = DateTime.MinValue;
 
 		/// <summary>
 		///     Constructor for MainWindow
@@ -34,89 +35,75 @@ namespace SpaceInvaders
 
 			ViewModel.ShipChangedEventHandler += (sender, e) =>
 			{
-				Dispatcher.Invoke(() =>
+				try
 				{
-					var justSpawned = false;
-
-					var control = ViewModel.ShipWithControls.FirstOrDefault(kvp => kvp.Key.Equals(e.Ship)).Value;
-
-					if (control == null)
-					{
-						//TODO Remove control
-						return;
-					}
-
-					if (!_ships.Contains(control.DataContext as IShip))
-					{
-						_ships.Add(control.DataContext as IShip);
-						PlayArea51.Children.Add(control);
-						justSpawned = true;
-					}
-
-					foreach (var cont in PlayArea51.Children)
-					{
-						var ship = cont as ShipControl;
-
-						var shipBase = ship?.DataContext as ShipBase;
-
-						var shipBase2 = control.DataContext as ShipBase;
-
-						if (!Equals(shipBase, shipBase2)) continue;
-
-						if (justSpawned)
-						{
-							Animate(e.Ship.Rect, control, 0);
-						}
-						else
-						{
-							Animate(e.Ship.Rect, control);
-						}
-					}
-				});
+					Dispatcher.Invoke(ReDraw);
+				}
+				catch
+				{
+					// ignored
+				}
 			};
 
 			ViewModel.ShotMovedEventHandler += (sender, e) =>
 			{
-				Dispatcher.Invoke(() =>
+				try
 				{
-					var justSpawned = false;
-
-					var control = ViewModel.ShotsWithControl.FirstOrDefault(kvp => kvp.Key.Equals(e.Shot)).Value;
-
-					if (control == null)
-					{
-						//TODO Remove control
-						return;
-					}
-
-					if (!_shots.Contains(control.DataContext as IShot))
-					{
-						_shots.Add(control.DataContext as IShot);
-						PlayArea51.Children.Add(control);
-						justSpawned = true;
-					}
-
-					foreach (var con in PlayArea51.Children)
-					{
-						var shot = con as ShotControl;
-
-						var shotBase = shot?.DataContext as ShotBase;
-
-						var shotBase2 = control.DataContext as ShotBase;
-
-						if (!Equals(shotBase, shotBase2)) continue;
-
-						if (justSpawned)
-						{
-							Animate(e.Shot.Rect, control, 0);
-						}
-						else
-						{
-							Animate(e.Shot.Rect, control);
-						}
-					}
-				});
+					Dispatcher.Invoke(ReDraw);
+				}
+				catch
+				{
+					// ignored
+				}
 			};
+		}
+
+		private void ReDraw()
+		{
+			PlayArea51.Children.Clear();
+			foreach (var shotWithControl in ViewModel.ShotsWithControl)
+			{
+				PlayArea51.Children.Add(shotWithControl.Value);
+				AnimateControl(shotWithControl.Value, shotWithControl.Key.Rect);
+			}
+
+			foreach (var shipWithControl in ViewModel.ShipWithControls)
+			{
+				PlayArea51.Children.Add(shipWithControl.Value);
+				AnimateControl(shipWithControl.Value, shipWithControl.Key.Rect);
+			}
+		}
+
+		private void AnimateControl(FrameworkElement control, Rect newRect)
+		{
+			foreach (var element in PlayArea51.Children)
+			{
+				var shot = element as ShotControl;
+				var ship = element as ShipControl;
+
+				if (shot != null)
+				{
+					var shotBase = shot.DataContext as ShotBase;
+
+					var shotBase2 = control.DataContext as ShotBase;
+
+					if (!Equals(shotBase, shotBase2)) continue;
+				}
+				else if(ship != null)
+				{
+					var shipBase = ship.DataContext as ShipBase;
+
+					var shipBase2 = control.DataContext as ShipBase;
+
+					if (!Equals(shipBase, shipBase2)) continue;
+				}
+				else
+				{
+					throw new NotImplementedException("Control has to be a ShipControl or ShotControl");
+				}
+
+				Animate(newRect, control);
+			}
 		}
 
 		private SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
@@ -126,12 +113,10 @@ namespace SpaceInvaders
 		/// </summary>
 		/// <param name="rect">Das zu animierende <see cref="Rect"/></param>
 		/// <param name="control">Das zu animierende <see cref="ShipControl"/></param>
-		/// <param name="animationSecond">Die Zeit der Animation in Sekunden</param>
-		private static void Animate(Rect rect, UIElement control, int animationSecond = 1)
+		private static void Animate(Rect rect, UIElement control)
 		{
 			var top = Canvas.GetTop(control);
 			var left = Canvas.GetLeft(control);
-
 
 			if (double.IsNaN(top))
 			{
@@ -148,42 +133,31 @@ namespace SpaceInvaders
 			
 			var trans = new TranslateTransform();
 			control.RenderTransform = trans;
-			var anim1 = new DoubleAnimation(top, rect.X, TimeSpan.FromSeconds(animationSecond));
-			var anim2 = new DoubleAnimation(left, rect.Y, TimeSpan.FromSeconds(animationSecond));
+			var anim1 = new DoubleAnimation(top, rect.X, TimeSpan.FromSeconds(0));
+			var anim2 = new DoubleAnimation(left, rect.Y, TimeSpan.FromSeconds(0));
 			trans.BeginAnimation(TranslateTransform.XProperty, anim1);
 			trans.BeginAnimation(TranslateTransform.YProperty, anim2);
 
-			/*var moveInvaders = new Storyboard();
-
-			// X
-			var moveAnimationX = new DoubleAnimation
-			{
-				Duration = new Duration(TimeSpan.FromSeconds(1)),
-				To = ship.Rect.Location.X
-			};
-			Storyboard.SetTarget(moveAnimationX, control);
-			Storyboard.SetTargetProperty(moveAnimationX, new PropertyPath(Canvas.LeftProperty));
-			moveInvaders.Children.Add(moveAnimationX);
-
-			// Y
-			var moveAnimationY = new DoubleAnimation
-			{
-				Duration = new Duration(TimeSpan.FromSeconds(1)),
-				To = ship.Rect.Location.Y
-			};
-			Storyboard.SetTarget(moveAnimationY, control);
-			Storyboard.SetTargetProperty(moveAnimationY, new PropertyPath(Canvas.TopProperty));
-			moveInvaders.Children.Add(moveAnimationY);
-
-
-			// Begin
-			//TODO moveInvaders.Begin();
-			//TODO control.StartAnimation();
-
-	*/
+			//TODO control.NextImage();
 		}
 		private void OnKeyDown(object sender, KeyEventArgs e)
 		{
+			// ReSharper disable once PossibleLossOfFraction
+			var timeToWait = 0.1;
+
+			if (timeToWait < 0)
+			{
+				timeToWait = 0;
+			}
+
+			if (_lastKeyInput >= DateTime.Now.AddSeconds(-timeToWait))
+			{
+				return;
+			}
+
+			_lastKeyInput = DateTime.Now;
+
+
 			if (e.Key == Key.A || e.Key == Key.Left)
 			{
 				ViewModel.MovePlayer(Direction.Left);

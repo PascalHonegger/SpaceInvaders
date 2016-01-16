@@ -13,7 +13,7 @@ namespace SpaceInvaders.Ship.Invaders
 	/// </summary>
 	public class Alien : ShipBase
 	{
-		private static readonly Size DefaultSize = new Size(10, 20);
+		private static readonly Size DefaultSize = new Size(50, 100);
 
 		private static readonly IEnumerable<BitmapSource> DefaultTextures = new List<BitmapSource>
 		{

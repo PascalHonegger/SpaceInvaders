@@ -13,7 +13,7 @@ namespace SpaceInvaders.Ship.Invaders
 	/// </summary>
 	public class Ufo : ShipBase
 	{
-		private static readonly Size DefaultSize = new Size(20, 10);
+		private static readonly Size DefaultSize = new Size(100, 50);
 
 		private static readonly IEnumerable<BitmapSource> DefaultTextures = new List<BitmapSource>
 		{

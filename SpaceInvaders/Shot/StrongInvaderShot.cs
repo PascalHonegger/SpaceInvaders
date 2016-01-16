@@ -23,8 +23,8 @@ namespace SpaceInvaders.Shot
 		}
 
 		private const double DefaultDamage = 30;
-		private const int DefaultSpeed = 15;
-		private static readonly Size DefaultSize = new Size(5, 5);
+		private const int DefaultSpeed = 12;
+		private static readonly Size DefaultSize = new Size(50, 50);
 		private static readonly IEnumerable<BitmapSource> DefaultTextures = new List<BitmapSource>
 		{
 			Resources.bossshot.ToBitmapSource()

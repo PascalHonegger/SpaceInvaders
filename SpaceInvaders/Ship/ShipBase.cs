@@ -27,7 +27,6 @@ namespace SpaceInvaders.Ship
 		/// <param name="health">Ändert das <see cref="Health" /></param>
 		/// <param name="name">Ändert den <see cref="Name" /></param>
 		/// <param name="textures">Ändert die <see cref="Textures" /></param>
-		/// <param name="speed">Ändert den <see cref="Speed" /></param>
 		/// <param name="points">Ändert die <see cref="Points" /></param>
 		/// <param name="rect">Ändert die <see cref="Rect" /></param>
 		protected ShipBase(int points, IShot shot, double health, string name, IEnumerable<BitmapSource> textures, Rect rect)

@@ -7,5 +7,5 @@
              xmlns:control="clr-namespace:SpaceInvaders.Control"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance ship:ShipBase }">
-	<control:AnimatedImageControl x:Name="AnimatedImageControl" />
+	<control:AnimatedImageControl x:Name="AnimatedImageControl" Width="{Binding Rect.Width}" Height="{Binding Rect.Height}"/>
 </UserControl>
