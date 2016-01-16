@@ -10,32 +10,13 @@ namespace SpaceInvaders.Control
 	public partial class ShotControl
 	{
 		/// <summary>
-		///     Constructor for MainWindow
-		/// </summary>
-		public ShotControl()
-		{
-			InitializeComponent();
-
-			var shot = DataContext as IShot;
-
-			AnimatedImageControl.StartAnimation(shot?.Textures, TimeSpan.FromSeconds(1));
-		}
-
-		/// <summary>
-		///     Constructor for MainWindow
+		///     Constructor for ShotControl
 		/// </summary>
 		public ShotControl(IShot datacontext)
 		{
 			InitializeComponent();
 
 			DataContext = datacontext;
-
-			AnimatedImageControl.StartAnimation(datacontext.Textures, TimeSpan.FromSeconds(1));
-		}
-
-		internal void StartAnimation()
-		{
-			AnimatedImageControl.StartAnimation((DataContext as IShip)?.Textures, TimeSpan.Zero);
 		}
 	}
 }

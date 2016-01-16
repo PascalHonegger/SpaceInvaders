@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Media.Imaging;
+﻿using System.Windows;
 using SpaceInvaders.Enums;
 using SpaceInvaders.Shot;
 
@@ -20,11 +18,6 @@ namespace SpaceInvaders.Ship
 		///	Die Location <see cref="Point"/> (top-left corner) und die Grösse <see cref="Size"/> des Schiffes in SpaceInvaders-Pixel
 		/// </summary>
 		Rect Rect { get; }
-
-		/// <summary>
-		///     Die Textures des Schiffes, welche im View angezeigt wird
-		/// </summary>
-		IEnumerable<BitmapSource> Textures { get; }
 
 		/// <summary>
 		///     Der Name des Schiffes. Beispielsweise 'The Destroyer'

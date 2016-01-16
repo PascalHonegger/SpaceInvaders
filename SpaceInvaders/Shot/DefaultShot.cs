@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media.Imaging;
 using SpaceInvaders.Enums;
 using SpaceInvaders.ExtensionMethods;
@@ -16,8 +15,8 @@ namespace SpaceInvaders.Shot
 		/// Der Base-Konstruktor für alle Schüsse.
 		/// </summary>
 		/// <param name="location">Ändert die <see cref="IShot.Rect"/></param>
-		/// <param name="direction">Ändert die <see cref="IShot.Direction"/></param>
-		public DefaultShot(Point location, Direction direction) : base(new Rect(location, DefaultSize), direction, DefaultDamage, DefaultSpeed, DefaultTextures)
+		/// <param name="direction">Ändert die <see cref="ShotBase.Direction"/></param>
+		public DefaultShot(Point location, Direction direction) : base(new Rect(location, DefaultSize), direction, DefaultDamage, DefaultSpeed)
 		{
 
 		}
@@ -25,9 +24,10 @@ namespace SpaceInvaders.Shot
 		private const double DefaultDamage = 20;
 		private const int DefaultSpeed = 15;
 		private static readonly Size DefaultSize = new Size(20, 40);
-		private static readonly IEnumerable<BitmapSource> DefaultTextures = new List<BitmapSource>
-		{
-			Resources.player_shot.ToBitmapSource()
-		};
+
+		/// <summary>
+		///     Die Textur des Schiffes, welche im View angezeigt wird
+		/// </summary>
+		public override BitmapSource CurrentTexture => Resources.player_shot.ToBitmapSource();
 	}
 }

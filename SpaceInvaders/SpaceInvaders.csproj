@@ -62,9 +62,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Control\AnimatedImageControl.xaml.cs">
-      <DependentUpon>AnimatedImageControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Control\Converter\InvertBoolConverter.cs" />
     <Compile Include="Control\ShotControl.xaml.cs">
       <DependentUpon>ShotControl.xaml</DependentUpon>
@@ -90,10 +87,6 @@
     <Compile Include="Shot\DefaultShot.cs" />
     <Compile Include="Shot\ShotBase.cs" />
     <Compile Include="SpaceInvadersViewModel.cs" />
-    <Page Include="Control\AnimatedImageControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Control\ShotControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

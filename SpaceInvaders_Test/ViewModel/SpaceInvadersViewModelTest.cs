@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System;
+using Moq;
 using NUnit.Framework;
 using SpaceInvaders;
 using SpaceInvaders.Enums;
@@ -19,6 +20,7 @@ namespace SpaceInvaders_Test.ViewModel
 			var playerMock = new Mock<IShip>();
 
 			playerMock.Setup(p => p.Lives).Returns(0);
+			playerMock.Setup(p => p.Health).Returns(0);
 
 			// Arrange
 			_unitUnderTest = new SpaceInvadersViewModel

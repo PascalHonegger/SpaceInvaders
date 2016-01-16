@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -23,46 +22,40 @@ namespace SpaceInvaders.Ship
 		/// <summary>
 		///     Der Base-Konstruktor für alle Invader.
 		/// </summary>
-		/// <param name="shot">Ändert den <see cref="Shot" /></param>
 		/// <param name="health">Ändert das <see cref="Health" /></param>
 		/// <param name="name">Ändert den <see cref="Name" /></param>
-		/// <param name="textures">Ändert die <see cref="Textures" /></param>
 		/// <param name="points">Ändert die <see cref="Points" /></param>
 		/// <param name="rect">Ändert die <see cref="Rect" /></param>
-		protected ShipBase(int points, IShot shot, double health, string name, IEnumerable<BitmapSource> textures, Rect rect)
+		protected ShipBase(string name, double health, int points, Rect rect)
 		{
-			Shot = shot;
-			Health = _totalHealth  = health;
 			Name = name;
-			Textures = textures;
+			Health = _totalHealth  = health;
+			Points = points;
+			Rect = rect;
+
 			Speed = 30;
 			ShipType = ShipType.Invader;
-			Points = points;
 			Lives = 0;
-			Rect = rect;
 		}
 
 		/// <summary>
 		///     Der Base-Konstruktor für alle Player.
 		/// </summary>
-		/// <param name="shot">Ändert den <see cref="Shot" /></param>
-		/// <param name="health">Ändert das <see cref="Health" /></param>
-		/// <param name="name">Ändert den <see cref="Name" /></param>
-		/// <param name="textures">Ändert die <see cref="Textures" /></param>
 		/// <param name="totalLives">Ändert die <see cref="Lives"/></param>
+		/// <param name="name">Ändert den <see cref="Name" /></param>
+		/// <param name="health">Ändert das <see cref="Health" /></param>
 		/// <param name="speed">Ändert den <see cref="Speed" /></param>
 		/// <param name="rect">Ändert die <see cref="Rect" /></param>
-		protected ShipBase(IShot shot, double health, string name, IEnumerable<BitmapSource> textures, int totalLives, int speed, Rect rect)
+		protected ShipBase(int totalLives, string name, double health, int speed, Rect rect)
 		{
-			Shot = shot;
-			Health = _totalHealth = health;
+			Lives = totalLives;
 			Name = name;
-			Textures = textures;
+			Health = _totalHealth = health;
 			Speed = speed;
+			Rect = rect;
+
 			ShipType = ShipType.Player;
 			Points = 0;
-			Lives = totalLives;
-			Rect = rect;
 		}
 
 		/// <summary>
@@ -91,7 +84,7 @@ namespace SpaceInvaders.Ship
 		/// <summary>
 		///     Der Schuss des Schiffes, welcher beim Schiessen geschossen wird
 		/// </summary>
-		public IShot Shot { get; }
+		public abstract IShot Shot { get; }
 
 		/// <summary>
 		///     Die Location <see cref="Point" /> (top-left corner) und die Grösse <see cref="Size" /> des Schiffes in
@@ -100,9 +93,10 @@ namespace SpaceInvaders.Ship
 		public Rect Rect { get; private set; }
 
 		/// <summary>
-		///     Die Textures des Schiffes, welche im View angezeigt wird
+		///     Die Textur des Schiffes, welche im View angezeigt wird
 		/// </summary>
-		public IEnumerable<BitmapSource> Textures { get; }
+		public abstract BitmapSource CurrentTexture { get; }
+
 
 		/// <summary>
 		///     Der Name des Schiffes. Beispielsweise 'The Destroyer'

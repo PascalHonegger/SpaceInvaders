@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ship="clr-namespace:SpaceInvaders.Ship"
-             xmlns:control="clr-namespace:SpaceInvaders.Control"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance ship:ShipBase }">
-	<control:AnimatedImageControl x:Name="AnimatedImageControl" Width="{Binding Rect.Width}" Height="{Binding Rect.Height}"/>
+	<Image Stretch="Fill" Source="{Binding CurrentTexture}" Width="{Binding Rect.Width}" Height="{Binding Rect.Height}"/>
 </UserControl>

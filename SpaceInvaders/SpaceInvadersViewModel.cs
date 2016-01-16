@@ -28,8 +28,6 @@ namespace SpaceInvaders
 		private const int InvaderColumns = 4;
 		private const int InvaderRows = 3;
 		private readonly Rect _playArea = new Rect(new Size(1074, 587));
-		private readonly Dictionary<IShip, ShipControl> _shipWithControls = new Dictionary<IShip, ShipControl>();
-		private readonly Dictionary<IShot, ShotControl> _shotWithControls = new Dictionary<IShot, ShotControl>();
 		private bool _gameOver = true;
 		private Direction _invaderDirection = Direction.Left;
 		private DateTime _invaderLastFired = DateTime.MinValue;
@@ -54,60 +52,6 @@ namespace SpaceInvaders
 		/// </summary>
 		public List<IShip> Invaders { get; } = new List<IShip>();
 
-		/// <summary>
-		///     Das <see cref="Dictionary{TKey,TValue}" /> mit dem Schiff und dem dazugehörigen Control
-		/// </summary>
-		public Dictionary<IShip, ShipControl> ShipWithControls
-		{
-			get
-			{
-				var hasControl = _shipWithControls.Where(kvp => Invaders.Contains(kvp.Key)).ToList();
-
-				var hasNoControl = Invaders.Where(inv => !_shipWithControls.Select(kvp => kvp.Key).Contains(inv));
-
-				hasControl.AddRange(hasNoControl.Select(ship => new KeyValuePair<IShip, ShipControl>(ship, new ShipControl(ship))));
-
-				_shipWithControls.Clear();
-
-				foreach (var kvp in hasControl)
-				{
-					_shipWithControls.Add(kvp.Key, kvp.Value);
-				}
-
-				_shipWithControls.Add(_playerWithControl.Key, _playerWithControl.Value);
-
-				return _shipWithControls;
-			}
-		}
-
-		/// <summary>
-		///     Das <see cref="Dictionary{TKey,TValue}" /> mit dem Schuss und dem dazugehörigen Control
-		/// </summary>
-		public Dictionary<IShot, ShotControl> ShotsWithControl
-		{
-			get
-			{
-				var shots = InvaderShots.ToList();
-
-				shots.AddRange(PlayerShots.ToList());
-
-				var hasControl = _shotWithControls.Where(kvp => shots.Contains(kvp.Key)).ToList();
-
-				var hasNoControl = shots.Where(inv => !_shotWithControls.Select(kvp => kvp.Key).Contains(inv));
-
-				hasControl.AddRange(hasNoControl.Select(shot => new KeyValuePair<IShot, ShotControl>(shot, new ShotControl(shot))));
-
-				_shotWithControls.Clear();
-
-				foreach (var kvp in hasControl)
-				{
-					_shotWithControls.Add(kvp.Key, kvp.Value);
-				}
-
-				return _shotWithControls;
-			}
-		}
-
 		private Point PlayerSpawn => new Point(_playArea.Width / 2, _playArea.Height - 175);
 
 		/// <summary>
@@ -129,11 +73,10 @@ namespace SpaceInvaders
 		/// </summary>
 		public IShip Player
 		{
-			private get { return _player; }
+			get { return _player; }
 			set
 			{
 				_player = value;
-				_playerWithControl = new KeyValuePair<IShip, ShipControl>(_player, new ShipControl(_player));
 				OnPropertyChanged();
 				// ReSharper disable once ExplicitCallerInfoArgument
 				OnPropertyChanged(nameof(CurrentLives));
@@ -141,7 +84,7 @@ namespace SpaceInvaders
 			}
 		}
 
-		private KeyValuePair<IShip, ShipControl> _playerWithControl;
+		private KeyValuePair<IShip, ShipControl> PlayerWithControl => new KeyValuePair<IShip, ShipControl>(_player, new ShipControl(_player));
 
 		private Timer UpdateTimer { get; } = new Timer(100);
 
@@ -224,8 +167,6 @@ namespace SpaceInvaders
 			if (ship.ShipType == ShipType.Player && PlayerShots.Count < MaximumPlayerShotsAtTheSameTime)
 			{
 				PlayerShots.Add(ship.Shot);
-
-				OnShotMovedEventHandler(new ShotMovedEventArgs(ship.Shot), IsOutOfBounds(ship.Rect));
 			}
 			else if (ship.ShipType == ShipType.Invader || ship.ShipType == ShipType.Boss)
 			{

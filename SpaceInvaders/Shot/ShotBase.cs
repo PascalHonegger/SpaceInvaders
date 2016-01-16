@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using SpaceInvaders.Enums;
+using SpaceInvaders.ExtensionMethods;
 using SpaceInvaders.Ship;
 
 namespace SpaceInvaders.Shot
@@ -13,9 +14,9 @@ namespace SpaceInvaders.Shot
 	public abstract class ShotBase : IShot
 	{
 		/// <summary>
-		///     Die Textures des Schusses, welche im View angezeigt wird
+		///     Die Textur des Schiffes, welche im View angezeigt wird
 		/// </summary>
-		public IEnumerable<BitmapSource> Textures { get; }
+		public abstract BitmapSource CurrentTexture { get; }
 
 		/// <summary>
 		///     Der Schaden, welcher der Schuss beim Aufprall mit einem <see cref="IShip" /> verursacht
@@ -25,12 +26,12 @@ namespace SpaceInvaders.Shot
 		/// <summary>
 		///     Die Geschwindigkeit des Schusses. Wird in SpaceInvaders-Pixel / Tick angegeben
 		/// </summary>
-		public int Speed { get; }
+		private int Speed { get; }
 
 		/// <summary>
 		///     Die Richtung, in welche sich der Schuss bewegt
 		/// </summary>
-		public Direction Direction { get; }
+		private Direction Direction { get; }
 
 		/// <summary>
 		///	Die Location <see cref="Point"/> (top-left corner) und die Grösse <see cref="Size"/> des Schiffes in SpaceInvaders-Pixel
@@ -38,7 +39,7 @@ namespace SpaceInvaders.Shot
 		public Rect Rect { get; private set; }
 
 		/// <summary>
-		///     Bewegt den Schuss in die <see cref="IShot.Direction" /> mit der Hilfe des <see cref="IShot.Speed" />
+		///     Bewegt den Schuss in die <see cref="ShotBase.Direction" /> mit der Hilfe des <see cref="ShotBase.Speed" />
 		/// </summary>
 		public void Move()
 		{
@@ -70,14 +71,12 @@ namespace SpaceInvaders.Shot
 		/// <param name="direction">Ändert die <see cref="Direction"/></param>
 		/// <param name="damage">Ändert den <see cref="Damage"/></param>
 		/// <param name="speed">Ändert den <see cref="Speed"/></param>
-		/// <param name="textures">Ändert die <see cref="Textures"/></param>
-		public ShotBase(Rect rect, Direction direction, double damage, int speed, IEnumerable<BitmapSource> textures)
+		protected ShotBase(Rect rect, Direction direction, double damage, int speed)
 		{
 			Rect = rect;
 			Direction = direction;
 			Damage = damage;
 			Speed = speed;
-			Textures = textures;
 		}
 	}
 }

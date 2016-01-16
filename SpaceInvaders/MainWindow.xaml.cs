@@ -37,7 +37,7 @@ namespace SpaceInvaders
 			{
 				try
 				{
-					Dispatcher.Invoke(ReDraw);
+					Dispatcher.InvokeAsync(ReDraw);
 				}
 				catch
 				{
@@ -49,7 +49,7 @@ namespace SpaceInvaders
 			{
 				try
 				{
-					Dispatcher.Invoke(ReDraw);
+					Dispatcher.InvokeAsync(ReDraw);
 				}
 				catch
 				{
@@ -61,13 +61,23 @@ namespace SpaceInvaders
 		private void ReDraw()
 		{
 			PlayArea51.Children.Clear();
-			foreach (var shotWithControl in ViewModel.ShotsWithControl)
+			var shots = ViewModel.InvaderShots.Select(s => new KeyValuePair<IShot, ShotControl>(s, new ShotControl(s))).ToList();
+
+			shots.AddRange(ViewModel.PlayerShots.Select(s => new KeyValuePair<IShot, ShotControl>(s, new ShotControl(s))).ToList());
+
+
+			foreach (var shotWithControl in shots)
 			{
 				PlayArea51.Children.Add(shotWithControl.Value);
 				AnimateControl(shotWithControl.Value, shotWithControl.Key.Rect);
 			}
 
-			foreach (var shipWithControl in ViewModel.ShipWithControls)
+
+			var ships = ViewModel.Invaders.Select(s => new KeyValuePair<IShip, ShipControl>(s, new ShipControl(s))).ToList();
+
+			ships.Add(new KeyValuePair<IShip, ShipControl>(ViewModel.Player, new ShipControl(ViewModel.Player)));
+
+			foreach (var shipWithControl in ships)
 			{
 				PlayArea51.Children.Add(shipWithControl.Value);
 				AnimateControl(shipWithControl.Value, shipWithControl.Key.Rect);

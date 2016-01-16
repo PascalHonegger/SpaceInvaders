@@ -10,27 +10,13 @@ namespace SpaceInvaders.Control
 	public partial class ShipControl
 	{
 		/// <summary>
-		///     Constructor for MainWindow
-		/// </summary>
-		public ShipControl()
-		{
-			InitializeComponent();
-
-			var ship = DataContext as IShip;
-
-			AnimatedImageControl.StartAnimation(ship?.Textures, TimeSpan.FromSeconds(1));
-		}
-
-		/// <summary>
-		///     Constructor for MainWindow
+		///     Constructor for ShipControl
 		/// </summary>
 		public ShipControl(IShip datacontext)
 		{
 			InitializeComponent();
 
 			DataContext = datacontext;
-
-			AnimatedImageControl.StartAnimation(datacontext.Textures, TimeSpan.FromSeconds(1));
 		}
 	}
 }

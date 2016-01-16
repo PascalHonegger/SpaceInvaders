@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using SpaceInvaders.Enums;
@@ -15,12 +16,6 @@ namespace SpaceInvaders.Ship.Invaders
 	{
 		private static readonly Size DefaultSize = new Size(50, 100);
 
-		private static readonly IEnumerable<BitmapSource> DefaultTextures = new List<BitmapSource>
-		{
-			Resources.invader1_animation_one.ToBitmapSource(),
-			Resources.invader1_animation_two.ToBitmapSource()
-		};
-
 		private const double DefaultHealth = 20;
 
 		private const string DefaultName = "Player of Doom";
@@ -31,9 +26,19 @@ namespace SpaceInvaders.Ship.Invaders
 		/// Der Konstruktor für <see cref="Ufo"/>
 		/// </summary>
 		/// <param name="location">Die Location, an welcher das Ufo auftaucht</param>
-		public Alien(Point location) : base(DefaultPoints, new StrongInvaderShot(location, Direction.Down), DefaultHealth, DefaultName, DefaultTextures, new Rect(location, DefaultSize))
+		public Alien(Point location) : base(DefaultName, DefaultHealth, DefaultPoints, new Rect(location, DefaultSize))
 		{
 
 		}
+
+		/// <summary>
+		///     Der Schuss des Schiffes, welcher beim Schiessen geschossen wird
+		/// </summary>
+		public override IShot Shot => new StrongInvaderShot(Rect.Location, Direction.Down);
+
+		/// <summary>
+		///     Die Textur des Schiffes, welche im View angezeigt wird
+		/// </summary>
+		public override BitmapSource CurrentTexture => DateTime.Now.Second < 5 ? Resources.invader1_animation_one.ToBitmapSource() : Resources.invader1_animation_two.ToBitmapSource();
 	}
 }
