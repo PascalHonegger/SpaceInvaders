@@ -6,5 +6,5 @@
              xmlns:shot="clr-namespace:SpaceInvaders.Shot"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance shot:ShotBase }">
-	<Image Stretch="Fill" Source="{Binding CurrentTexture}" Width="{Binding Rect.Width}" Height="{Binding Rect.Height}"/>
+	<Image Stretch="Fill" Source="{Binding CurrentTexture}" Width="{Binding Rect.Width}" Height="{Binding Rect.Height}" />
 </UserControl>

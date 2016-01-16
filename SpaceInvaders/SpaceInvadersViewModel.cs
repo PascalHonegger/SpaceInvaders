@@ -7,7 +7,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Timers;
 using System.Windows;
-using SpaceInvaders.Control;
 using SpaceInvaders.Enums;
 using SpaceInvaders.EventArgs;
 using SpaceInvaders.ExtensionMethods;
@@ -32,10 +31,10 @@ namespace SpaceInvaders
 		private Direction _invaderDirection = Direction.Left;
 		private DateTime _invaderLastFired = DateTime.MinValue;
 		private DateTime _invaderLastMoved = DateTime.MinValue;
+		private IShip _player;
 		private string _playerName = "Player1";
 		private int _score;
 		private int _wave;
-		private IShip _player;
 
 		/// <summary>
 		///     Liste aller aktiven Schüsse der Invader
@@ -48,11 +47,11 @@ namespace SpaceInvaders
 		public List<IShot> PlayerShots { get; } = new List<IShot>();
 
 		/// <summary>
-		/// Liste aller aktiven Invader
+		///     Liste aller aktiven Invader
 		/// </summary>
 		public List<IShip> Invaders { get; } = new List<IShip>();
 
-		private Point PlayerSpawn => new Point(_playArea.Width / 2, _playArea.Height - 175);
+		private Point PlayerSpawn => new Point(_playArea.Width/2, _playArea.Height - 175);
 
 		/// <summary>
 		///     Alle Player-Schiffe, welche selektiert werden können
@@ -83,8 +82,6 @@ namespace SpaceInvaders
 				OnShipChangedEventHandler(new ShipChangedEventArgs(_player));
 			}
 		}
-
-		private KeyValuePair<IShip, ShipControl> PlayerWithControl => new KeyValuePair<IShip, ShipControl>(_player, new ShipControl(_player));
 
 		private Timer UpdateTimer { get; } = new Timer(100);
 
@@ -333,7 +330,7 @@ namespace SpaceInvaders
 		}
 
 		/// <summary>
-		/// Aktualisiert das Spiel. Wird von <see cref="UpdateTimer"/> aufgerufen
+		///     Aktualisiert das Spiel. Wird von <see cref="UpdateTimer" /> aufgerufen
 		/// </summary>
 		public void Update()
 		{
@@ -447,7 +444,9 @@ namespace SpaceInvaders
 
 			_invaderLastFired = DateTime.Now;
 
-			var invader = Invaders.PickRandom();
+			var lowestY = Invaders.Min(i => i.Rect.Bottom);
+
+			var invader = Invaders.Where(i => Equals(i.Rect.Bottom, lowestY)).PickRandom();
 
 			FireShot(invader);
 		}

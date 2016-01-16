@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
-using SpaceInvaders.Ship;
+﻿using SpaceInvaders.Ship;
 
 namespace SpaceInvaders.Control
 {

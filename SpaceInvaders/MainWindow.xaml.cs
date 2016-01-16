@@ -18,7 +18,7 @@ namespace SpaceInvaders
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private readonly IList<IShip> _ships = new List<IShip>(); 
+		private readonly IList<IShip> _ships = new List<IShip>();
 		private readonly IList<IShot> _shots = new List<IShot>();
 		private DateTime _lastKeyInput = DateTime.MinValue;
 
@@ -58,12 +58,15 @@ namespace SpaceInvaders
 			};
 		}
 
+		private SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
+
 		private void ReDraw()
 		{
 			PlayArea51.Children.Clear();
 			var shots = ViewModel.InvaderShots.Select(s => new KeyValuePair<IShot, ShotControl>(s, new ShotControl(s))).ToList();
 
-			shots.AddRange(ViewModel.PlayerShots.Select(s => new KeyValuePair<IShot, ShotControl>(s, new ShotControl(s))).ToList());
+			shots.AddRange(
+				ViewModel.PlayerShots.Select(s => new KeyValuePair<IShot, ShotControl>(s, new ShotControl(s))).ToList());
 
 
 			foreach (var shotWithControl in shots)
@@ -73,7 +76,8 @@ namespace SpaceInvaders
 			}
 
 
-			var ships = ViewModel.Invaders.Select(s => new KeyValuePair<IShip, ShipControl>(s, new ShipControl(s))).ToList();
+			var ships =
+				ViewModel.Invaders.ToList().Select(s => new KeyValuePair<IShip, ShipControl>(s, new ShipControl(s))).ToList();
 
 			ships.Add(new KeyValuePair<IShip, ShipControl>(ViewModel.Player, new ShipControl(ViewModel.Player)));
 
@@ -99,7 +103,7 @@ namespace SpaceInvaders
 
 					if (!Equals(shotBase, shotBase2)) continue;
 				}
-				else if(ship != null)
+				else if (ship != null)
 				{
 					var shipBase = ship.DataContext as ShipBase;
 
@@ -116,13 +120,11 @@ namespace SpaceInvaders
 			}
 		}
 
-		private SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
-
 		/// <summary>
-		/// Animiert das Schiff an die neue Position
+		///     Animiert das Schiff an die neue Position
 		/// </summary>
-		/// <param name="rect">Das zu animierende <see cref="Rect"/></param>
-		/// <param name="control">Das zu animierende <see cref="ShipControl"/></param>
+		/// <param name="rect">Das zu animierende <see cref="Rect" /></param>
+		/// <param name="control">Das zu animierende <see cref="ShipControl" /></param>
 		private static void Animate(Rect rect, UIElement control)
 		{
 			var top = Canvas.GetTop(control);
@@ -140,7 +142,7 @@ namespace SpaceInvaders
 				left = Canvas.GetLeft(control);
 			}
 
-			
+
 			var trans = new TranslateTransform();
 			control.RenderTransform = trans;
 			var anim1 = new DoubleAnimation(top, rect.X, TimeSpan.FromSeconds(0));
@@ -150,6 +152,7 @@ namespace SpaceInvaders
 
 			//TODO control.NextImage();
 		}
+
 		private void OnKeyDown(object sender, KeyEventArgs e)
 		{
 			// ReSharper disable once PossibleLossOfFraction
@@ -176,7 +179,7 @@ namespace SpaceInvaders
 			{
 				ViewModel.MovePlayer(Direction.Right);
 			}
-			else  if (e.Key == Key.Space)
+			else if (e.Key == Key.Space)
 			{
 				ViewModel.FireShotPlayer();
 			}
@@ -200,7 +203,9 @@ namespace SpaceInvaders
 
 		private void StopButton_OnClick(object sender, RoutedEventArgs e)
 		{
-			var rsltMessageBox = MessageBox.Show("Sind Sie sicher, dass Sie das jetzige Spiel beenden möchten? Ihr Highscore wird gespeichert!", "Sind Sie sich sicher?", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+			var rsltMessageBox =
+				MessageBox.Show("Sind Sie sicher, dass Sie das jetzige Spiel beenden möchten? Ihr Highscore wird gespeichert!",
+					"Sind Sie sich sicher?", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
 
 			switch (rsltMessageBox)
 			{

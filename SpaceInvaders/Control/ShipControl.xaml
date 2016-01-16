@@ -6,5 +6,5 @@
              xmlns:ship="clr-namespace:SpaceInvaders.Ship"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance ship:ShipBase }">
-	<Image Stretch="Fill" Source="{Binding CurrentTexture}" Width="{Binding Rect.Width}" Height="{Binding Rect.Height}"/>
+	<Image Stretch="Fill" Source="{Binding CurrentTexture}" Width="{Binding Rect.Width}" Height="{Binding Rect.Height}" />
 </UserControl>

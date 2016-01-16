@@ -1,27 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using SpaceInvaders.Enums;
-using SpaceInvaders.ExtensionMethods;
 using SpaceInvaders.Ship;
 
 namespace SpaceInvaders.Shot
 {
 	/// <summary>
-	/// Die Grundimplementation des Schusses
+	///     Die Grundimplementation des Schusses
 	/// </summary>
 	public abstract class ShotBase : IShot
 	{
 		/// <summary>
+		///     Der Base-Konstruktor für alle Schüsse.
+		/// </summary>
+		/// <param name="rect">Ändert die <see cref="Rect" /></param>
+		/// <param name="direction">Ändert die <see cref="Direction" /></param>
+		/// <param name="damage">Ändert den <see cref="Damage" /></param>
+		/// <param name="speed">Ändert den <see cref="Speed" /></param>
+		protected ShotBase(Rect rect, Direction direction, double damage, int speed)
+		{
+			Rect = rect;
+			Direction = direction;
+			Damage = damage;
+			Speed = speed;
+		}
+
+		/// <summary>
 		///     Die Textur des Schiffes, welche im View angezeigt wird
 		/// </summary>
 		public abstract BitmapSource CurrentTexture { get; }
-
-		/// <summary>
-		///     Der Schaden, welcher der Schuss beim Aufprall mit einem <see cref="IShip" /> verursacht
-		/// </summary>
-		public double Damage { get; }
 
 		/// <summary>
 		///     Die Geschwindigkeit des Schusses. Wird in SpaceInvaders-Pixel / Tick angegeben
@@ -34,7 +42,13 @@ namespace SpaceInvaders.Shot
 		private Direction Direction { get; }
 
 		/// <summary>
-		///	Die Location <see cref="Point"/> (top-left corner) und die Grösse <see cref="Size"/> des Schiffes in SpaceInvaders-Pixel
+		///     Der Schaden, welcher der Schuss beim Aufprall mit einem <see cref="IShip" /> verursacht
+		/// </summary>
+		public double Damage { get; }
+
+		/// <summary>
+		///     Die Location <see cref="Point" /> (top-left corner) und die Grösse <see cref="Size" /> des Schiffes in
+		///     SpaceInvaders-Pixel
 		/// </summary>
 		public Rect Rect { get; private set; }
 
@@ -62,21 +76,6 @@ namespace SpaceInvaders.Shot
 			}
 
 			Rect = new Rect(new Point(Rect.X, newY), Rect.Size);
-		}
-
-		/// <summary>
-		/// Der Base-Konstruktor für alle Schüsse.
-		/// </summary>
-		/// <param name="rect">Ändert die <see cref="Rect"/></param>
-		/// <param name="direction">Ändert die <see cref="Direction"/></param>
-		/// <param name="damage">Ändert den <see cref="Damage"/></param>
-		/// <param name="speed">Ändert den <see cref="Speed"/></param>
-		protected ShotBase(Rect rect, Direction direction, double damage, int speed)
-		{
-			Rect = rect;
-			Direction = direction;
-			Damage = damage;
-			Speed = speed;
 		}
 	}
 }

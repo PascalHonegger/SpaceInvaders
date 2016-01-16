@@ -3,7 +3,6 @@ using NUnit.Framework;
 using SpaceInvaders.Enums;
 using SpaceInvaders.Ship;
 using SpaceInvaders.Ship.Players;
-using SpaceInvaders.Shot;
 using SpaceInvaders_Test.TestBases;
 
 namespace SpaceInvaders_Test.Ship.Players

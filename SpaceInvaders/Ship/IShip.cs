@@ -15,7 +15,8 @@ namespace SpaceInvaders.Ship
 		IShot Shot { get; }
 
 		/// <summary>
-		///	Die Location <see cref="Point"/> (top-left corner) und die Grösse <see cref="Size"/> des Schiffes in SpaceInvaders-Pixel
+		///     Die Location <see cref="Point" /> (top-left corner) und die Grösse <see cref="Size" /> des Schiffes in
+		///     SpaceInvaders-Pixel
 		/// </summary>
 		Rect Rect { get; }
 
@@ -23,12 +24,6 @@ namespace SpaceInvaders.Ship
 		///     Der Name des Schiffes. Beispielsweise 'The Destroyer'
 		/// </summary>
 		string Name { get; }
-
-		/// <summary>
-		///     Bewegt das Schiff in die gewünschte Richtung, indem es den <see cref="Rect" /> verändert
-		/// </summary>
-		/// <param name="direction">Die Richtung, in welche sich das Schiff bewegt</param>
-		void Move(Direction direction);
 
 		/// <summary>
 		///     Die Respawns des Spielers
@@ -49,5 +44,11 @@ namespace SpaceInvaders.Ship
 		///     Das Leben eines Schiffes. Wird bei einem Treffer reduziert. Unabhängig von den Respawns des Spielers!
 		/// </summary>
 		double Health { get; set; }
+
+		/// <summary>
+		///     Bewegt das Schiff in die gewünschte Richtung, indem es den <see cref="Rect" /> verändert
+		/// </summary>
+		/// <param name="direction">Die Richtung, in welche sich das Schiff bewegt</param>
+		void Move(Direction direction);
 	}
 }
