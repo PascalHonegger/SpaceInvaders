@@ -264,7 +264,6 @@ namespace SpaceInvaders
 				OnShipChangedEventHandler(new ShipChangedEventArgs(invader), true);
 			}
 
-
 			Invaders.AddRange(CreateNewAttackWave());
 
 			foreach (var invader in Invaders)
@@ -344,12 +343,11 @@ namespace SpaceInvaders
 				NextWave();
 			}
 
-			foreach (var shot in InvaderShots.ToList())
-			{
-				shot.Move();
-				OnShotMovedEventHandler(new ShotMovedEventArgs(shot), IsOutOfBounds(shot.Rect));
-			}
-			foreach (var shot in PlayerShots.ToList())
+			var shots = InvaderShots.ToList();
+
+			shots.AddRange(PlayerShots.ToList());
+
+			foreach (var shot in shots)
 			{
 				shot.Move();
 				OnShotMovedEventHandler(new ShotMovedEventArgs(shot), IsOutOfBounds(shot.Rect));

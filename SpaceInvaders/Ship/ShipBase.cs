@@ -89,6 +89,8 @@ namespace SpaceInvaders.Ship
 					Lives--;
 					_health = _totalHealth;
 				}
+
+				OnPropertyChanged();
 			}
 		}
 
