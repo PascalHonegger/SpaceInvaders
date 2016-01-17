@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using SpaceInvaders.Enums;
 using SpaceInvaders.Shot;
 
@@ -7,7 +8,7 @@ namespace SpaceInvaders.Ship
 	/// <summary>
 	///     Das Interface für alle Schiffe
 	/// </summary>
-	public interface IShip
+	public interface IShip : INotifyPropertyChanged
 	{
 		/// <summary>
 		///     Der Schuss des Schiffes, welcher beim Schiessen geschossen wird

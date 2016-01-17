@@ -18,9 +18,10 @@ namespace SpaceInvaders
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private readonly IList<IShip> _ships = new List<IShip>();
-		private readonly IList<IShot> _shots = new List<IShot>();
 		private DateTime _lastKeyInput = DateTime.MinValue;
+		private readonly Dictionary<IShip, ShipControl> _shipWithControls = new Dictionary<IShip, ShipControl>();
+		private readonly Dictionary<IShot, ShotControl> _shotWithControls = new Dictionary<IShot, ShotControl>();
+		private KeyValuePair<IShip, ShipControl> _playerWithControl;
 
 		/// <summary>
 		///     Constructor for MainWindow
@@ -60,63 +61,79 @@ namespace SpaceInvaders
 
 		private SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
 
-		private void ReDraw()
+		/// <summary>
+		///     Das <see cref="Dictionary{TKey,TValue}" /> mit dem Schiff und dem dazugehörigen Control
+		/// </summary>
+		private Dictionary<IShip, ShipControl> ShipWithControls
 		{
-			PlayArea51.Children.Clear();
-			var shots = ViewModel.InvaderShots.Select(s => new KeyValuePair<IShot, ShotControl>(s, new ShotControl(s))).ToList();
-
-			shots.AddRange(
-				ViewModel.PlayerShots.Select(s => new KeyValuePair<IShot, ShotControl>(s, new ShotControl(s))).ToList());
-
-
-			foreach (var shotWithControl in shots)
+			get
 			{
-				PlayArea51.Children.Add(shotWithControl.Value);
-				AnimateControl(shotWithControl.Value, shotWithControl.Key.Rect);
-			}
+				var hasControl = _shipWithControls.Where(kvp => ViewModel.Invaders.Contains(kvp.Key)).ToList();
 
+				var hasNoControl = ViewModel.Invaders.Where(inv => !_shipWithControls.Select(kvp => kvp.Key).Contains(inv));
 
-			var ships =
-				ViewModel.Invaders.ToList().Select(s => new KeyValuePair<IShip, ShipControl>(s, new ShipControl(s))).ToList();
+				hasControl.AddRange(hasNoControl.Select(ship => new KeyValuePair<IShip, ShipControl>(ship, new ShipControl(ship))));
 
-			ships.Add(new KeyValuePair<IShip, ShipControl>(ViewModel.Player, new ShipControl(ViewModel.Player)));
+				_shipWithControls.Clear();
 
-			foreach (var shipWithControl in ships)
-			{
-				PlayArea51.Children.Add(shipWithControl.Value);
-				AnimateControl(shipWithControl.Value, shipWithControl.Key.Rect);
+				foreach (var kvp in hasControl)
+				{
+					_shipWithControls.Add(kvp.Key, kvp.Value);
+				}
+
+				if (_playerWithControl.Key == null || Equals(_playerWithControl.Key, ViewModel.Player))
+				{
+					_playerWithControl = new KeyValuePair<IShip, ShipControl>(ViewModel.Player, new ShipControl(ViewModel.Player));
+				}
+
+				_shipWithControls.Add(_playerWithControl.Key, _playerWithControl.Value);
+
+				return _shipWithControls;
 			}
 		}
 
-		private void AnimateControl(FrameworkElement control, Rect newRect)
+		/// <summary>
+		///     Das <see cref="Dictionary{TKey,TValue}" /> mit dem Schuss und dem dazugehörigen Control
+		/// </summary>
+		private Dictionary<IShot, ShotControl> ShotsWithControl
 		{
-			foreach (var element in PlayArea51.Children)
+			get
 			{
-				var shot = element as ShotControl;
-				var ship = element as ShipControl;
+				var shots = ViewModel.InvaderShots.ToList();
 
-				if (shot != null)
+				shots.AddRange(ViewModel.PlayerShots.ToList());
+
+				var hasControl = _shotWithControls.Where(kvp => shots.Contains(kvp.Key)).ToList();
+
+				var hasNoControl = shots.Where(inv => !_shotWithControls.Select(kvp => kvp.Key).Contains(inv));
+
+				hasControl.AddRange(hasNoControl.Select(shot => new KeyValuePair<IShot, ShotControl>(shot, new ShotControl(shot))));
+
+				_shotWithControls.Clear();
+
+				foreach (var kvp in hasControl)
 				{
-					var shotBase = shot.DataContext as ShotBase;
-
-					var shotBase2 = control.DataContext as ShotBase;
-
-					if (!Equals(shotBase, shotBase2)) continue;
-				}
-				else if (ship != null)
-				{
-					var shipBase = ship.DataContext as ShipBase;
-
-					var shipBase2 = control.DataContext as ShipBase;
-
-					if (!Equals(shipBase, shipBase2)) continue;
-				}
-				else
-				{
-					throw new NotImplementedException("Control has to be a ShipControl or ShotControl");
+					_shotWithControls.Add(kvp.Key, kvp.Value);
 				}
 
-				Animate(newRect, control);
+				return _shotWithControls;
+			}
+		}
+
+		private void ReDraw()
+		{
+			PlayArea51.Children.Clear();
+
+			foreach (var shotWithControl in ShotsWithControl)
+			{
+				PlayArea51.Children.Add(shotWithControl.Value);
+				Animate(shotWithControl.Key.Rect, shotWithControl.Value);
+			}
+
+			foreach (var shipWithControl in ShipWithControls)
+			{
+				PlayArea51.Children.Add(shipWithControl.Value);
+				Animate(shipWithControl.Key.Rect, shipWithControl.Value);
 			}
 		}
 
@@ -149,13 +166,10 @@ namespace SpaceInvaders
 			var anim2 = new DoubleAnimation(left, rect.Y, TimeSpan.FromSeconds(0));
 			trans.BeginAnimation(TranslateTransform.XProperty, anim1);
 			trans.BeginAnimation(TranslateTransform.YProperty, anim2);
-
-			//TODO control.NextImage();
 		}
 
 		private void OnKeyDown(object sender, KeyEventArgs e)
 		{
-			// ReSharper disable once PossibleLossOfFraction
 			var timeToWait = 0.1;
 
 			if (timeToWait < 0)

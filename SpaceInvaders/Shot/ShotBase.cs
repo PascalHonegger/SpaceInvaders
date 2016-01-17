@@ -1,6 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using SpaceInvaders.Annotations;
 using SpaceInvaders.Enums;
 using SpaceInvaders.Ship;
 
@@ -41,6 +44,8 @@ namespace SpaceInvaders.Shot
 		/// </summary>
 		private Direction Direction { get; }
 
+		private Guid Identification { get; } = Guid.NewGuid();
+
 		/// <summary>
 		///     Der Schaden, welcher der Schuss beim Aufprall mit einem <see cref="IShip" /> verursacht
 		/// </summary>
@@ -76,6 +81,49 @@ namespace SpaceInvaders.Shot
 			}
 
 			Rect = new Rect(new Point(Rect.X, newY), Rect.Size);
+		}
+
+		/// <summary>
+		///     Tritt ein, wenn sich ein Eigenschaftswert ändert.
+		/// </summary>
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		/// <summary>
+		///     Notifies the GUI, that the Porperty changed
+		/// </summary>
+		/// <param name="propertyName">The name of the Property, which got changed</param>
+		[NotifyPropertyChangedInvocator]
+		public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		/// <summary>
+		///     Bestimmt, ob das angegebene Objekt mit dem aktuellen Objekt identisch ist.
+		/// </summary>
+		/// <returns>
+		///     true, wenn das angegebene Objekt und das aktuelle Objekt gleich sind, andernfalls false.
+		/// </returns>
+		/// <param name="obj">Das Objekt, das mit dem aktuellen Objekt verglichen werden soll. </param>
+		/// <filterpriority>2</filterpriority>
+		public override bool Equals(object obj)
+		{
+			var shotBase = obj as ShotBase;
+			if (shotBase == null) return false;
+
+			return Equals(Identification, shotBase.Identification);
+		}
+
+		/// <summary>
+		///     Fungiert als die Standardhashfunktion.
+		/// </summary>
+		/// <returns>
+		///     Ein Hashcode für das aktuelle Objekt.
+		/// </returns>
+		/// <filterpriority>2</filterpriority>
+		public override int GetHashCode()
+		{
+			return Identification.GetHashCode();
 		}
 	}
 }

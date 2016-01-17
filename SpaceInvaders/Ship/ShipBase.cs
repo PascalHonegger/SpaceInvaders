@@ -12,7 +12,7 @@ namespace SpaceInvaders.Ship
 	/// <summary>
 	///     Die Grundimplementation des Schiffes
 	/// </summary>
-	public abstract class ShipBase : IShip, INotifyPropertyChanged
+	public abstract class ShipBase : IShip
 	{
 		private readonly double _totalHealth;
 		private double _health;
@@ -169,7 +169,7 @@ namespace SpaceInvaders.Ship
 		/// </summary>
 		/// <param name="propertyName">The name of the Property, which got changed</param>
 		[NotifyPropertyChangedInvocator]
-		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		public void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}

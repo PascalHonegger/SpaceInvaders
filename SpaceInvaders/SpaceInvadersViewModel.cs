@@ -360,6 +360,20 @@ namespace SpaceInvaders
 			MoveInvaders();
 
 			InvaderReturnFire();
+
+//			foreach (var shot in shots)
+//			{
+//				(shot as ShotBase)?.OnPropertyChanged(nameof(ShotBase.CurrentTexture));
+//			}
+//
+//			var ships = Invaders.ToList();
+//
+//			ships.Add(Player);
+//
+//			foreach (var ship in ships)
+//			{
+//				(ship as ShipBase)?.OnPropertyChanged(nameof(ShipBase.CurrentTexture));
+//			}
 		}
 
 		private bool IsOutOfBounds(Rect rect)
@@ -411,6 +425,7 @@ namespace SpaceInvaders
 				{
 					invader.Health -= shot.Damage;
 					OnShipChangedEventHandler(new ShipChangedEventArgs(invader), invader.Health <= 0);
+					OnShotMovedEventHandler(new ShotMovedEventArgs(shot), true);
 				}
 			}
 		}
@@ -442,9 +457,9 @@ namespace SpaceInvaders
 
 			_invaderLastFired = DateTime.Now;
 
-			var lowestY = Invaders.Min(i => i.Rect.Bottom);
+			var highestY = Invaders.Max(i => i.Rect.Bottom);
 
-			var invader = Invaders.Where(i => Equals(i.Rect.Bottom, lowestY)).PickRandom();
+			var invader = Invaders.Where(i => Equals(i.Rect.Bottom, highestY)).PickRandom();
 
 			FireShot(invader);
 		}
