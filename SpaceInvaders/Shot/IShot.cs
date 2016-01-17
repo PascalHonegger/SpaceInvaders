@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using SpaceInvaders.Enums;
 using SpaceInvaders.Ship;
 
@@ -7,7 +8,7 @@ namespace SpaceInvaders.Shot
 	/// <summary>
 	///     Das Interface für alle Schüsse mit den dazugehörigen Eigenschaften
 	/// </summary>
-	public interface IShot
+	public interface IShot : INotifyPropertyChanged
 	{
 		/// <summary>
 		///     Der Schaden, welcher der Schuss beim Aufprall mit einem <see cref="IShip" /> verursacht

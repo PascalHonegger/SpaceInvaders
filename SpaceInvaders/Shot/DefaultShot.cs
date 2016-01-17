@@ -11,7 +11,7 @@ namespace SpaceInvaders.Shot
 	/// </summary>
 	public class DefaultShot : ShotBase
 	{
-		private const double DefaultDamage = 20;
+		private const double DefaultDamage = 50;
 		private const int DefaultSpeed = 15;
 		private static readonly Size DefaultSize = new Size(20, 40);
 

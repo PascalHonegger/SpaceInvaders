@@ -18,9 +18,10 @@ namespace SpaceInvaders
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private readonly IList<IShip> _ships = new List<IShip>();
-		private readonly IList<IShot> _shots = new List<IShot>();
 		private DateTime _lastKeyInput = DateTime.MinValue;
+		private readonly Dictionary<IShip, ShipControl> _shipWithControls = new Dictionary<IShip, ShipControl>();
+		private readonly Dictionary<IShot, ShotControl> _shotWithControls = new Dictionary<IShot, ShotControl>();
+		private KeyValuePair<IShip, ShipControl> _playerWithControl;
 
 		/// <summary>
 		///     Constructor for MainWindow
@@ -60,28 +61,76 @@ namespace SpaceInvaders
 
 		private SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
 
+		/// <summary>
+		///     Das <see cref="Dictionary{TKey,TValue}" /> mit dem Schiff und dem dazugehörigen Control
+		/// </summary>
+		private Dictionary<IShip, ShipControl> ShipWithControls
+		{
+			get
+			{
+				var hasControl = _shipWithControls.Where(kvp => ViewModel.Invaders.Contains(kvp.Key)).ToList();
+
+				var hasNoControl = ViewModel.Invaders.Where(inv => !_shipWithControls.Select(kvp => kvp.Key).Contains(inv));
+
+				hasControl.AddRange(hasNoControl.Select(ship => new KeyValuePair<IShip, ShipControl>(ship, new ShipControl(ship))));
+
+				_shipWithControls.Clear();
+
+				foreach (var kvp in hasControl)
+				{
+					_shipWithControls.Add(kvp.Key, kvp.Value);
+				}
+
+				if (_playerWithControl.Key == null || Equals(_playerWithControl.Key, ViewModel.Player))
+				{
+					_playerWithControl = new KeyValuePair<IShip, ShipControl>(ViewModel.Player, new ShipControl(ViewModel.Player));
+				}
+
+				_shipWithControls.Add(_playerWithControl.Key, _playerWithControl.Value);
+
+				return _shipWithControls;
+			}
+		}
+
+		/// <summary>
+		///     Das <see cref="Dictionary{TKey,TValue}" /> mit dem Schuss und dem dazugehörigen Control
+		/// </summary>
+		private Dictionary<IShot, ShotControl> ShotsWithControl
+		{
+			get
+			{
+				var shots = ViewModel.InvaderShots.ToList();
+
+				shots.AddRange(ViewModel.PlayerShots.ToList());
+
+				var hasControl = _shotWithControls.Where(kvp => shots.Contains(kvp.Key)).ToList();
+
+				var hasNoControl = shots.Where(inv => !_shotWithControls.Select(kvp => kvp.Key).Contains(inv));
+
+				hasControl.AddRange(hasNoControl.Select(shot => new KeyValuePair<IShot, ShotControl>(shot, new ShotControl(shot))));
+
+				_shotWithControls.Clear();
+
+				foreach (var kvp in hasControl)
+				{
+					_shotWithControls.Add(kvp.Key, kvp.Value);
+				}
+
+				return _shotWithControls;
+			}
+		}
+
 		private void ReDraw()
 		{
 			PlayArea51.Children.Clear();
-			var shots = ViewModel.InvaderShots.Select(s => new KeyValuePair<IShot, ShotControl>(s, new ShotControl(s))).ToList();
 
-			shots.AddRange(
-				ViewModel.PlayerShots.Select(s => new KeyValuePair<IShot, ShotControl>(s, new ShotControl(s))).ToList());
-
-
-			foreach (var shotWithControl in shots)
+			foreach (var shotWithControl in ShotsWithControl)
 			{
 				PlayArea51.Children.Add(shotWithControl.Value);
 				AnimateControl(shotWithControl.Value, shotWithControl.Key.Rect);
 			}
 
-
-			var ships =
-				ViewModel.Invaders.ToList().Select(s => new KeyValuePair<IShip, ShipControl>(s, new ShipControl(s))).ToList();
-
-			ships.Add(new KeyValuePair<IShip, ShipControl>(ViewModel.Player, new ShipControl(ViewModel.Player)));
-
-			foreach (var shipWithControl in ships)
+			foreach (var shipWithControl in ShipWithControls)
 			{
 				PlayArea51.Children.Add(shipWithControl.Value);
 				AnimateControl(shipWithControl.Value, shipWithControl.Key.Rect);
