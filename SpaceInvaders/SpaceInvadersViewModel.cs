@@ -377,6 +377,9 @@ namespace SpaceInvaders
 			MoveInvaders();
 
 			InvaderReturnFire();
+
+			// ReSharper disable once ExplicitCallerInfoArgument
+			OnPropertyChanged(nameof(CurrentLives));
 		}
 
 		private bool IsOutOfBounds(Rect rect)

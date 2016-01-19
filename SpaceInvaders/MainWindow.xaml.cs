@@ -67,7 +67,7 @@ namespace SpaceInvaders
 					_shipWithControls.Add(kvp.Key, kvp.Value);
 				}
 
-				if (_playerWithControl.Key == null || Equals(_playerWithControl.Key, ViewModel.Player))
+				if (_playerWithControl.Key == null || !Equals(_playerWithControl.Key, ViewModel.Player))
 				{
 					_playerWithControl = new KeyValuePair<IShip, ShipControl>(ViewModel.Player, new ShipControl(ViewModel.Player));
 				}
