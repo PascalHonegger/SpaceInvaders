@@ -376,7 +376,12 @@ namespace SpaceInvaders
 //			}
 		}
 
-		private bool IsOutOfBounds(Rect rect)
+		/// <summary>
+		/// Schaut ob sich rects überlappen
+		/// </summary>
+		/// <param name="rect"></param>
+		/// <returns></returns>
+		public bool IsOutOfBounds(Rect rect)
 		{
 			var overlappingRect = Rect.Intersect(_playArea, rect);
 

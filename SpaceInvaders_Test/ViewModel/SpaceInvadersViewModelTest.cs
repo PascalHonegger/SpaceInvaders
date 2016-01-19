@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System.Windows;
+using Moq;
 using NUnit.Framework;
 using SpaceInvaders;
 using SpaceInvaders.Enums;
@@ -100,6 +101,7 @@ namespace SpaceInvaders_Test.ViewModel
 			_unitUnderTest = new SpaceInvadersViewModel();
 			_unitUnderTest.Invaders.Add(invaderMock.Object);
 			_unitUnderTest.InvaderShots.Add(shotMock.Object);
+			_unitUnderTest.PlayerShots.Add(shotMock.Object);
 			
 			invaderMock.Setup(pl => pl.ShipType).Returns(ShipType.Invader);
 			
@@ -109,6 +111,24 @@ namespace SpaceInvaders_Test.ViewModel
 			// Assert
 			Assert.That(_unitUnderTest.InvaderShots.Count, Is.EqualTo(0));
 			Assert.That(_unitUnderTest.Invaders.Count, Is.EqualTo(0));
+		}
+		[Test]
+		public void TestIsOutOfBounds()
+		{
+			// Arrang
+			_unitUnderTest = new SpaceInvadersViewModel();
+
+			// Act
+
+			// Assert
+			for (int i = 0; i < 1074; i++)
+			{
+				for (int j = 0; j < 587; j++)
+				{
+					Assert.That(_unitUnderTest.IsOutOfBounds(new Rect(i, j, 1, 1)), Is.False, "Rect bei Position " + i.ToString() + j.ToString());
+				}
+			}
+			
 		}
 
 
