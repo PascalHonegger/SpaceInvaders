@@ -4,8 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 using SpaceInvaders.Control;
 using SpaceInvaders.Enums;
 using SpaceInvaders.Ship;
@@ -18,9 +16,9 @@ namespace SpaceInvaders
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private DateTime _lastKeyInput = DateTime.MinValue;
 		private readonly Dictionary<IShip, ShipControl> _shipWithControls = new Dictionary<IShip, ShipControl>();
 		private readonly Dictionary<IShot, ShotControl> _shotWithControls = new Dictionary<IShot, ShotControl>();
+		private DateTime _lastKeyInput = DateTime.MinValue;
 		private KeyValuePair<IShip, ShipControl> _playerWithControl;
 
 		/// <summary>
@@ -34,7 +32,7 @@ namespace SpaceInvaders
 
 			DataContext = new SpaceInvadersViewModel();
 
-			ViewModel.ShipChangedEventHandler += (sender, e) =>
+			ViewModel.UpdateTimer.Elapsed += (sender, e) =>
 			{
 				try
 				{
@@ -45,19 +43,7 @@ namespace SpaceInvaders
 					// ignored
 				}
 			};
-
-			ViewModel.ShotMovedEventHandler += (sender, e) =>
-			{
-				try
-				{
-					Dispatcher.InvokeAsync(ReDraw);
 				}
-				catch
-				{
-					// ignored
-				}
-			};
-		}
 
 		private SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
 
@@ -150,12 +136,7 @@ namespace SpaceInvaders
 
 		private void OnKeyDown(object sender, KeyEventArgs e)
 		{
-			var timeToWait = 0.1;
-
-			if (timeToWait < 0)
-			{
-				timeToWait = 0;
-			}
+			const double timeToWait = 0.1;
 
 			if (_lastKeyInput >= DateTime.Now.AddSeconds(-timeToWait))
 			{
@@ -163,7 +144,7 @@ namespace SpaceInvaders
 			}
 
 			_lastKeyInput = DateTime.Now;
-			
+
 			if (e.Key == Key.A || e.Key == Key.Left)
 			{
 				ViewModel.MovePlayer(Direction.Left);

@@ -22,7 +22,7 @@ namespace SpaceInvaders.Shot
 		Rect Rect { get; }
 
 		/// <summary>
-		///     Bewegt den Schuss in die <see cref="Direction" /> mit der Hilfe des <see cref="Speed" />
+		///     Bewegt den Schuss in die <see cref="Direction" />
 		/// </summary>
 		void Move();
 	}
