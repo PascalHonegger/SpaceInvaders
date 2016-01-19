@@ -34,19 +34,7 @@ namespace SpaceInvaders
 
 			DataContext = new SpaceInvadersViewModel();
 
-			ViewModel.ShipChangedEventHandler += (sender, e) =>
-			{
-				try
-				{
-					Dispatcher.InvokeAsync(ReDraw);
-				}
-				catch
-				{
-					// ignored
-				}
-			};
-
-			ViewModel.ShotMovedEventHandler += (sender, e) =>
+			ViewModel.UpdateTimer.Elapsed += (sender, e) =>
 			{
 				try
 				{
@@ -144,38 +132,14 @@ namespace SpaceInvaders
 		/// <param name="control">Das zu animierende <see cref="ShipControl" /></param>
 		private static void Animate(Rect rect, UIElement control)
 		{
-			var top = Canvas.GetTop(control);
-			var left = Canvas.GetLeft(control);
+				Canvas.SetTop(control, rect.Y);
 
-			if (double.IsNaN(top))
-			{
-				Canvas.SetTop(control, 0);
-				top = Canvas.GetTop(control);
-			}
-
-			if (double.IsNaN(left))
-			{
-				Canvas.SetLeft(control, 0);
-				left = Canvas.GetLeft(control);
-			}
-
-
-			var trans = new TranslateTransform();
-			control.RenderTransform = trans;
-			var anim1 = new DoubleAnimation(top, rect.X, TimeSpan.FromSeconds(0));
-			var anim2 = new DoubleAnimation(left, rect.Y, TimeSpan.FromSeconds(0));
-			trans.BeginAnimation(TranslateTransform.XProperty, anim1);
-			trans.BeginAnimation(TranslateTransform.YProperty, anim2);
+				Canvas.SetLeft(control, rect.X);
 		}
 
 		private void OnKeyDown(object sender, KeyEventArgs e)
 		{
-			var timeToWait = 0.1;
-
-			if (timeToWait < 0)
-			{
-				timeToWait = 0;
-			}
+			const double timeToWait = 0.1;
 
 			if (_lastKeyInput >= DateTime.Now.AddSeconds(-timeToWait))
 			{
