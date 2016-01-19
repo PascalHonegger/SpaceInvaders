@@ -1,64 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="SpaceInvaders.Control.AnimatedImageControl" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="4.25" Y="0.5" Width="2.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Control\AnimatedImageControl.xaml.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
-  </Class>
-  <Class Name="SpaceInvaders.Control.ShipControl" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="7" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Control\ShipControl.xaml.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
-  </Class>
-  <Class Name="SpaceInvaders.EventArgs.ShipChangedEventArgs" Collapsed="true">
-    <Position X="5.25" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>EventArgs\ShipChangedEventArgs.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="SpaceInvaders.EventArgs.ShotMovedEventArgs" Collapsed="true">
-    <Position X="8.75" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>EventArgs\ShotMovedEventArgs.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="SpaceInvaders.ExtensionMethods.ExtensionMethodsIEnumerable" Collapsed="true">
-    <Position X="7" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAA=</HashCode>
-      <FileName>ExtensionMethods\ListExtensions.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="SpaceInvaders.Ship.Invaders.Ufo" Collapsed="true">
-    <Position X="2.75" Y="1.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>QAAAAAAAAAAAAAAAAAAEAAAAAAAIAAAACIAAAAAAAAg=</HashCode>
-      <FileName>Ship\Invaders\Ufo.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="SpaceInvaders.Ship.ShipBase" Collapsed="true">
-    <Position X="1.75" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>QAAACACBAIEAgABAoAAAAQQBgCAIAIACAAAAAAAAAAA=</HashCode>
-      <FileName>Ship\ShipBase.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="SpaceInvaders.Ship.Players.DefaultPlayer" Collapsed="true">
-    <Position X="0.5" Y="1.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>QAAAAAAAAAAAAAAAAAAEAAAAAAAIAAAACYAEAAAAAAA=</HashCode>
-      <FileName>Ship\Players\DefaultPlayer.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="SpaceInvaders.Shot.DefaultShot" Collapsed="true">
     <Position X="0.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
@@ -67,52 +8,154 @@
     </TypeIdentifier>
   </Class>
   <Class Name="SpaceInvaders.Shot.ShotBase" Collapsed="true">
-    <Position X="0.5" Y="3.5" Width="1.5" />
+    <Position X="2.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAACBAIAAAAAAoCAAAAABgCAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>Shot\ShotBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="SpaceInvaders.SpaceInvadersViewModel" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="5.25" Y="2.5" Width="1.5" />
+  <Class Name="SpaceInvaders.Shot.StrongInvaderShot" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BBUAgIAIBKBAJigAIAAAKYoohAkNCAAAhhAMAQAQB0A=</HashCode>
-      <FileName>SpaceInvadersViewModel.cs</FileName>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQAAAAAAEAA=</HashCode>
+      <FileName>Shot\StrongInvaderShot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpaceInvaders.Shot.WeakInvaderShot" Collapsed="true">
+    <Position X="5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQAAAAAAEAA=</HashCode>
+      <FileName>Shot\WeakInvaderShot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpaceInvaders.Control.Converter.InvertBoolConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Control\Converter\InvertBoolConverter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
+  <Class Name="SpaceInvaders.Control.ShipControl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Control\ShipControl.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SpaceInvaders.Control.ShotControl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Control\ShotControl.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SpaceInvaders.EventArgs.ShipChangedEventArgs" Collapsed="true">
+    <Position X="11.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EventArgs\ShipChangedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpaceInvaders.EventArgs.ShotMovedEventArgs" Collapsed="true">
+    <Position X="11.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EventArgs\ShotMovedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpaceInvaders.ExtensionMethods.NativeMethods" Collapsed="true">
+    <Position X="9.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ExtensionMethods\ImageExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpaceInvaders.ExtensionMethods.ExtensionMethodsIEnumerable" Collapsed="true">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAA=</HashCode>
+      <FileName>ExtensionMethods\ListExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpaceInvaders.Ship.Invaders.Alien" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAEAAAAAAAIAAAACIAAAAAAAAg=</HashCode>
+      <FileName>Ship\Invaders\Alien.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpaceInvaders.Ship.Invaders.Ufo" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAEAAAAAAAIAAAACIAAAAAAAAg=</HashCode>
+      <FileName>Ship\Invaders\Ufo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpaceInvaders.Ship.ShipBase" Collapsed="true">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQACACBAIEAgABAoAAAAQQBgCAIAIACAAAAAAAAAAA=</HashCode>
+      <FileName>Ship\ShipBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SpaceInvaders.Ship.Players.DefaultPlayer" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAEAAAAAAAIAAAACYAEAAAAAAA=</HashCode>
+      <FileName>Ship\Players\DefaultPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpaceInvaders.Ship.Players.FastPlayer" Collapsed="true">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAEAAAAAAAIAAAACYAEAAAAAAA=</HashCode>
+      <FileName>Ship\Players\FastPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="SpaceInvaders.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="8.75" Y="0.5" Width="1.5" />
+    <Position X="13.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QABAACAgAAAAAAAACCAAAAQAEAJgAAAAAABAgAAAAAA=</HashCode>
       <FileName>MainWindow.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Interface Name="SpaceInvaders.Ship.IShip" Collapsed="true">
-    <Position X="5.25" Y="3.75" Width="1.5" />
+  <Class Name="SpaceInvaders.SpaceInvadersViewModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAACAAAAIAAgABAAAAAAAQAACAIAAACAAAAAAAAAAA=</HashCode>
-      <FileName>Ship\IShip.cs</FileName>
+      <HashCode>BBUAgIAIBKBAJigAIAAAKYoohAkNCAAQhhAMAQAQB0A=</HashCode>
+      <FileName>SpaceInvadersViewModel.cs</FileName>
     </TypeIdentifier>
-  </Interface>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
   <Interface Name="SpaceInvaders.Shot.IShot" Collapsed="true">
-    <Position X="7" Y="3.75" Width="1.5" />
+    <Position X="11.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAACAAIAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Shot\IShot.cs</FileName>
     </TypeIdentifier>
   </Interface>
+  <Interface Name="SpaceInvaders.Ship.IShip" Collapsed="true">
+    <Position X="9.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQACAAAAIAAgABAAAAAAAQAACAIAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Ship\IShip.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Enum Name="SpaceInvaders.Enums.Direction" Collapsed="true">
-    <Position X="5.25" Y="4.75" Width="1.5" />
+    <Position X="9.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAAI=</HashCode>
       <FileName>Enums\Direction.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="SpaceInvaders.Enums.ShipType" Collapsed="true">
-    <Position X="7" Y="4.75" Width="1.5" />
+    <Position X="11.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAQAAQAA=</HashCode>
       <FileName>Enums\ShipType.cs</FileName>

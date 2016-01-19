@@ -31,22 +31,35 @@
     <NamespaceGrouping>False</NamespaceGrouping>
     <SyntaxFilters>C#, XAML Usage</SyntaxFilters>
     <SdkLinkTarget>Blank</SdkLinkTarget>
-    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
     <PresentationStyle>VS2013</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
-    <HelpTitle>A Sandcastle Documented Class Library</HelpTitle>
+    <HelpTitle>SpaceInvaders API-Dokumentation</HelpTitle>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="SpaceInvaders_Test" isDocumented="True">Das allgemeine Testprojekt</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SpaceInvaders_Test" isDocumented="False">Das allgemeine Testprojekt</NamespaceSummaryItem>
 <NamespaceSummaryItem name="(global)" isDocumented="True">SpaceInvaders</NamespaceSummaryItem>
 <NamespaceSummaryItem name="SpaceInvaders" isDocumented="True">Das allgemeine Projekt</NamespaceSummaryItem>
 <NamespaceSummaryItem name="SpaceInvaders.Control" isDocumented="True">Alle Controls für das GUI</NamespaceSummaryItem>
 <NamespaceSummaryItem name="SpaceInvaders.Enums" isDocumented="True">Alle verwendeten Enums</NamespaceSummaryItem>
 <NamespaceSummaryItem name="SpaceInvaders.EventArgs" isDocumented="True">Alle EventArgs-Klassen</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SpaceInvaders.ExtensionMethods" isDocumented="True">Alle ExtensionMethods unabhängig davon, wo diese verwendet werden</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders.ExtensionMethods" isDocumented="True">Alle ExtensionMethods unabhaengig davon, wo diese verwendet werden</NamespaceSummaryItem>
 <NamespaceSummaryItem name="SpaceInvaders.Ship" isDocumented="True">Alle Schiffe inklusive Texturen</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SpaceInvaders.Shot" isDocumented="True">Alle Schüsse inklusive Texturen</NamespaceSummaryItem></NamespaceSummaries>
+<NamespaceSummaryItem name="SpaceInvaders.Shot" isDocumented="True">Alle Schüsse inklusive Texturen</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders.Annotations" isDocumented="False">ReSharper generiert</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders.Control.Converter" isDocumented="True">Alle Converter für das XAML</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders.Properties" isDocumented="False">Projekt Properties</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders.Ship.Invaders" isDocumented="True">Alle Invader</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders.Ship.Players" isDocumented="True">Alle Spieler</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SpaceInvaders_Test.Ship.Invaders" isDocumented="False" />
+<NamespaceSummaryItem name="SpaceInvaders_Test.Ship.Players" isDocumented="False" />
+<NamespaceSummaryItem name="SpaceInvaders_Test.TestBases" isDocumented="False" />
+<NamespaceSummaryItem name="SpaceInvaders_Test.ViewModel" isDocumented="False" />
+<NamespaceSummaryItem name="XamlGeneratedNamespace" isDocumented="False" /></NamespaceSummaries>
+    <CopyrightText>MIT-Licence</CopyrightText>
+    <ProjectSummary>SpaceInvaders von Alain, Seraphin und Pascal!</ProjectSummary>
+    <RootNamespaceTitle>SpaceInvaders</RootNamespaceTitle>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->

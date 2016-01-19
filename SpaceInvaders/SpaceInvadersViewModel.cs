@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.Remoting.Channels;
 using System.Timers;
 using System.Windows;
 using SpaceInvaders.Enums;
@@ -36,6 +35,11 @@ namespace SpaceInvaders
 		private string _playerName = "Player1";
 		private int _score;
 		private int _wave;
+
+		/// <summary>
+		///     Die Maximale Anzahl Zeichen, welche der Spielername lang sein darf
+		/// </summary>
+		public int MaximumPlayerNameLength => 20;
 
 		/// <summary>
 		///     Liste aller aktiven Schüsse der Invader
@@ -84,7 +88,7 @@ namespace SpaceInvaders
 		}
 
 		/// <summary>
-		/// Der Updatetimer bestimmt die Tikrate
+		///     Der Updatetimer bestimmt die Tikrate
 		/// </summary>
 		public Timer UpdateTimer { get; } = new Timer(100);
 
@@ -138,6 +142,10 @@ namespace SpaceInvaders
 			get { return _playerName; }
 			set
 			{
+				if (value?.Length >= MaximumPlayerNameLength)
+				{
+					return;
+				}
 				_playerName = value;
 				OnPropertyChanged();
 			}
@@ -175,7 +183,6 @@ namespace SpaceInvaders
 				InvaderShots.Add(ship.Shot);
 				OnShotMovedEventHandler(new ShotMovedEventArgs(ship.Shot));
 			}
-			
 		}
 
 		/// <summary>
@@ -292,7 +299,7 @@ namespace SpaceInvaders
 					var x = _playArea.Width/InvaderColumns*row + 10;
 					var y = _playArea.Height/InvaderRows/3*column;
 					var invader = new Ufo(new Point(x, y));
-					ShipChangedEventHandler += (sender, e) => { invader.Update(e);};
+					ShipChangedEventHandler += (sender, e) => { invader.Update(e); };
 					attackers.Add(invader);
 				}
 			}

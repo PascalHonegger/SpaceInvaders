@@ -49,17 +49,18 @@ trotzdem nicht erreicht
 
 === Planung
 
-* Example
+* Grundgerüst des Programmes realisieren
 
 === Retro
 
-* Example
+* Definitionen Stories genauer spezifizieren
 
 == Sprint 04
 
 === Planung
 
-* Example
+* Kompetenzen bei Frey sammeln
+* Lauffähige Version "fertig"-stellen
 
 === Retro
 

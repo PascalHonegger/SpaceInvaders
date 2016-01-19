@@ -11,23 +11,6 @@ namespace SpaceInvaders_Test.Ship.Invaders
 	{
 		private IShip _unitUnderTest;
 
-		[Test]
-		public void TestMove()
-		{
-			//TODO Example Test erweitern
-
-			// Arrange
-			_unitUnderTest = new Ufo(new Point(100,100));
-
-			// Act
-			_unitUnderTest.Move(Direction.Right);
-
-			// Assert
-			var shouldArriveHerePoint = new Point(130, 100);
-
-			Assert.That(_unitUnderTest.Rect.Location, Is.EqualTo(shouldArriveHerePoint));
-		}
-
 		protected override void OnSetUp()
 		{
 			// Nothing
@@ -51,6 +34,23 @@ namespace SpaceInvaders_Test.Ship.Invaders
 
 			// Assert
 			Assert.That(overlappingRect, Is.EqualTo(ship));
+		}
+
+		[Test]
+		public void TestMove()
+		{
+			//TODO Example Test erweitern
+
+			// Arrange
+			_unitUnderTest = new Ufo(new Point(100, 100));
+
+			// Act
+			_unitUnderTest.Move(Direction.Right);
+
+			// Assert
+			var shouldArriveHerePoint = new Point(130, 100);
+
+			Assert.That(_unitUnderTest.Rect.Location, Is.EqualTo(shouldArriveHerePoint));
 		}
 	}
 }

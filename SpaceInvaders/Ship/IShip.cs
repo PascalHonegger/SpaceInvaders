@@ -55,9 +55,9 @@ namespace SpaceInvaders.Ship
 
 
 		/// <summary>
-		/// Wird aufgerufen, wenn sich das Schiff aktualisieren sollte
+		///     Wird aufgerufen, wenn sich das Schiff aktualisieren sollte
 		/// </summary>
-		/// <param name="e">Die <see cref="ShipChangedEventArgs"/></param>
+		/// <param name="e">Die <see cref="ShipChangedEventArgs" /></param>
 		void Update(ShipChangedEventArgs e);
 	}
 }
