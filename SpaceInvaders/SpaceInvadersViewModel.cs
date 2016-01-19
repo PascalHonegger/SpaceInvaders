@@ -28,7 +28,7 @@ namespace SpaceInvaders
 		private const int InvaderRows = 3;
 		private readonly Rect _playArea = new Rect(new Size(1074, 587));
 		private bool _gameOver = true;
-		private Direction _invaderDirection = Direction.Left;
+		private Direction _invaderDirection = Direction.Right;
 		private DateTime _invaderLastFired = DateTime.MinValue;
 		private DateTime _invaderLastMoved = DateTime.MinValue;
 		private IShip _player;
@@ -76,14 +76,16 @@ namespace SpaceInvaders
 			set
 			{
 				_player = value;
-				OnPropertyChanged();
+				OnShipChangedEventHandler(new ShipChangedEventArgs(_player));
 				// ReSharper disable once ExplicitCallerInfoArgument
 				OnPropertyChanged(nameof(CurrentLives));
-				OnShipChangedEventHandler(new ShipChangedEventArgs(_player));
 			}
 		}
 
-		private Timer UpdateTimer { get; } = new Timer(100);
+		/// <summary>
+		/// Der Updatetimer bestimmt die Tikrate
+		/// </summary>
+		public Timer UpdateTimer { get; } = new Timer(100);
 
 		/// <summary>
 		///     Die aktuelle Punktzahl des Spielers
@@ -161,15 +163,18 @@ namespace SpaceInvaders
 		/// <param name="ship">Das Schiff, welches einen <see cref="IShot" /> schiesst</param>
 		public void FireShot(IShip ship)
 		{
+			if (IsOutOfBounds(ship.Shot.Rect)) return;
 			if (ship.ShipType == ShipType.Player && PlayerShots.Count < MaximumPlayerShotsAtTheSameTime)
 			{
 				PlayerShots.Add(ship.Shot);
+				OnShotMovedEventHandler(new ShotMovedEventArgs(ship.Shot));
 			}
 			else if (ship.ShipType == ShipType.Invader || ship.ShipType == ShipType.Boss)
 			{
 				InvaderShots.Add(ship.Shot);
+				OnShotMovedEventHandler(new ShotMovedEventArgs(ship.Shot));
 			}
-			OnShotMovedEventHandler(new ShotMovedEventArgs(ship.Shot), IsOutOfBounds(ship.Shot.Rect));
+			
 		}
 
 		/// <summary>
