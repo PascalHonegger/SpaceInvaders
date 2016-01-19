@@ -9,3 +9,13 @@ Pascal und Seraphin sassen vor dem Probelm, dass unser Invader und der Spieler b
 
 == 05.01.2015 SRP - Single Responsibility Principle
 Nachdem Pascal und Seraphin den Vorschlag bezüglich des Spielers / Invaders gelöst hatten, entschieden wir uns trotzdem als Team die Lösung zu überdenken. Wir wollte dabei nicht die Implementation überarbeiten, da wir nicht mehr viel Zeit für das Projekt hatten. Stattdessen wollten wir einfach herausfinde, ob es eine bessere Implementation gäbe. Nach kurzer Analyse des nun übergrossen IShip-Interfaces viel uns direkt auf, dass wir nicht mehr nach dem SRP arbeiten. Das IShip-Interface ist sowohl für Spieler als auch für den Invader und den zukünftigen Boss verantwortlich. Dabei enthält dieses auch beispielsweise Spieler-spezifische Eigenschaften, welche beim Boss und Invader einfach nicht oder nur mangelhaft implementiert werden. Nach längerem Überlegen sind wir zum Schluss gekommen, dass ein ISpaceInvadersObject interface die beste lösung gewesen wäre. Dieses Interface sorgt für die nötige Implementation von Move(), Texturen und der Unterstützung für das Koordinatensystem.
+
+== 05.01.2015 Evolvierbarkeit
+Wie oben schon erwähnt entschieden wir uns nicht nach dem SRP zu implementieren, da der Aufwand des refactoing zu gross gewesen wäre. Dadurch mussten wir auch einen Kompromiss in der Evolvierbrkeit unseres codes eingehen. Viele Aufgaben werden in einer Klasse gelöst, und es besteht auch keine lose koppelung zwischen View und Viewmodel. Diese lose Koppelung zu erreichen wäre ein zu grosser Aufwand für unsere restliche Zeit. Dazu wären Events nötig, doch diese sind in unsere Implementation zu sehr gebunden und machen auch weniger Sinn als erwartet. 
+
+== Was haben wir gelernt?
+
+Am meisten Probleme hatten wir bei der Architektur und der Implementation. Obwohl wir das Gefühl hatten alles durchdacht zu haben, standen wir bei der Implemenation immer wieder vor Überlegungsfehler in der Architektur. Am mesisten haben wir das SRP vernachlässigt. Während dem erstellen der Architektur haben wir uns viel zu wenig gedanken über verantwortlichkeiten der einzelnen Klassen gemacht. Das haben wir dann erst beim Implemetieren gemerkt. Die teils fehlende Architektur hat sicher damit zu tun, dass wir zu viel Zeit für den Basic-Test gebraucht haben. Das nächste Mal müssen wir uns mehr Gedanken darüber machen, wie viel Zeit wir für unseres Projekt haben, und wie viel wir benötigen. 
+
+Bei der Implementation haben wir auch gemerkt, dass unser Gui-Framework nicht sehr für unseres Projekt geeignet ist. Wir hatten vor das Spiel mit WPF zu realisieren, doch ein Framework, welches für Games/Animationen gemacht ist, wäre um einiges Sinnvoller gewesen. Die Unity-Engine wäre z.B. geeigneter gewesen.
+
