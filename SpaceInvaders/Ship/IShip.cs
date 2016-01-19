@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using SpaceInvaders.Enums;
+using SpaceInvaders.EventArgs;
 using SpaceInvaders.Shot;
 
 namespace SpaceInvaders.Ship
@@ -51,5 +52,12 @@ namespace SpaceInvaders.Ship
 		/// </summary>
 		/// <param name="direction">Die Richtung, in welche sich das Schiff bewegt</param>
 		void Move(Direction direction);
+
+
+		/// <summary>
+		/// Wird aufgerufen, wenn sich das Schiff aktualisieren sollte
+		/// </summary>
+		/// <param name="e">Die <see cref="ShipChangedEventArgs"/></param>
+		void Update(ShipChangedEventArgs e);
 	}
 }

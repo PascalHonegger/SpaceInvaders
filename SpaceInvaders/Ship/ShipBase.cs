@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using SpaceInvaders.Annotations;
 using SpaceInvaders.Enums;
+using SpaceInvaders.EventArgs;
 using SpaceInvaders.Shot;
 
 namespace SpaceInvaders.Ship
@@ -142,6 +143,18 @@ namespace SpaceInvaders.Ship
 		}
 
 		/// <summary>
+		/// Wird aufgerufen, wenn sich das Schiff aktualisieren sollte
+		/// </summary>
+		/// <param name="e">Die <see cref="ShipChangedEventArgs"/></param>
+		public void Update(ShipChangedEventArgs e)
+		{
+			if (Equals(e.Ship, this))
+			{
+				OnPropertyChanged(nameof(CurrentTexture));
+			}
+		}
+
+		/// <summary>
 		///     Die Respawns des Spielers
 		/// </summary>
 		public int Lives
@@ -169,7 +182,7 @@ namespace SpaceInvaders.Ship
 		/// </summary>
 		/// <param name="propertyName">The name of the Property, which got changed</param>
 		[NotifyPropertyChangedInvocator]
-		public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		private void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Remoting.Channels;
 using System.Timers;
 using System.Windows;
 using SpaceInvaders.Enums;
@@ -223,6 +224,8 @@ namespace SpaceInvaders
 
 			DestroyEverything();
 
+			_invaderDirection = Direction.Right;
+
 			OnShipChangedEventHandler(new ShipChangedEventArgs(Player));
 
 			Wave = 0;
@@ -274,6 +277,7 @@ namespace SpaceInvaders
 
 		private IEnumerable<IShip> CreateNewAttackWave()
 		{
+			_invaderDirection = Direction.Right;
 			IList<IShip> attackers = new List<IShip>();
 
 			for (var row = 0; row < InvaderColumns; row++)
@@ -283,6 +287,7 @@ namespace SpaceInvaders
 					var x = _playArea.Width/InvaderColumns*row + 10;
 					var y = _playArea.Height/InvaderRows/3*column;
 					var invader = new Ufo(new Point(x, y));
+					ShipChangedEventHandler += (sender, e) => { invader.Update(e);};
 					attackers.Add(invader);
 				}
 			}
@@ -360,20 +365,6 @@ namespace SpaceInvaders
 			MoveInvaders();
 
 			InvaderReturnFire();
-
-//			foreach (var shot in shots)
-//			{
-//				(shot as ShotBase)?.OnPropertyChanged(nameof(ShotBase.CurrentTexture));
-//			}
-//
-//			var ships = Invaders.ToList();
-//
-//			ships.Add(Player);
-//
-//			foreach (var ship in ships)
-//			{
-//				(ship as ShipBase)?.OnPropertyChanged(nameof(ShipBase.CurrentTexture));
-//			}
 		}
 
 		private bool IsOutOfBounds(Rect rect)
@@ -415,6 +406,11 @@ namespace SpaceInvaders
 					invader.Move(Direction.Down);
 				}
 			}
+
+			foreach (var invader in Invaders)
+			{
+				OnShipChangedEventHandler(new ShipChangedEventArgs(invader));
+			}
 		}
 
 		private void CheckForInvaderCollision()
@@ -426,6 +422,13 @@ namespace SpaceInvaders
 					invader.Health -= shot.Damage;
 					OnShipChangedEventHandler(new ShipChangedEventArgs(invader), invader.Health <= 0);
 					OnShotMovedEventHandler(new ShotMovedEventArgs(shot), true);
+				}
+
+				if (RectsOverlap(invader.Rect, Player.Rect))
+				{
+					Player.Health -= invader.Health;
+					OnShipChangedEventHandler(new ShipChangedEventArgs(invader), true);
+					OnShipChangedEventHandler(new ShipChangedEventArgs(Player));
 				}
 			}
 		}
