@@ -35,7 +35,9 @@
 		           TextDecorations="{x:Null}" />
 		<Canvas Focusable="True" x:Name="PlayArea51" Grid.Column="1" HorizontalAlignment="Left"
 		        Height="587" Margin="0" Grid.Row="3" VerticalAlignment="Top"
-		        Width="1074" Background="LightBlue" />
+		        Width="1074" Background="LightBlue">
+			<Canvas Height="10" Canvas.Top="293.5" Width="1074" Background="Black" />
+		</Canvas>
 		<StackPanel Grid.Column="2" HorizontalAlignment="Left"
 		            Height="587" Margin="15,0,0,0" Grid.Row="3" VerticalAlignment="Top"
 		            Width="240" Background="#FF686868" Grid.ColumnSpan="2">
@@ -48,7 +50,7 @@
 				</ListBox.ItemTemplate>
 			</ListBox>
 			<TextBox IsEnabled="{Binding GameOver}" TextWrapping="Wrap" Text="{Binding PlayerName}" Height="75" FontSize="24"
-			         TextAlignment="Center" />
+			         TextAlignment="Center" MaxLength="{Binding MaximumPlayerNameLength}" />
 			<TextBlock TextWrapping="Wrap" Text="{Binding Score}" Height="75" FontSize="24" TextAlignment="Center" />
 			<TextBlock TextWrapping="Wrap" Text="{Binding Wave}" Height="75" FontSize="24" TextAlignment="Center" />
 			<TextBlock TextWrapping="Wrap" Text="{Binding CurrentLives}" Height="75" FontSize="24" TextAlignment="Center" />

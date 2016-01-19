@@ -11,6 +11,17 @@ namespace SpaceInvaders_Test.Ship.Players
 	{
 		private IShip _unitUnderTest;
 
+
+		protected override void OnSetUp()
+		{
+			// Nothing
+		}
+
+		protected override void OnTearDown()
+		{
+			// Nothing
+		}
+
 		[Test]
 		public void TestMove()
 		{
@@ -24,18 +35,6 @@ namespace SpaceInvaders_Test.Ship.Players
 			var shouldArriveHerePoint = new Point(120, 100);
 
 			Assert.That(_unitUnderTest.Rect.Location, Is.EqualTo(shouldArriveHerePoint));
-		}
-
-     
-
-		protected override void OnSetUp()
-		{
-			// Nothing
-		}
-
-		protected override void OnTearDown()
-		{
-			// Nothing
 		}
 	}
 }
