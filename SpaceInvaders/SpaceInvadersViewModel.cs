@@ -28,7 +28,7 @@ namespace SpaceInvaders
 		private const int InvaderRows = 3;
 		private readonly Rect _playArea = new Rect(new Size(1074, 587));
 		private bool _gameOver = true;
-		private Direction _invaderDirection = Direction.Left;
+		private Direction _invaderDirection = Direction.Right;
 		private DateTime _invaderLastFired = DateTime.MinValue;
 		private DateTime _invaderLastMoved = DateTime.MinValue;
 		private IShip _player;
@@ -79,7 +79,6 @@ namespace SpaceInvaders
 				OnPropertyChanged();
 				// ReSharper disable once ExplicitCallerInfoArgument
 				OnPropertyChanged(nameof(CurrentLives));
-				OnShipChangedEventHandler(new ShipChangedEventArgs(_player));
 			}
 		}
 
@@ -129,7 +128,6 @@ namespace SpaceInvaders
 		/// <summary>
 		///     Der ausgewählte Name des Spielers, wird für den Highscore verwendet
 		/// </summary>
-		/// <exception cref="NotImplementedException"></exception>
 		public string PlayerName
 		{
 			get { return _playerName; }
@@ -280,7 +278,7 @@ namespace SpaceInvaders
 			{
 				for (var column = 0; column < InvaderRows; column++)
 				{
-					var x = _playArea.Width/InvaderColumns*row + 10;
+					var x = _playArea.Width/InvaderColumns*row;
 					var y = _playArea.Height/InvaderRows/3*column;
 					var invader = new Ufo(new Point(x, y));
 					attackers.Add(invader);
@@ -380,8 +378,40 @@ namespace SpaceInvaders
 		{
 			var overlappingRect = Rect.Intersect(_playArea, rect);
 
+			var x1 = Math.Abs(overlappingRect.X);
+			var x2 = Math.Abs(rect.X);
+
+			if (!Equals(x1, x2))
+			{
+				return true;
+			}
+
+			var y1 = Math.Abs(overlappingRect.Y);
+			var y2 = Math.Abs(rect.Y);
+
+			if (!Equals(y1, y2))
+			{
+				return true;
+			}
+
+			var width1 = Math.Abs(overlappingRect.Width);
+			var width2 = Math.Abs(rect.Width);
+
+			if (!Equals(width1, width2))
+			{
+				return true;
+			}
+
+			var heigth1 = Math.Abs(overlappingRect.Height);
+			var heigth2 = Math.Abs(rect.Height);
+
+			if (!Equals(heigth1, heigth2))
+			{
+				return true;
+			}
+
 			// Das komplette 'rect' überlappt sich mit dem Spielfeld
-			return !Equals(overlappingRect, rect);
+			return false;
 		}
 
 		private void MoveInvaders()

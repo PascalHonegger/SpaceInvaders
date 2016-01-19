@@ -64,13 +64,13 @@ namespace SpaceInvaders
 		/// <summary>
 		///     Das <see cref="Dictionary{TKey,TValue}" /> mit dem Schiff und dem dazugehörigen Control
 		/// </summary>
-		private Dictionary<IShip, ShipControl> ShipWithControls
+		private Dictionary<IShip, ShipControl> ShipsWithControls
 		{
 			get
 			{
 				var hasControl = _shipWithControls.Where(kvp => ViewModel.Invaders.Contains(kvp.Key)).ToList();
 
-				var hasNoControl = ViewModel.Invaders.Where(inv => !_shipWithControls.Select(kvp => kvp.Key).Contains(inv));
+				var hasNoControl = ViewModel.Invaders.Where(ship => !_shipWithControls.Select(kvp => kvp.Key).Contains(ship));
 
 				hasControl.AddRange(hasNoControl.Select(ship => new KeyValuePair<IShip, ShipControl>(ship, new ShipControl(ship))));
 
@@ -81,7 +81,7 @@ namespace SpaceInvaders
 					_shipWithControls.Add(kvp.Key, kvp.Value);
 				}
 
-				if (_playerWithControl.Key == null || Equals(_playerWithControl.Key, ViewModel.Player))
+				if (_playerWithControl.Key == null || !Equals(_playerWithControl.Key, ViewModel.Player))
 				{
 					_playerWithControl = new KeyValuePair<IShip, ShipControl>(ViewModel.Player, new ShipControl(ViewModel.Player));
 				}
@@ -105,7 +105,7 @@ namespace SpaceInvaders
 
 				var hasControl = _shotWithControls.Where(kvp => shots.Contains(kvp.Key)).ToList();
 
-				var hasNoControl = shots.Where(inv => !_shotWithControls.Select(kvp => kvp.Key).Contains(inv));
+				var hasNoControl = shots.Where(shot => !_shotWithControls.Select(kvp => kvp.Key).Contains(shot));
 
 				hasControl.AddRange(hasNoControl.Select(shot => new KeyValuePair<IShot, ShotControl>(shot, new ShotControl(shot))));
 
@@ -127,13 +127,13 @@ namespace SpaceInvaders
 			foreach (var shotWithControl in ShotsWithControl)
 			{
 				PlayArea51.Children.Add(shotWithControl.Value);
-				Animate(shotWithControl.Key.Rect, shotWithControl.Value);
+				Position(shotWithControl.Key.Rect, shotWithControl.Value);
 			}
 
-			foreach (var shipWithControl in ShipWithControls)
+			foreach (var shipWithControl in ShipsWithControls)
 			{
 				PlayArea51.Children.Add(shipWithControl.Value);
-				Animate(shipWithControl.Key.Rect, shipWithControl.Value);
+				Position(shipWithControl.Key.Rect, shipWithControl.Value);
 			}
 		}
 
@@ -142,30 +142,10 @@ namespace SpaceInvaders
 		/// </summary>
 		/// <param name="rect">Das zu animierende <see cref="Rect" /></param>
 		/// <param name="control">Das zu animierende <see cref="ShipControl" /></param>
-		private static void Animate(Rect rect, UIElement control)
+		private static void Position(Rect rect, UIElement control)
 		{
-			var top = Canvas.GetTop(control);
-			var left = Canvas.GetLeft(control);
-
-			if (double.IsNaN(top))
-			{
-				Canvas.SetTop(control, 0);
-				top = Canvas.GetTop(control);
-			}
-
-			if (double.IsNaN(left))
-			{
-				Canvas.SetLeft(control, 0);
-				left = Canvas.GetLeft(control);
-			}
-
-
-			var trans = new TranslateTransform();
-			control.RenderTransform = trans;
-			var anim1 = new DoubleAnimation(top, rect.X, TimeSpan.FromSeconds(0));
-			var anim2 = new DoubleAnimation(left, rect.Y, TimeSpan.FromSeconds(0));
-			trans.BeginAnimation(TranslateTransform.XProperty, anim1);
-			trans.BeginAnimation(TranslateTransform.YProperty, anim2);
+			Canvas.SetTop(control, rect.Y);
+			Canvas.SetLeft(control, rect.X);
 		}
 
 		private void OnKeyDown(object sender, KeyEventArgs e)
@@ -183,8 +163,7 @@ namespace SpaceInvaders
 			}
 
 			_lastKeyInput = DateTime.Now;
-
-
+			
 			if (e.Key == Key.A || e.Key == Key.Left)
 			{
 				ViewModel.MovePlayer(Direction.Left);
@@ -193,7 +172,7 @@ namespace SpaceInvaders
 			{
 				ViewModel.MovePlayer(Direction.Right);
 			}
-			else if (e.Key == Key.Space)
+			else if (e.Key == Key.Space || e.Key == Key.W|| e.Key == Key.Up)
 			{
 				ViewModel.FireShotPlayer();
 			}
