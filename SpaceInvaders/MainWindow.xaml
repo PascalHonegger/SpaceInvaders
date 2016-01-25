@@ -36,7 +36,6 @@
 		<Canvas Focusable="True" x:Name="PlayArea51" Grid.Column="1" HorizontalAlignment="Left"
 		        Height="587" Margin="0" Grid.Row="3" VerticalAlignment="Top"
 		        Width="1074" Background="LightBlue">
-			<Canvas Height="10" Canvas.Top="293.5" Width="1074" Background="Black" />
 		</Canvas>
 		<StackPanel Grid.Column="2" HorizontalAlignment="Left"
 		            Height="587" Margin="15,0,0,0" Grid.Row="3" VerticalAlignment="Top"
@@ -51,8 +50,11 @@
 			</ListBox>
 			<TextBox IsEnabled="{Binding GameOver}" TextWrapping="Wrap" Text="{Binding PlayerName}" Height="75" FontSize="24"
 			         TextAlignment="Center" MaxLength="{Binding MaximumPlayerNameLength}" />
-			<TextBlock TextWrapping="Wrap" Text="{Binding Score}" Height="75" FontSize="24" TextAlignment="Center" />
-			<TextBlock TextWrapping="Wrap" Text="{Binding Wave}" Height="75" FontSize="24" TextAlignment="Center" />
+			<TextBlock x:Name="textBlock" TextWrapping="Wrap" Height="33" FontSize="24" TextAlignment="Center" Text="Score:"/>
+			<TextBlock TextWrapping="Wrap" Height="75" FontSize="24" TextAlignment="Center" ><Run Text="0"/></TextBlock>
+			<TextBlock x:Name="textBlock2" TextWrapping="Wrap" Height="33" FontSize="24" TextAlignment="Center" Text="Wave:"/>
+			<TextBlock TextWrapping="Wrap" Height="75" FontSize="24" TextAlignment="Center" ><Run Text="0"/></TextBlock>
+			<TextBlock x:Name="textBlock3" TextWrapping="Wrap" Height="33" FontSize="24" TextAlignment="Center" Text="Lives:"/>
 			<TextBlock TextWrapping="Wrap" Text="{Binding CurrentLives}" Height="75" FontSize="24" TextAlignment="Center" />
 			<Button x:Name="StartButton" Content="Start Game" Height="100" Click="StartGame_Click" IsDefault="True" />
 			<Button x:Name="StopButton" Content="Stop current Game" Height="100" Click="StopButton_OnClick"
