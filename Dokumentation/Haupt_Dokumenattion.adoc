@@ -68,3 +68,57 @@ link:https://github.com/PascalHonegger/SpaceInvaders[Github]
 ** Zeigt den Benutzernamen, aktuelle Punktzahl und Höchstpunktzahl an
 ** Zeigt, in welcher Runde man sich befindet
 ** Zeigt eine Auswahl an Schiffen an
+
+== Architektur
+=== Usecase Beschreibung 
+=== Schuss asuweichen
+==== Kategorie
+primär
+
+==== Vorbedingungen
+Spiel ist gestartet
+, Letzte Bewegung vor 0.2 sek.
+
+==== Invarianten
+Invaders
+
+==== Akteuere
+Spieler, System(Spielerschiff)
+
+==== Auslösendes Ereignis
+Invader schiesst
+
+image:Bilder/Schussausweichen.JPG[]
+
+=== Spiel beenden (aus sicht des Invaders)
+
+==== Beschreibung
+Der Invader möchte das Spiel beenden in dem er bis zum Boden gelangt
+
+==== Kategorie
+primär
+
+==== Vorbedingungen
+Spiel ist gestartet
+
+==== Invarianten
+Spielerschiff
+
+==== Akteuere
+Invader
+
+==== Auslösendes Ereignis
+Spiel wirdgestartet
+
+image:Bilder/Spielbeenden.JPG[]
+
+== Tests
+Wir haben unsere Klassen mit NUnit getestet. Folgende Klassen und Methoden wurden getested
+
+* Schiffe
+** Move();
+* ViewModel
+** DestroyEverything();
+** IsOutOfBounce();
+** FireShot();
+** CurrentLives (Wenn unter 1 Game Over)
