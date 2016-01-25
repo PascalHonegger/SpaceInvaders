@@ -103,6 +103,7 @@ namespace SpaceInvaders_Test.ViewModel
 
 			invaderMock.Setup(pl => pl.ShipType).Returns(ShipType.Invader);
 			invaderMock.Setup(pl => pl.Shot).Returns(shotMock.Object);
+1
 			
 			// Act
 			_unitUnderTest.FireShot(invaderMock.Object);
