@@ -1,7 +1,7 @@
 Teamwork
 ========
 Alain Keller, Pascal Honegger und Seraphin Rihm
-Version 1.2, 11.01.2016
+Version 1.3, 25.01.2016
 :toc:
 
 == 29.12.2015 Problem Invader | Player
@@ -19,3 +19,16 @@ Am meisten Probleme hatten wir bei der Architektur und der Implementation. Obwoh
 
 Bei der Implementation haben wir auch gemerkt, dass unser Gui-Framework nicht sehr für unseres Projekt geeignet ist. Wir hatten vor das Spiel mit WPF zu realisieren, doch ein Framework, welches für Games/Animationen gemacht ist, wäre um einiges Sinnvoller gewesen. Die Unity-Engine wäre z.B. geeigneter gewesen.
 
+== Tipps
+
+=== VCS - Git
+In unserem Projekt haben wir das Versionsverwaltungssystem link:https://git-scm.com/[Git] verwendet. Dieses hat den Vorteil ,dass mehrere Personen an der selben Datei arbeiten können, ohne voneinander abhängig zu sein. Auch ein grosser Vorteil von Git ist link:https://github.com/[Github], welches wir als kostenlosen Git-Server verwenden können.
+
+=== UMLet & Asciidoc
+Git ist wirklich gut darin, Textdateien zu verwalten. Verwendet man nun beispielsweise Wrod oder Visio-Dateien, verliert git an Werr. link:http://asciidoc.org/[Asciidoc] Ist beispielsweise ein rein textbasierte Art um ein Dokument zu gestallten. So schreibt man sozusagen Code, welcher danach in ein GTML oder ähnliches "kompiliert" werden kann. Genauso können via link:http://www.umlet.com/[UMLet] UML-Diagramme codiert werden. 
+
+=== Scrum - Taiga
+Damit die Arbeit mit Git möglichst effizient von statten gehen konnte, mussten wir unsere Arbeit möglichst effizient aufteilen. Hierfür haben wir uns nicht für IPERKA sonder für eine Agile Arbeitsmethode namens Scrum entschieden. Bei Scrum plant man täglich, was man erreichen mlchte und teilt dieses Wissen mit den anderen Teammitgliedern. Dadurch weiss jeder, was der ander an diesem Tag machen möchte und kann seine Arebti an dies anpassen. Diese Planung haltet man in einem Scrum-Board fest - hierfür haben wir den Gratis-Dienst link:https://tree.taiga.io/[Taiga] verwendet.
+
+=== Continous Integration
+Auch wenn es viel Zeit beim ersten Aufsetzen frisst, lohnt sich die sogenannte Continous Integration (kurz CI) allemal. Eine CI sorgt grundsätzlich dafür, dass bei jeden Git-Push (heraufladen auf Server) auf einer externen Testmaschine der Code auf Fehler überprüft wird. Diese informiert dann beispielsweise den Ersteller des Fehler mit einer E-Mail. Wir haben die Gratis C#-CI link:https://www.appveyor.com/[AppVeyor] welche mit Github funktioniert. Der grosse vorteil dieser CI ist, dass sie keine zwei Minuten zum Aufsetzen benötigt. Trotzdem macht eine CI nur sinn, wenn die Applikation über genügend Unit-Tests verfügt!
