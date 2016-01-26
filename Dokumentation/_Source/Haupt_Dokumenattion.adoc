@@ -73,18 +73,17 @@ link:https://github.com/PascalHonegger/SpaceInvaders[Github]
 === Usecase Beschreibung 
 ==== Bewegen (Spieler)
 ==== Beschreibung
-Der Spieler möchte sein Schiff vertikal bewegen. Dies tut er über eine Pfeiltasten Imput
+Der Spieler möchte sein Schiff vertikal bewegen. Dies tut er über einen Pfeiltasten Input
 
 ===== Kategorie
 Primär
 
 ===== Vorbedingungen
-Spiel ist gestartet,
- Pfeiltaste gedrückt (rechts oder links),
- Letzte Bewegung vor 0.2 sek.
- 
+Spiel ist gestartet, Pfeiltaste gedrückt (rechts oder links), letzte Bewegung vor mindestens 0.2 sek.
+
 ===== Nachbedingung
-Das Spielerschiff ist nach der Bewegeung noch komplet inerhalb des Spielfeldes.
+Erfolg: Das Spielerschiff ist nach der Bewegung noch Komplet innerhalb des Spielfeldes.
+Fehlschlag: Das Schiff ist nach der Bewegung ausserhalb des Spielfeldes.
 
 ===== Invarianten
 Invaders
@@ -104,7 +103,7 @@ image:../Bilder/Schussausweichen.JPG[Schuss ausweichen]
 ==== Spiel beenden (aus sicht des Invaders)
 
 ===== Beschreibung
-Der Invader möchte das Spiel beenden in dem er bis zum Boden gelangt, dies tut er indem er sich bewegt.
+Der Invader möchte das Spiel beenden, indem er bis zum Boden gelangt. Dies tut er, indem er sich bewegt.
 
 ===== Kategorie
 primär
@@ -113,7 +112,8 @@ primär
 Spiel ist gestartet
 
 ===== Nachbedingung
-Spiel ist Game Over
+Erfolgsfall: Spiel ist Game Over
+Fehlschlag: Wave wurde zerstört
 
 ===== Invarianten
 Spielerschiff
@@ -127,21 +127,21 @@ Spiel wird gestartet
 image:../Bilder/Spielbeenden.JPG[Spiel Beenden]
 
 ===== Ablaufbeschreibung
-* Invader bewegt sich horizonzal bis er eine Wand erreicht
-* Dann bewegt er sich einaml vertikal nach unten
-* Die obigen Schritte wieder holt er bis er den Boden erreicht
+* Invader bewegt sich horizontal, bis er eine Wand erreicht
+* Dann bewegt er sich einmal vertikal nach unten
+* Die obigen Schritte wiederholt er solange, bis er den Boden erreicht hat
 
 == Tests
 Wir haben unsere Klassen mit NUnit getestet. Folgende Klassen und Methoden sind getestet
 
 * Schiffe
 ** Bei jedem Schiff ist die *Move* Methode getestet. Es wird sichergestellt, dass sich jedes Schiff korrekt bewegen kann.
-** Die Properties *Lives* und *Health* werden direkt im Schiff verwaltet. So wird im Falle, dass die Health auf 0 Fallen ein Lives abgezogen und die Leben erneut aufgefüllt.
+** Die Properties *Lives* und *Health* werden direkt im Schiff verwaltet. So wird im Falle, dass die Health auf 0 fallen ein Lives abgezogen und die Leben erneut aufgefüllt.
 * ViewModel
-** Die Methode *DestroyEverything* ist getestet. Hinter diesem unscheinbaren Namen verbirgt sich die Logik, um die Variablen zurückzusetzen. Dies wird beispielsweise beim beenden des Spiels aufgerufen, damit ein neues Spiel gestartet werden kann.
-** Die Methode *IsOutOfBounds* ist ausführlich getestet. Diese Methode entscheided, wenn ein Schiff oder Schuss das Spielfeld verlassen hat. Dies wird sowohl verwendet, um den Schuss beim Erreichen der Wand zu zerstören, als auch um zu verhindern, dass ein Schiff aus dem Spielfeld fliegen könnte.
-** Die Methode *FireShot* ist mit Mocks isoliert der Schiffe und Schüsse getestet. Diese Methode Sorgt dafür, dass ein Schuss des Schusses geschossen wird. Diese Methode wird sowohl beim Spieler als auch beim Invader verwendet.
+** Die Methode *DestroyEverything* ist getestet. Hinter diesem unscheinbaren Namen verbirgt sich die Logik, um die Variablen zurückzusetzen. Dies wird beispielsweise beim Beenden des Spiels aufgerufen, damit ein neues Spiel gestartet werden kann.
+** Die Methode *IsOutOfBounds* ist ausführlich getestet. Diese Methode entscheided, wann ein Schiff oder Schuss das Spielfeld verlassen hat. Dies wird verwendet, um den Schuss beim Erreichen der Wand zu zerstören. Als auch um zu verhindern, dass ein Schiff aus dem Spielfeld fliegen könnte.
+** Die Methode *FireShot* ist mit Mocks isoliert, welcher Schiffe und Schüsse testet. Diese Methode Sorgt dafür, dass ein Schuss des Schiffes geschossen wird. Diese Methode wird sowohl beim Spieler als auch beim Invader verwendet.
 ** Das Property *CurrentLives* wird im ViewModel getestet. So ist sichergestellt, dass wenn der Wert der jetzigen Leben auf 0 fällt, die Methode *GameOver* aufgerufen wird.
 
 === Fazit
-Da unser Programm ausschliesslich über automatisierte Tests überprüft wird, ist es relativ einfach zu erkennen, ob das Programm sich in einem guten Zustand befindet. So kann man auf Github und auf link:https://ci.appveyor.com/project/PascalHonegger/spaceinvaders[AppVeyor] ansehen, ob die jetzige Version des Codes Fehler beinhaltet. Grundsätzlich kann man sagen, dass auch nur ein fehlgeschlagener Unit-Test heisst, dass ein Kern-Feature nicht korrekt funktioniert.
+Da unser Programm ausschliesslich über automatisierte Tests überprüft wird, ist es relativ einfach zu erkennen, ob das Programm sich in einem guten Zustand befindet. So kann man auf Github und auf link:https://ci.appveyor.com/project/PascalHonegger/spaceinvaders[AppVeyor] ansehen, ob die jetzige Version des Codes Fehler beinhaltet. Grundsätzlich kann man sagen, dass bereits ein fehlgeschlagener Unit-Test heisst, dass ein Kern-Feature nicht korrekt funktioniert.
