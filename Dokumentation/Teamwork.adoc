@@ -22,10 +22,15 @@ Bei der Implementation haben wir auch gemerkt, dass unser Gui-Framework nicht se
 == Tipps
 
 === VCS - Git
-In unserem Projekt haben wir das Versionsverwaltungssystem link:https://git-scm.com/[Git] verwendet. Dieses hat den Vorteil ,dass mehrere Personen an der selben Datei arbeiten können, ohne voneinander abhängig zu sein. Auch ein grosser Vorteil von Git ist link:https://github.com/[Github], welches wir als kostenlosen Git-Server verwenden können. Um mit Github arbeiten zu können, braucht man die Git-Erweiterung auf Systemebene. Um Git konfortabler benutzen zu können, kann man auch die Git-Erweiterung für die IDE installieren.
-image:Bilder/github.jpg[Git Commits]
-image:Bilder/gitdiff.jpg[Vergleich von Dateien]
+In unserem Projekt haben wir das Versionsverwaltungssystem link:https://git-scm.com/[Git] verwendet. Dieses hat den Vorteil ,dass mehrere Personen an der selben Datei arbeiten können, ohne voneinander abhängig zu sein. Auch ein grosser Vorteil von Git ist link:https://github.com/[Github], welches wir als kostenlosen Git-Server verwenden können. Um mit Github arbeiten zu können, braucht man lediglich eine Git-Installation und einen gratis Github-Account. Um Git konfortabler benutzen zu können, kann man auch die Github-Erweiterung für die jeweilige IDE installieren.
 
+==== Commits
+Mithilfe von Commits kann man jederzeit in der Zeit zurückreisen und sich ansehen, wer was bearbeitet hat.
+image:Bilder/github.jpg[Git Commits]
+
+==== Diff
+Mithilfe von Git kann man einen sogenannten Diff (Difference) einsehen. In diesem kann man genau sehen, welche Zeilen sich verändert haben. So kann man sogenannte Reviews durchführen und die Code-Qualität zu erhöhen.
+image:Bilder/gitdiff.jpg[Vergleich von Dateien]
 
 === UMLet & Asciidoc
 Git ist wirklich gut darin, Textdateien zu verwalten. Verwendet man nun beispielsweise Wrod oder Visio-Dateien, verliert git an Wert. link:http://asciidoc.org/[Asciidoc] Ist beispielsweise ein rein textbasierte Art um ein Dokument zu gestallten. So schreibt man sozusagen Code, welcher danach in ein GTML oder ähnliches "kompiliert" werden kann. Genauso können via link:http://www.umlet.com/[UMLet] UML-Diagramme codiert werden. Am Anfang ist es nützlich ein Cheatsheet zu verwenden, um den Syntax möglichst schnell zu erlernen. 
