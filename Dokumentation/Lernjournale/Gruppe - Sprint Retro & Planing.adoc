@@ -1,7 +1,7 @@
 Retro & Planung
 ===============
 Alain Keller, Pascal Honegger und Seraphin Rihm
-Version 1.1, 11.01.2016
+Version 1.2, 26.01.2016
 :toc:
 
 == Initial Sprint
@@ -63,15 +63,14 @@ trotzdem nicht erreicht
 * Lauffähige Version "fertig"-stellen
 
 === Retro
-
-* Example
+-
 
 == Final Sprint
 
 === Planung
 
-* Example
+* Projekt abschliessen
+* Dokumentation abschliessen
 
 === Retro
-
-* Example
+-

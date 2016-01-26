@@ -71,49 +71,49 @@ link:https://github.com/PascalHonegger/SpaceInvaders[Github]
 
 == Architektur
 === Usecase Beschreibung 
-=== Schuss asuweichen
-==== Kategorie
-primär
+==== Schuss asuweichen
+===== Kategorie
+Primär
 
-==== Vorbedingungen
+===== Vorbedingungen
 Spiel ist gestartet
 , Letzte Bewegung vor 0.2 sek.
 
-==== Invarianten
+===== Invarianten
 Invaders
 
-==== Akteuere
+===== Akteuere
 Spieler, System(Spielerschiff)
 
-==== Auslösendes Ereignis
+===== Auslösendes Ereignis
 Invader schiesst
 
 image:Bilder/Schussausweichen.JPG[]
 
-=== Spiel beenden (aus sicht des Invaders)
+==== Spiel beenden (aus sicht des Invaders)
 
-==== Beschreibung
+===== Beschreibung
 Der Invader möchte das Spiel beenden in dem er bis zum Boden gelangt
 
-==== Kategorie
+===== Kategorie
 primär
 
-==== Vorbedingungen
+===== Vorbedingungen
 Spiel ist gestartet
 
-==== Invarianten
+===== Invarianten
 Spielerschiff
 
-==== Akteuere
+===== Akteuere
 Invader
 
-==== Auslösendes Ereignis
-Spiel wirdgestartet
+===== Auslösendes Ereignis
+Spiel wird gestartet
 
 image:Bilder/Spielbeenden.JPG[]
 
 == Tests
-Wir haben unsere Klassen mit NUnit getestet. Folgende Klassen und Methoden wurden getested
+Wir haben unsere Klassen mit NUnit getestet. Folgende Klassen und Methoden wurden getestet
 
 * Schiffe
 ** Move();

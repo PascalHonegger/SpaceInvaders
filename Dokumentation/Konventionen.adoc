@@ -2,6 +2,8 @@ C# Code-Konventionen
 ====================
 Alain Keller, Pascal Honegger und Seraphin Rihm 
 Version 1.0, 15.12.2015
+:toc:
+
 === Namensgebung
     * CamelCase 
     * Dateinamen sind gleich wie die Kalsse, die sie beinhalten
