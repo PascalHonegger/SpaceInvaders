@@ -1,7 +1,7 @@
 Dokumentation
 =============
 Alain Keller, Pascal Honegger und Seraphin Rihm
-Version 1.2, 11.01.2016
+Version 1.3, 26.01.2016
 :toc:
 
 == Framework
@@ -71,35 +71,49 @@ link:https://github.com/PascalHonegger/SpaceInvaders[Github]
 
 == Architektur
 === Usecase Beschreibung 
-==== Schuss asuweichen
+==== Bewegen (Spieler)
+==== Beschreibung
+Der Spieler möchte sein Schiff vertikal bewegen. Dies tut er über eine Pfeiltasten Imput
+
 ===== Kategorie
 Primär
 
 ===== Vorbedingungen
-Spiel ist gestartet
-, Letzte Bewegung vor 0.2 sek.
+Spiel ist gestartet,
+ Pfeiltaste gedrückt (rechts oder links),
+ Letzte Bewegung vor 0.2 sek.
+ 
+===== Nachbedingung
+Das Spielerschiff ist nach der Bewegeung noch komplet inerhalb des Spielfeldes.
 
 ===== Invarianten
 Invaders
 
 ===== Akteuere
-Spieler, System(Spielerschiff)
+Spieler, Spielerschiff
 
 ===== Auslösendes Ereignis
-Invader schiesst
+Pfeiltaste wird gedrückt
 
 image:../Bilder/Schussausweichen.JPG[Schuss ausweichen]
+
+===== Ablaufbeschreibung
+* Spieler drückt rechte oder linke Pfeiltaste
+* Das Schiff bewegt sich nach je nach Input in die jeweilige Richtung
 
 ==== Spiel beenden (aus sicht des Invaders)
 
 ===== Beschreibung
-Der Invader möchte das Spiel beenden in dem er bis zum Boden gelangt
+Der Invader möchte das Spiel beenden in dem er bis zum Boden gelangt, dies tut er indem er sich bewegt.
 
 ===== Kategorie
 primär
 
 ===== Vorbedingungen
 Spiel ist gestartet
+
+===== Nachbedingung
+Spiel ist Game Over
 
 ===== Invarianten
 Spielerschiff
@@ -111,6 +125,11 @@ Invader
 Spiel wird gestartet
 
 image:../Bilder/Spielbeenden.JPG[Spiel Beenden]
+
+===== Ablaufbeschreibung
+* Invader bewegt sich horizonzal bis er eine Wand erreicht
+* Dann bewegt er sich einaml vertikal nach unten
+* Die obigen Schritte wieder holt er bis er den Boden erreicht
 
 == Tests
 Wir haben unsere Klassen mit NUnit getestet. Folgende Klassen und Methoden sind getestet
