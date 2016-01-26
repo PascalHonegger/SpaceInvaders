@@ -95,7 +95,7 @@ Spieler, Spielerschiff
 ===== Auslösendes Ereignis
 Pfeiltaste wird gedrückt
 
-image:Bilder/Schussausweichen.JPG[]
+image:Bilder/Schussausweichen.JPG[Schuss ausweichen]
 
 ===== Ablaufbeschreibung
 * Spieler drückt rechte oder linke Pfeiltaste
@@ -124,7 +124,7 @@ Invader
 ===== Auslösendes Ereignis
 Spiel wird gestartet
 
-image:Bilder/Spielbeenden.JPG[]
+image:Bilder/Spielbeenden.JPG[Spiel Beenden]
 
 ===== Ablaufbeschreibung
 * Invader bewegt sich horizonzal bis er eine Wand erreicht
@@ -132,12 +132,16 @@ image:Bilder/Spielbeenden.JPG[]
 * Die obigen Schritte wieder holt er bis er den Boden erreicht
 
 == Tests
-Wir haben unsere Klassen mit NUnit getestet. Folgende Klassen und Methoden wurden getestet
+Wir haben unsere Klassen mit NUnit getestet. Folgende Klassen und Methoden sind getestet
 
 * Schiffe
-** Move();
+** Bei jedem Schiff ist die *Move* Methode getestet. Es wird sichergestellt, dass sich jedes Schiff korrekt bewegen kann.
+** Die Properties *Lives* und *Health* werden direkt im Schiff verwaltet. So wird im Falle, dass die Health auf 0 Fallen ein Lives abgezogen und die Leben erneut aufgefüllt.
 * ViewModel
-** DestroyEverything();
-** IsOutOfBounce();
-** FireShot();
-** CurrentLives (Wenn unter 1 Game Over)
+** Die Methode *DestroyEverything* ist getestet. Hinter diesem unscheinbaren Namen verbirgt sich die Logik, um die Variablen zurückzusetzen. Dies wird beispielsweise beim beenden des Spiels aufgerufen, damit ein neues Spiel gestartet werden kann.
+** Die Methode *IsOutOfBounds* ist ausführlich getestet. Diese Methode entscheided, wenn ein Schiff oder Schuss das Spielfeld verlassen hat. Dies wird sowohl verwendet, um den Schuss beim Erreichen der Wand zu zerstören, als auch um zu verhindern, dass ein Schiff aus dem Spielfeld fliegen könnte.
+** Die Methode *FireShot* ist mit Mocks isoliert der Schiffe und Schüsse getestet. Diese Methode Sorgt dafür, dass ein Schuss des Schusses geschossen wird. Diese Methode wird sowohl beim Spieler als auch beim Invader verwendet.
+** Das Property *CurrentLives* wird im ViewModel getestet. So ist sichergestellt, dass wenn der Wert der jetzigen Leben auf 0 fällt, die Methode *GameOver* aufgerufen wird.
+
+=== Fazit
+Da unser Programm ausschliesslich über automatisierte Tests überprüft wird, ist es relativ einfach zu erkennen, ob das Programm sich in einem guten Zustand befindet. So kann man auf Github und auf link:https://ci.appveyor.com/project/PascalHonegger/spaceinvaders[AppVeyor] ansehen, ob die jetzige Version des Codes Fehler beinhaltet. Grundsätzlich kann man sagen, dass auch nur ein fehlgeschlagener Unit-Test heisst, dass ein Kern-Feature nicht korrekt funktioniert.
