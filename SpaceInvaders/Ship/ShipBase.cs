@@ -20,6 +20,11 @@ namespace SpaceInvaders.Ship
 		private int _lives;
 
 		/// <summary>
+		///     Das maximale Leben eines Schiffes.
+		/// </summary>
+		public double MaxHealth => _totalHealth;
+
+		/// <summary>
 		///     Der Base-Konstruktor für alle Invader.
 		/// </summary>
 		/// <param name="health">Ändert das <see cref="Health" /></param>

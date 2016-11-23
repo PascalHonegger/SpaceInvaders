@@ -186,6 +186,8 @@ namespace SpaceInvaders
 
 			PlayerSelection.Add(new DefaultPlayer(PlayerSpawn));
 			PlayerSelection.Add(new FastPlayer(PlayerSpawn));
+
+			Player = PlayerSelection.First();
 		}
 
 		private void ReallyEndGame()
@@ -236,6 +238,7 @@ namespace SpaceInvaders
 		/// </summary>
 		private void EndGame()
 		{
+			if (GameOver) return;
 			GameOver = true;
 
 			UpdateTimer.Elapsed -= UpdateEvent;
@@ -248,7 +251,7 @@ namespace SpaceInvaders
 				Settings.Default.Save();
 			}
 
-			ResetPlayerSelection();
+			Application.Current.Dispatcher.Invoke(ResetPlayerSelection);
 
 			DestroyEverything();
 		}
@@ -403,6 +406,8 @@ namespace SpaceInvaders
 			MoveInvaders();
 
 			InvaderReturnFire();
+
+			UpdateShips();
 		}
 
 		/// <summary>

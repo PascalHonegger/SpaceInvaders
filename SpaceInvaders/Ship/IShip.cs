@@ -47,6 +47,11 @@ namespace SpaceInvaders.Ship
 		double Health { get; set; }
 
 		/// <summary>
+		///     Das maximale Leben eines Schiffes.
+		/// </summary>
+		double MaxHealth { get; }
+
+		/// <summary>
 		///     Bewegt das Schiff in die gewünschte Richtung, indem es den <see cref="Rect" /> verändert
 		/// </summary>
 		/// <param name="direction">Die Richtung, in welche sich das Schiff bewegt</param>

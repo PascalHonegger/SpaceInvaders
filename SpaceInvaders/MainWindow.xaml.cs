@@ -63,10 +63,14 @@ namespace SpaceInvaders
 				_shipWithControls.Clear();
 
 				foreach (var kvp in hasControl)
+				{
 					_shipWithControls.Add(kvp.Key, kvp.Value);
+				}
 
 				if (_playerWithControl.Key == null || !Equals(_playerWithControl.Key, ViewModel.Player))
+				{
 					_playerWithControl = new KeyValuePair<IShip, ShipControl>(ViewModel.Player, new ShipControl(ViewModel.Player));
+				}
 
 				_shipWithControls.Add(_playerWithControl.Key, _playerWithControl.Value);
 
@@ -94,7 +98,9 @@ namespace SpaceInvaders
 				_shotWithControls.Clear();
 
 				foreach (var kvp in hasControl)
+				{
 					_shotWithControls.Add(kvp.Key, kvp.Value);
+				}
 
 				return _shotWithControls;
 			}
@@ -133,7 +139,9 @@ namespace SpaceInvaders
 			const double timeToWait = 0.05;
 
 			if (_lastKeyInput >= DateTime.Now.AddSeconds(-timeToWait))
+			{
 				return;
+			}
 
 			_lastKeyInput = DateTime.Now;
 
