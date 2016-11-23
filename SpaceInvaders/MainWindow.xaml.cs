@@ -14,7 +14,7 @@ namespace SpaceInvaders
 	/// <summary>
 	///     Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class MainWindow
 	{
 		private readonly Dictionary<IShip, ShipControl> _shipWithControls = new Dictionary<IShip, ShipControl>();
 		private readonly Dictionary<IShot, ShotControl> _shotWithControls = new Dictionary<IShot, ShotControl>();
@@ -43,7 +43,7 @@ namespace SpaceInvaders
 					// ignored
 				}
 			};
-				}
+		}
 
 		private SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
 
@@ -145,63 +145,25 @@ namespace SpaceInvaders
 
 			_lastKeyInput = DateTime.Now;
 
-			if (e.Key == Key.A || e.Key == Key.Left)
+			// ReSharper disable once SwitchStatementMissingSomeCases
+			switch (e.Key)
 			{
-				ViewModel.MovePlayer(Direction.Left);
-			}
-			else if (e.Key == Key.D || e.Key == Key.Right)
-			{
-				ViewModel.MovePlayer(Direction.Right);
-			}
-			else if (e.Key == Key.Space || e.Key == Key.W|| e.Key == Key.Up)
-			{
-				ViewModel.FireShotPlayer();
-			}
-		}
-
-		private void StartGame_Click(object sender, RoutedEventArgs e)
-		{
-			ViewModel.StartGame();
-
-			StartButton.IsDefault = false;
-			StartButton.Visibility = Visibility.Collapsed;
-
-			StopButton.IsCancel = true;
-			StopButton.Visibility = Visibility.Visible;
-		}
-
-		private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			ViewModel.Player = e.AddedItems[0] as IShip;
-		}
-
-		private void StopButton_OnClick(object sender, RoutedEventArgs e)
-		{
-			var rsltMessageBox =
-				MessageBox.Show("Sind Sie sicher, dass Sie das jetzige Spiel beenden möchten? Ihr Highscore wird gespeichert!",
-					"Sind Sie sich sicher?", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
-
-			switch (rsltMessageBox)
-			{
-				case MessageBoxResult.Yes:
-					ViewModel.EndGame();
-
-					StartButton.IsDefault = true;
-					StartButton.Visibility = Visibility.Visible;
-
-					StopButton.IsCancel = false;
-					StopButton.Visibility = Visibility.Collapsed;
+				case Key.A:
+				case Key.Left:
+					ViewModel.MovePlayer(Direction.Left);
 					break;
-				case MessageBoxResult.No:
+				case Key.D:
+				case Key.Right:
+					ViewModel.MovePlayer(Direction.Right);
 					break;
-				case MessageBoxResult.Cancel:
-					break;
-				case MessageBoxResult.None:
-					break;
-				case MessageBoxResult.OK:
+				case Key.Space:
+				case Key.W:
+				case Key.Up:
+					ViewModel.FireShotPlayer();
 					break;
 				default:
-					throw new ArgumentOutOfRangeException();
+					//Nothing
+					break;
 			}
 		}
 	}

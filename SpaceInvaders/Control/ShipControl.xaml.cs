@@ -10,10 +10,16 @@ namespace SpaceInvaders.Control
 		/// <summary>
 		///     Constructor for ShipControl
 		/// </summary>
-		public ShipControl(IShip datacontext)
+		public ShipControl()
 		{
 			InitializeComponent();
+		}
 
+		/// <summary>
+		///     Constructor for ShipControl
+		/// </summary>
+		public ShipControl(IShip datacontext) : this()
+		{
 			DataContext = datacontext;
 		}
 	}

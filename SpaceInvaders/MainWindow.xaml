@@ -5,60 +5,79 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpaceInvaders"
         xmlns:converter="clr-namespace:SpaceInvaders.Control.Converter"
+        xmlns:control="clr-namespace:SpaceInvaders.Control"
         mc:Ignorable="d"
-        Title="Space Invaders" Height="785" Width="1366"
+        Title="Space Invaders" Height="775" Width="1475"
         d:DataContext="{d:DesignInstance local:SpaceInvadersViewModel}"
         ResizeMode="NoResize">
 	<Window.Resources>
 		<converter:InvertBoolConverter x:Key="InvertBoolConverter" />
 	</Window.Resources>
-
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="5" />
-			<RowDefinition Height="124" />
-			<RowDefinition Height="25" />
-			<RowDefinition Height="587" />
-			<RowDefinition Height="10" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="575" />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="10" />
-			<ColumnDefinition Width="1074" />
-			<ColumnDefinition Width="17" />
-			<ColumnDefinition Width="240" />
-			<ColumnDefinition Width="10" />
+			<ColumnDefinition Width="1075" />
+			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
-		<TextBlock Grid.Column="1" HorizontalAlignment="Left"
-		           Height="124" Margin="0" Grid.Row="1" VerticalAlignment="Top"
-		           Width="1330" Background="#FF2B2B2B" Grid.ColumnSpan="3" Text="SPACEINVADERS 1.0" Foreground="#FF86FF62"
-		           FontFamily="Showcard Gothic" FontSize="96" TextAlignment="Center" FontWeight="Bold"
-		           TextDecorations="{x:Null}" />
-		<Canvas Focusable="True" x:Name="PlayArea51" Grid.Column="1" HorizontalAlignment="Left"
-		        Height="587" Margin="0" Grid.Row="3" VerticalAlignment="Top"
-		        Width="1074" Background="LightBlue">
-		</Canvas>
-		<StackPanel Grid.Column="2" HorizontalAlignment="Left"
-		            Height="587" Margin="15,0,0,0" Grid.Row="3" VerticalAlignment="Top"
-		            Width="240" Background="#FF686868" Grid.ColumnSpan="2">
-			<ListBox IsEnabled="{Binding GameOver}" ItemsSource="{Binding PlayerSelection}" SelectionMode="Single"
-			         SelectedIndex="0" SelectionChanged="Selector_OnSelectionChanged">
-				<ListBox.ItemTemplate>
-					<DataTemplate>
-						<TextBlock Text="{Binding Name}" />
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
-			<TextBox IsEnabled="{Binding GameOver}" TextWrapping="Wrap" Text="{Binding PlayerName}" Height="75" FontSize="24"
-			         TextAlignment="Center" MaxLength="{Binding MaximumPlayerNameLength}" />
-			<TextBlock x:Name="textBlock" TextWrapping="Wrap" Height="33" FontSize="24" TextAlignment="Center" Text="Score:"/>
-			<TextBlock TextWrapping="Wrap" Height="75" FontSize="24" TextAlignment="Center" ><Run Text="0"/></TextBlock>
-			<TextBlock x:Name="textBlock2" TextWrapping="Wrap" Height="33" FontSize="24" TextAlignment="Center" Text="Wave:"/>
-			<TextBlock TextWrapping="Wrap" Height="75" FontSize="24" TextAlignment="Center" ><Run Text="0"/></TextBlock>
-			<TextBlock x:Name="textBlock3" TextWrapping="Wrap" Height="33" FontSize="24" TextAlignment="Center" Text="Lives:"/>
-			<TextBlock TextWrapping="Wrap" Text="{Binding CurrentLives}" Height="75" FontSize="24" TextAlignment="Center" />
-			<Button x:Name="StartButton" Content="Start Game" Height="100" Click="StartGame_Click" IsDefault="True" />
-			<Button x:Name="StopButton" Content="Stop current Game" Height="100" Click="StopButton_OnClick"
-			        Visibility="Collapsed" />
-		</StackPanel>
+		<Border BorderBrush="{x:Null}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF2B2B2B" Grid.ColumnSpan="2" >
+			<TextBlock Text="SPACEINVADERS 2.0" Foreground="#FF86FF62"
+		           FontFamily="Showcard Gothic" FontSize="96" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		</Border>
+		<Canvas Focusable="True" x:Name="PlayArea51" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+		        Grid.Row="1" Background="LightBlue" />
+		<Grid Grid.Column="1" HorizontalAlignment="Stretch"
+		            Grid.Row="1" VerticalAlignment="Stretch"
+		            Background="#FF686868">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0.75*" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			<Grid.Resources>
+				<Style TargetType="{x:Type TextBlock}">
+					<Setter Property="FontSize" Value="24" />
+					<Setter Property="HorizontalAlignment" Value="Center" />
+					<Setter Property="VerticalAlignment" Value="Center" />
+				</Style>
+			</Grid.Resources>
+			<ListView Grid.ColumnSpan="2" IsEnabled="{Binding GameOver}" ItemsSource="{Binding PlayerSelection}" SelectionMode="Single" SelectedItem="{Binding Player}" >
+				<ListView.View>
+					<GridView>
+						<GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
+						<GridViewColumn Header="Ship">
+							<GridViewColumn.CellTemplate>
+								<DataTemplate>
+									<control:ShipControl DataContext="{Binding}"/>
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
+						</GridViewColumn>
+					</GridView>
+				</ListView.View>
+			</ListView>
+			<TextBlock Grid.Row="1" Grid.Column="0" Text="Name:"/>
+			<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding PlayerName}" IsEnabled="{Binding GameOver}" FontSize="24" HorizontalAlignment="Stretch" VerticalAlignment="Center" MaxLength="{Binding MaximumPlayerNameLength}" />
+			<TextBlock Grid.Row="2" Grid.Column="0" Text="Score:"/>
+			<TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Score}" />
+			<TextBlock Grid.Row="3" Grid.Column="0" Text="Wave:"/>
+			<TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Wave}" />
+			<TextBlock Grid.Row="4" Grid.Column="0" Text="Health:"/>
+			<TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Player.Health}" />
+			<TextBlock Grid.Row="5" Grid.Column="0" Text="Lives:"/>
+			<TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Player.Lives}" />
+			<Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="Start Game" Command="{Binding StartGameCommand}" IsDefault="True" />
+			<Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Content="Stop current Game" Command="{Binding ReallyEndGameCommand}" IsCancel="True" />
+		</Grid>
 	</Grid>
 </Window>

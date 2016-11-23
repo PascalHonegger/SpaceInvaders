@@ -7,6 +7,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Timers;
 using System.Windows;
+using Prism.Commands;
+using SpaceInvaders.Annotations;
 using SpaceInvaders.Enums;
 using SpaceInvaders.EventArgs;
 using SpaceInvaders.ExtensionMethods;
@@ -32,14 +34,41 @@ namespace SpaceInvaders
 		private DateTime _invaderLastFired = DateTime.MinValue;
 		private DateTime _invaderLastMoved = DateTime.MinValue;
 		private IShip _player;
-		private string _playerName = "Player1";
 		private int _score;
 		private int _wave;
 
 		/// <summary>
+		/// Command für <see cref="ReallyEndGame"/>
+		/// </summary>
+		public DelegateCommand ReallyEndGameCommand { get; }
+		
+		/// <summary>
+		/// Command für <see cref="StartGame"/>
+		/// </summary>
+		public DelegateCommand StartGameCommand { get; }
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SpaceInvadersViewModel()
+		{
+			ReallyEndGameCommand = new DelegateCommand(ReallyEndGame, () => !GameOver).ObservesProperty(() => GameOver);
+
+			StartGameCommand = new DelegateCommand(StartGame).ObservesCanExecute(o => GameOver);
+
+			PlayerSelection = new ObservableCollection<IShip>
+			{
+				new DefaultPlayer(PlayerSpawn),
+				new FastPlayer(PlayerSpawn)
+			};
+
+			_player = PlayerSelection.First();
+		}
+
+		/// <summary>
 		///     Die Maximale Anzahl Zeichen, welche der Spielername lang sein darf
 		/// </summary>
-		public int MaximumPlayerNameLength => 20;
+		public static int MaximumPlayerNameLength => 20;
 
 		/// <summary>
 		///     Liste aller aktiven Schüsse der Invader
@@ -61,16 +90,7 @@ namespace SpaceInvaders
 		/// <summary>
 		///     Alle Player-Schiffe, welche selektiert werden können
 		/// </summary>
-		public IEnumerable<IShip> PlayerSelection => new ObservableCollection<IShip>
-		{
-			new DefaultPlayer(PlayerSpawn),
-			new FastPlayer(PlayerSpawn)
-		};
-
-		/// <summary>
-		///     Die aktuellen Respawns des Spielers
-		/// </summary>
-		public int CurrentLives => Player.Lives;
+		public IEnumerable<IShip> PlayerSelection { get; }
 
 		/// <summary>
 		///     Der jetzige Spieler
@@ -80,17 +100,41 @@ namespace SpaceInvaders
 			get { return _player; }
 			set
 			{
+				if (Equals(_player, value)) return;
 				_player = value;
 				OnShipChangedEventHandler(new ShipChangedEventArgs(_player));
-				// ReSharper disable once ExplicitCallerInfoArgument
-				OnPropertyChanged(nameof(CurrentLives));
+				OnPropertyChanged();
+			}
+		}
+
+		private void ReallyEndGame()
+		{
+			UpdateTimer.Stop();
+
+			var rsltMessageBox =
+				MessageBox.Show("Sind Sie sicher, dass Sie das jetzige Spiel beenden möchten? Ihr Highscore wird gespeichert!",
+					"Sind Sie sich sicher?", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+
+			switch (rsltMessageBox)
+			{
+				case MessageBoxResult.Yes:
+					EndGame();
+					break;
+				case MessageBoxResult.No:
+				case MessageBoxResult.Cancel:
+				case MessageBoxResult.None:
+				case MessageBoxResult.OK:
+					UpdateTimer.Start();
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
 			}
 		}
 
 		/// <summary>
-		///     Der Updatetimer bestimmt die Tikrate
+		///     Der Updatetimer bestimmt die Tickrate
 		/// </summary>
-		public Timer UpdateTimer { get; } = new Timer(100);
+		public Timer UpdateTimer = new Timer(100);
 
 		/// <summary>
 		///     Die aktuelle Punktzahl des Spielers
@@ -100,6 +144,7 @@ namespace SpaceInvaders
 			get { return _score; }
 			set
 			{
+				if(Equals(_score, value)) return;
 				_score = value;
 				OnPropertyChanged();
 			}
@@ -113,6 +158,7 @@ namespace SpaceInvaders
 			get { return _wave; }
 			set
 			{
+				if (Equals(_wave, value)) return;
 				_wave = value;
 				OnPropertyChanged();
 			}
@@ -138,14 +184,15 @@ namespace SpaceInvaders
 		/// </summary>
 		public string PlayerName
 		{
-			get { return _playerName; }
+			get { return Settings.Default.Username; }
 			set
 			{
 				if (value?.Length >= MaximumPlayerNameLength)
 				{
 					return;
 				}
-				_playerName = value;
+				Settings.Default.Username = value;
+				Settings.Default.Save();
 				OnPropertyChanged();
 			}
 		}
@@ -187,21 +234,30 @@ namespace SpaceInvaders
 		/// <summary>
 		///     Der EventHandel für die <see cref="ShipChangedEventArgs" />
 		/// </summary>
-		public event EventHandler<ShipChangedEventArgs> ShipChangedEventHandler;
+		public event EventHandler<ShipChangedEventArgs> ShipChangedEvent;
 
 		/// <summary>
 		///     Der EventHandel für die <see cref="ShotMovedEventArgs" />
 		/// </summary>
-		public event EventHandler<ShotMovedEventArgs> ShotMovedEventHandler;
+		public event EventHandler<ShotMovedEventArgs> ShotMovedEvent;
 
 		/// <summary>
 		///     Beendet das Spiel
 		/// </summary>
-		public void EndGame()
+		private void EndGame()
 		{
 			GameOver = true;
+
+			UpdateTimer.Elapsed -= UpdateEvent;
 			UpdateTimer.Stop();
-			//TODO  Save Highscore
+
+			//TODO Highscore-service inklusive Username
+			if (Settings.Default.HighScore < Score)
+			{
+				Settings.Default.HighScore = Score;
+				Settings.Default.Save();
+			}
+
 			DestroyEverything();
 		}
 
@@ -209,10 +265,15 @@ namespace SpaceInvaders
 		{
 			if (removeInvader)
 			{
+				ShipChangedEvent -= e.Ship.Update;
 				Invaders.Remove(e.Ship);
-				Score += e.Ship.Points;
+
+				if (!GameOver)
+				{
+					Score += e.Ship.Points;
+				}
 			}
-			ShipChangedEventHandler?.Invoke(this, e);
+			ShipChangedEvent?.Invoke(this, e);
 		}
 
 		private void OnShotMovedEventHandler(ShotMovedEventArgs e, bool removeShot = false)
@@ -223,13 +284,13 @@ namespace SpaceInvaders
 				InvaderShots.Remove(e.Shot);
 			}
 
-			ShotMovedEventHandler?.Invoke(this, e);
+			ShotMovedEvent?.Invoke(this, e);
 		}
 
 		/// <summary>
 		///     Starte das Spiel und setzte alle Variablen zurück
 		/// </summary>
-		public void StartGame()
+		private void StartGame()
 		{
 			GameOver = false;
 
@@ -244,9 +305,11 @@ namespace SpaceInvaders
 
 			NextWave();
 
-			UpdateTimer.Elapsed += (sender, args) => { Update(); };
+			UpdateTimer.Elapsed += UpdateEvent;
 			UpdateTimer.Start();
 		}
+
+		private void UpdateEvent(object sender, ElapsedEventArgs args) => Update();
 
 		/// <summary>
 		///     Zertört alle Einheiten auf dem Spielfeld
@@ -295,10 +358,10 @@ namespace SpaceInvaders
 			{
 				for (var column = 0; column < InvaderRows; column++)
 				{
-					var x = _playArea.Width/InvaderColumns*row;
-					var y = _playArea.Height/InvaderRows/3*column;
+					var x = _playArea.Width / InvaderColumns * row;
+					var y = _playArea.Height / InvaderRows / 3 * column;
 					var invader = new Ufo(new Point(x, y));
-					ShipChangedEventHandler += (sender, e) => { invader.Update(e); };
+					ShipChangedEvent += invader.Update;
 					attackers.Add(invader);
 				}
 			}
@@ -349,7 +412,7 @@ namespace SpaceInvaders
 		/// </summary>
 		public void Update()
 		{
-			if (Player.Lives == 0)
+			if (Player.Lives <= 0)
 			{
 				EndGame();
 			}
@@ -376,9 +439,6 @@ namespace SpaceInvaders
 			MoveInvaders();
 
 			InvaderReturnFire();
-
-			// ReSharper disable once ExplicitCallerInfoArgument
-			OnPropertyChanged(nameof(CurrentLives));
 		}
 
 		/// <summary>
@@ -390,32 +450,32 @@ namespace SpaceInvaders
 		{
 			var overlappingRect = Rect.Intersect(_playArea, rect);
 
-			var x1 = Math.Abs(overlappingRect.X);
-			var x2 = Math.Abs(rect.X);
+			var x1 = Math.Round(overlappingRect.X, 1);
+			var x2 = Math.Round(rect.X, 1);
 
 			if (!Equals(x1, x2))
 			{
 				return true;
 			}
 
-			var y1 = Math.Abs(overlappingRect.Y);
-			var y2 = Math.Abs(rect.Y);
+			var y1 = Math.Round(overlappingRect.Y, 1);
+			var y2 = Math.Round(rect.Y, 1);
 
 			if (!Equals(y1, y2))
 			{
 				return true;
 			}
 
-			var width1 = Math.Abs(overlappingRect.Width);
-			var width2 = Math.Abs(rect.Width);
+			var width1 = Math.Round(overlappingRect.Width, 1);
+			var width2 = Math.Round(rect.Width, 1);
 
 			if (!Equals(width1, width2))
 			{
 				return true;
 			}
 
-			var heigth1 = Math.Abs(overlappingRect.Height);
-			var heigth2 = Math.Abs(rect.Height);
+			var heigth1 = Math.Round(overlappingRect.Height, 1);
+			var heigth2 = Math.Round(rect.Height, 1);
 
 			if (!Equals(heigth1, heigth2))
 			{
@@ -541,16 +601,17 @@ namespace SpaceInvaders
 			{
 				// Managed Resources
 				UpdateTimer.Dispose();
+				UpdateTimer = null;
 				DestroyEverything();
 				_invaderLastMoved = DateTime.MinValue;
 				Player = null;
-				ShipChangedEventHandler = null;
-				ShotMovedEventHandler = null;
+				ShipChangedEvent = null;
+				ShotMovedEvent = null;
 			}
 
 			// Unmanaged Resources
 
-			// Leer, da wir keine Serververbindung aufbauen
+			// Leer, da wir keine Serververbindung aufbauen und alle werte nur in dieser Instanz gespeichert werden
 		}
 
 		/// <summary>

@@ -145,8 +145,9 @@ namespace SpaceInvaders.Ship
 		/// <summary>
 		///     Wird aufgerufen, wenn sich das Schiff aktualisieren sollte
 		/// </summary>
+		/// <param name="sender">Event sender</param>
 		/// <param name="e">Die <see cref="ShipChangedEventArgs" /></param>
-		public void Update(ShipChangedEventArgs e)
+		public void Update(object sender, ShipChangedEventArgs e)
 		{
 			if (Equals(e.Ship, this))
 			{
@@ -162,6 +163,7 @@ namespace SpaceInvaders.Ship
 			get { return _lives; }
 			private set
 			{
+				if(Equals(_lives, value)) return;
 				_lives = value;
 				OnPropertyChanged();
 			}

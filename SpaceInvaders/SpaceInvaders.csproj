@@ -40,6 +40,10 @@
     <StartupObject>SpaceInvaders.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Prism, Version=6.2.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Core.6.2.1\lib\net45\Prism.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -76,7 +80,6 @@
     <Compile Include="ExtensionMethods\ImageExtensions.cs" />
     <Compile Include="ExtensionMethods\ListExtensions.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Ship\Invaders\Alien.cs" />
     <Compile Include="Ship\Invaders\Ufo.cs" />
     <Compile Include="Ship\Players\FastPlayer.cs" />
@@ -130,6 +133,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ClassDiagram.cd" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
