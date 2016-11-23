@@ -38,8 +38,8 @@ namespace SpaceInvaders.Ship.Invaders
 		/// </summary>
 		public override BitmapSource CurrentTexture
 			=>
-				DateTime.Now.Second%2 == 0
-					? Resources.invaderboss_animation_1.ToBitmapSource()
-					: Resources.invaderboss_animation_2.ToBitmapSource();
+			DateTime.Now.Second % 2 == 0
+				? Resources.invaderboss_animation_1.ToBitmapSource()
+				: Resources.invaderboss_animation_2.ToBitmapSource();
 	}
 }

@@ -7,7 +7,7 @@ namespace SpaceInvaders.Control.Converter
 	/// <summary>
 	///     Invert a boolean
 	/// </summary>
-	[ValueConversion(typeof (bool), typeof (bool))]
+	[ValueConversion(typeof(bool), typeof(bool))]
 	public class InvertBoolConverter : IValueConverter
 	{
 		#region IValueConverter Members
@@ -25,7 +25,7 @@ namespace SpaceInvaders.Control.Converter
 		public object Convert(object value, Type targetType, object parameter,
 			CultureInfo culture)
 		{
-			if (targetType != typeof (bool))
+			if (targetType != typeof(bool))
 				throw new InvalidOperationException("The target must be a boolean");
 
 			return !(bool) value;

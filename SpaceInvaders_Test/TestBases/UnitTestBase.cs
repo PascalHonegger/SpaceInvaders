@@ -2,7 +2,8 @@
 
 namespace SpaceInvaders_Test.TestBases
 {
-	[TestFixture, Category("UnitTest")]
+	[TestFixture]
+	[Category("UnitTest")]
 	public abstract class UnitTestBase
 	{
 		[SetUp]

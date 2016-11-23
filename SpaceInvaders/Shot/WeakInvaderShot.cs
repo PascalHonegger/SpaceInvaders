@@ -31,8 +31,8 @@ namespace SpaceInvaders.Shot
 		/// </summary>
 		public override BitmapSource CurrentTexture
 			=>
-				DateTime.Now.Second < 5
-					? Resources.shot1_animation_one.ToBitmapSource()
-					: Resources.shot1_animation_two.ToBitmapSource();
+			DateTime.Now.Second < 5
+				? Resources.shot1_animation_one.ToBitmapSource()
+				: Resources.shot1_animation_two.ToBitmapSource();
 	}
 }

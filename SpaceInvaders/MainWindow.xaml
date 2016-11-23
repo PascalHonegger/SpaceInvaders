@@ -18,15 +18,18 @@
 			<ColumnDefinition Width="1075" />
 			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
-		<Border BorderBrush="{x:Null}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF2B2B2B" Grid.ColumnSpan="2" >
+		<Border BorderBrush="{x:Null}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF2B2B2B"
+		        Grid.ColumnSpan="2">
 			<TextBlock Text="SPACEINVADERS 2.0" Foreground="#FF86FF62"
-		           FontFamily="Showcard Gothic" FontSize="96" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			           FontFamily="Showcard Gothic" FontSize="96" FontWeight="Bold" HorizontalAlignment="Center"
+			           VerticalAlignment="Center" />
 		</Border>
-		<Canvas Focusable="True" x:Name="PlayArea51" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+		<Canvas Focusable="True" x:Name="PlayArea51" Grid.Column="0" HorizontalAlignment="Stretch"
+		        VerticalAlignment="Stretch"
 		        Grid.Row="1" Background="LightBlue" />
 		<Grid Grid.Column="1" HorizontalAlignment="Stretch"
-		            Grid.Row="1" VerticalAlignment="Stretch"
-		            Background="#FF686868">
+		      Grid.Row="1" VerticalAlignment="Stretch"
+		      Background="#FF686868">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="*" />
@@ -48,32 +51,36 @@
 					<Setter Property="VerticalAlignment" Value="Center" />
 				</Style>
 			</Grid.Resources>
-			<ListView Grid.IsSharedSizeScope="True" Grid.ColumnSpan="2" IsEnabled="{Binding GameOver}" ItemsSource="{Binding PlayerSelection}" SelectionMode="Single" SelectedItem="{Binding Player}" >
+			<ListView Grid.IsSharedSizeScope="True" Grid.ColumnSpan="2" IsEnabled="{Binding GameOver}"
+			          ItemsSource="{Binding PlayerSelection}" SelectionMode="Single" SelectedItem="{Binding Player}">
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<Grid>
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition SharedSizeGroup="ShipName"/>
+								<ColumnDefinition SharedSizeGroup="ShipName" />
 								<ColumnDefinition />
 							</Grid.ColumnDefinitions>
-							<TextBlock Grid.Column="0" Text="{Binding Name}"/>
-							<control:ShipControl Grid.Column="1" DataContext="{Binding}"/>
+							<TextBlock Grid.Column="0" Text="{Binding Name}" />
+							<control:ShipControl Grid.Column="1" DataContext="{Binding}" />
 						</Grid>
 					</DataTemplate>
 				</ListView.ItemTemplate>
 			</ListView>
-			<TextBlock Grid.Row="1" Grid.Column="0" Text="Name:"/>
-			<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding PlayerName}" IsEnabled="{Binding GameOver}" FontSize="24" HorizontalAlignment="Stretch" VerticalAlignment="Center" MaxLength="{Binding MaximumPlayerNameLength}" />
-			<TextBlock Grid.Row="2" Grid.Column="0" Text="Score:"/>
+			<TextBlock Grid.Row="1" Grid.Column="0" Text="Name:" />
+			<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding PlayerName}" IsEnabled="{Binding GameOver}" FontSize="24"
+			         HorizontalAlignment="Stretch" VerticalAlignment="Center" MaxLength="{Binding MaximumPlayerNameLength}" />
+			<TextBlock Grid.Row="2" Grid.Column="0" Text="Score:" />
 			<TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Score}" />
-			<TextBlock Grid.Row="3" Grid.Column="0" Text="Wave:"/>
+			<TextBlock Grid.Row="3" Grid.Column="0" Text="Wave:" />
 			<TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Wave}" />
-			<TextBlock Grid.Row="4" Grid.Column="0" Text="Health:"/>
+			<TextBlock Grid.Row="4" Grid.Column="0" Text="Health:" />
 			<TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Player.Health}" />
-			<TextBlock Grid.Row="5" Grid.Column="0" Text="Lives:"/>
+			<TextBlock Grid.Row="5" Grid.Column="0" Text="Lives:" />
 			<TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Player.Lives}" />
-			<Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="Start Game" Command="{Binding StartGameCommand}" IsDefault="True" />
-			<Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Content="Stop current Game" Command="{Binding ReallyEndGameCommand}" IsCancel="True" />
+			<Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="Start Game" Command="{Binding StartGameCommand}"
+			        IsDefault="True" />
+			<Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Content="Stop current Game"
+			        Command="{Binding ReallyEndGameCommand}" IsCancel="True" />
 		</Grid>
 	</Grid>
 </Window>

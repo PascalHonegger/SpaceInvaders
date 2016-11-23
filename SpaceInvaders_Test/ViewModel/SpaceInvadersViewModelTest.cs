@@ -27,7 +27,7 @@ namespace SpaceInvaders_Test.ViewModel
 
 
 		protected override void OnSetUp()
-			{
+		{
 			_unitUnderTest = new SpaceInvadersViewModel();
 		}
 
@@ -103,30 +103,12 @@ namespace SpaceInvaders_Test.ViewModel
 
 			invaderMock.Setup(pl => pl.ShipType).Returns(ShipType.Invader);
 			invaderMock.Setup(pl => pl.Shot).Returns(shotMock.Object);
-			
+
 			// Act
 			_unitUnderTest.FireShot(invaderMock.Object);
 
 			// Assert
 			Assert.That(_unitUnderTest.InvaderShots.Count, Is.EqualTo(1));
-		}
-		[Test]
-		public void TestIsOutOfBounds()
-		{
-			// Arrang
-			_unitUnderTest = new SpaceInvadersViewModel();
-
-			// Act
-
-			// Assert
-			for (int i = 0; i < 1074; i++)
-			{
-				for (int j = 0; j < 587; j++)
-				{
-					Assert.That(_unitUnderTest.IsOutOfBounds(new Rect(i, j, 1, 1)), Is.False, "Rect bei Position " + i.ToString() + j.ToString());
-				}
-			}
-			
 		}
 
 		[Test]
@@ -144,6 +126,20 @@ namespace SpaceInvaders_Test.ViewModel
 
 			// Assert
 			Assert.That(_unitUnderTest.PlayerShots.Count, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void TestIsOutOfBounds()
+		{
+			// Arrang
+			_unitUnderTest = new SpaceInvadersViewModel();
+
+			// Act
+
+			// Assert
+			for (var i = 0; i < 1074; i++)
+			for (var j = 0; j < 587; j++)
+				Assert.That(_unitUnderTest.IsOutOfBounds(new Rect(i, j, 1, 1)), Is.False, "Rect bei Position " + i + j);
 		}
 	}
 }

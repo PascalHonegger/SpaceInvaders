@@ -37,17 +37,12 @@ namespace SpaceInvaders
 		private int _wave;
 
 		/// <summary>
-		/// Command für <see cref="ReallyEndGame"/>
+		///     Der Updatetimer bestimmt die Tickrate
 		/// </summary>
-		public DelegateCommand ReallyEndGameCommand { get; }
-		
-		/// <summary>
-		/// Command für <see cref="StartGame"/>
-		/// </summary>
-		public DelegateCommand StartGameCommand { get; }
+		public Timer UpdateTimer = new Timer(100);
 
 		/// <summary>
-		/// Constructor
+		///     Constructor
 		/// </summary>
 		public SpaceInvadersViewModel()
 		{
@@ -59,13 +54,15 @@ namespace SpaceInvaders
 			_player = PlayerSelection.First();
 		}
 
-		private void ResetPlayerSelection()
-		{
-			PlayerSelection.Clear();
+		/// <summary>
+		///     Command für <see cref="ReallyEndGame" />
+		/// </summary>
+		public DelegateCommand ReallyEndGameCommand { get; }
 
-			PlayerSelection.Add(new DefaultPlayer(PlayerSpawn));
-			PlayerSelection.Add(new FastPlayer(PlayerSpawn));
-		}
+		/// <summary>
+		///     Command für <see cref="StartGame" />
+		/// </summary>
+		public DelegateCommand StartGameCommand { get; }
 
 		/// <summary>
 		///     Die Maximale Anzahl Zeichen, welche der Spielername lang sein darf
@@ -87,7 +84,7 @@ namespace SpaceInvaders
 		/// </summary>
 		public List<IShip> Invaders { get; } = new List<IShip>();
 
-		private Point PlayerSpawn => new Point(_playArea.Width/2, _playArea.Height - 175);
+		private Point PlayerSpawn => new Point(_playArea.Width / 2, _playArea.Height - 175);
 
 		/// <summary>
 		///     Alle Player-Schiffe, welche selektiert werden können
@@ -109,35 +106,6 @@ namespace SpaceInvaders
 			}
 		}
 
-		private void ReallyEndGame()
-		{
-			UpdateTimer.Stop();
-
-			var rsltMessageBox =
-				MessageBox.Show("Sind Sie sicher, dass Sie das jetzige Spiel beenden möchten? Ihr Highscore wird gespeichert!",
-					"Sind Sie sich sicher?", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
-
-			switch (rsltMessageBox)
-			{
-				case MessageBoxResult.Yes:
-					EndGame();
-					break;
-				case MessageBoxResult.No:
-				case MessageBoxResult.Cancel:
-				case MessageBoxResult.None:
-				case MessageBoxResult.OK:
-					UpdateTimer.Start();
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
-		}
-
-		/// <summary>
-		///     Der Updatetimer bestimmt die Tickrate
-		/// </summary>
-		public Timer UpdateTimer = new Timer(100);
-
 		/// <summary>
 		///     Die aktuelle Punktzahl des Spielers
 		/// </summary>
@@ -146,7 +114,7 @@ namespace SpaceInvaders
 			get { return _score; }
 			set
 			{
-				if(Equals(_score, value)) return;
+				if (Equals(_score, value)) return;
 				_score = value;
 				OnPropertyChanged();
 			}
@@ -190,9 +158,7 @@ namespace SpaceInvaders
 			set
 			{
 				if (value?.Length >= MaximumPlayerNameLength)
-				{
 					return;
-				}
 				Settings.Default.Username = value;
 				Settings.Default.Save();
 				OnPropertyChanged();
@@ -213,6 +179,38 @@ namespace SpaceInvaders
 		///     OnPropertyChanged Event
 		/// </summary>
 		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void ResetPlayerSelection()
+		{
+			PlayerSelection.Clear();
+
+			PlayerSelection.Add(new DefaultPlayer(PlayerSpawn));
+			PlayerSelection.Add(new FastPlayer(PlayerSpawn));
+		}
+
+		private void ReallyEndGame()
+		{
+			UpdateTimer.Stop();
+
+			var rsltMessageBox =
+				MessageBox.Show("Sind Sie sicher, dass Sie das jetzige Spiel beenden möchten? Ihr Highscore wird gespeichert!",
+					"Sind Sie sich sicher?", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+
+			switch (rsltMessageBox)
+			{
+				case MessageBoxResult.Yes:
+					EndGame();
+					break;
+				case MessageBoxResult.No:
+				case MessageBoxResult.Cancel:
+				case MessageBoxResult.None:
+				case MessageBoxResult.OK:
+					UpdateTimer.Start();
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
 
 		/// <summary>
 		///     Schiesst einen Schuss vom dem mitgegebenen Schiff
@@ -260,17 +258,13 @@ namespace SpaceInvaders
 			Invaders.Remove(ship);
 
 			if (!GameOver)
-			{
 				Score += ship.Points;
-			}
 		}
 
 		private void UpdateShips()
 		{
 			foreach (var invader in Invaders)
-			{
 				invader.Update();
-			}
 
 			Player.Update();
 		}
@@ -311,19 +305,13 @@ namespace SpaceInvaders
 		public void DestroyEverything()
 		{
 			foreach (var invader in Invaders.ToList())
-			{
 				RemoveInvader(invader);
-			}
 
 			foreach (var shot in PlayerShots.ToList())
-			{
 				RemoveShot(shot);
-			}
 
 			foreach (var shot in InvaderShots.ToList())
-			{
 				RemoveShot(shot);
-			}
 		}
 
 		private void NextWave()
@@ -331,9 +319,7 @@ namespace SpaceInvaders
 			Wave++;
 
 			foreach (var invader in Invaders)
-			{
 				RemoveInvader(invader);
-			}
 
 			Invaders.AddRange(CreateNewAttackWave());
 
@@ -346,14 +332,12 @@ namespace SpaceInvaders
 			IList<IShip> attackers = new List<IShip>();
 
 			for (var row = 0; row < InvaderColumns; row++)
+			for (var column = 0; column < InvaderRows; column++)
 			{
-				for (var column = 0; column < InvaderRows; column++)
-				{
-					var x = _playArea.Width / InvaderColumns * row;
-					var y = _playArea.Height / InvaderRows / 3 * column;
-					var invader = new Ufo(new Point(x, y));
-					attackers.Add(invader);
-				}
+				var x = _playArea.Width / InvaderColumns * row;
+				var y = _playArea.Height / InvaderRows / 3 * column;
+				var invader = new Ufo(new Point(x, y));
+				attackers.Add(invader);
 			}
 
 			return attackers;
@@ -366,16 +350,12 @@ namespace SpaceInvaders
 		public void MovePlayer(Direction direction)
 		{
 			if (Player.Health <= 0)
-			{
 				return;
-			}
 
 			Player.Move(direction);
 
 			if (IsOutOfBounds(Player.Rect))
-			{
 				Player.Move(InvertDirection(direction));
-			}
 
 			Player.Update();
 		}
@@ -403,23 +383,17 @@ namespace SpaceInvaders
 		public void Update()
 		{
 			if (Player.Lives <= 0)
-			{
 				EndGame();
-			}
 
 			if (Invaders.Count == 0)
-			{
 				NextWave();
-			}
 
 			foreach (var shot in InvaderShots.Concat(PlayerShots))
 			{
 				shot.Move();
 
 				if (IsOutOfBounds(shot.Rect))
-				{
 					RemoveShot(shot);
-				}
 			}
 
 			CheckForInvaderCollision();
@@ -432,7 +406,7 @@ namespace SpaceInvaders
 		}
 
 		/// <summary>
-		/// Schaut ob sich rects überlappen
+		///     Schaut ob sich rects überlappen
 		/// </summary>
 		/// <param name="rect"></param>
 		/// <returns></returns>
@@ -444,33 +418,25 @@ namespace SpaceInvaders
 			var x2 = Math.Round(rect.X, 1);
 
 			if (!Equals(x1, x2))
-			{
 				return true;
-			}
 
 			var y1 = Math.Round(overlappingRect.Y, 1);
 			var y2 = Math.Round(rect.Y, 1);
 
 			if (!Equals(y1, y2))
-			{
 				return true;
-			}
 
 			var width1 = Math.Round(overlappingRect.Width, 1);
 			var width2 = Math.Round(rect.Width, 1);
 
 			if (!Equals(width1, width2))
-			{
 				return true;
-			}
 
 			var heigth1 = Math.Round(overlappingRect.Height, 1);
 			var heigth2 = Math.Round(rect.Height, 1);
 
 			if (!Equals(heigth1, heigth2))
-			{
 				return true;
-			}
 
 			// Das komplette 'rect' überlappt sich mit dem Spielfeld
 			return false;
@@ -479,24 +445,18 @@ namespace SpaceInvaders
 		private void MoveInvaders()
 		{
 			// ReSharper disable once PossibleLossOfFraction
-			var timeToWait = 2 - Wave/20;
+			var timeToWait = 2 - Wave / 20;
 
 			if (timeToWait < 0)
-			{
 				timeToWait = 0;
-			}
 
 			if (_invaderLastMoved >= DateTime.Now.AddSeconds(-timeToWait))
-			{
 				return;
-			}
 
 			_invaderLastMoved = DateTime.Now;
 
 			foreach (var invader in Invaders)
-			{
 				invader.Move(_invaderDirection);
-			}
 
 			if (Invaders.Any(invader => IsOutOfBounds(invader.Rect)))
 			{
@@ -517,9 +477,7 @@ namespace SpaceInvaders
 				{
 					invader.Health -= shot.Damage;
 					if (invader.Health <= 0)
-					{
 						RemoveInvader(invader);
-					}
 
 					RemoveShot(shot);
 				}
@@ -544,17 +502,13 @@ namespace SpaceInvaders
 		private void InvaderReturnFire()
 		{
 			// ReSharper disable once PossibleLossOfFraction
-			var timeToWait = 2 - Wave/20;
+			var timeToWait = 2 - Wave / 20;
 
 			if (timeToWait < 0)
-			{
 				timeToWait = 0;
-			}
 
 			if (_invaderLastFired >= DateTime.Now.AddSeconds(-timeToWait))
-			{
 				return;
-			}
 
 			_invaderLastFired = DateTime.Now;
 
@@ -581,7 +535,7 @@ namespace SpaceInvaders
 
 		// Analysefehler
 		[SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed",
-			MessageId = "<UpdateTimer>k__BackingField")]
+			 MessageId = "<UpdateTimer>k__BackingField")]
 		private void Dispose(bool disposing)
 		{
 			if (disposing)

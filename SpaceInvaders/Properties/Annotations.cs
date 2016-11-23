@@ -26,8 +26,8 @@ namespace SpaceInvaders.Annotations
 	/// </code>
 	/// </example>
 	[AttributeUsage(
-		AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
-		AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event)]
+		 AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
+		 AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event)]
 	public sealed class CanBeNullAttribute : Attribute
 	{
 	}
@@ -43,8 +43,8 @@ namespace SpaceInvaders.Annotations
 	/// </code>
 	/// </example>
 	[AttributeUsage(
-		AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
-		AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event)]
+		 AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
+		 AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event)]
 	public sealed class NotNullAttribute : Attribute
 	{
 	}
@@ -55,8 +55,8 @@ namespace SpaceInvaders.Annotations
 	///     or of the Lazy.Value property can never be null.
 	/// </summary>
 	[AttributeUsage(
-		AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
-		AttributeTargets.Delegate | AttributeTargets.Field)]
+		 AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
+		 AttributeTargets.Delegate | AttributeTargets.Field)]
 	public sealed class ItemNotNullAttribute : Attribute
 	{
 	}
@@ -67,8 +67,8 @@ namespace SpaceInvaders.Annotations
 	///     or of the Lazy.Value property can be null.
 	/// </summary>
 	[AttributeUsage(
-		AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
-		AttributeTargets.Delegate | AttributeTargets.Field)]
+		 AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
+		 AttributeTargets.Delegate | AttributeTargets.Field)]
 	public sealed class ItemCanBeNullAttribute : Attribute
 	{
 	}
@@ -89,8 +89,8 @@ namespace SpaceInvaders.Annotations
 	/// </code>
 	/// </example>
 	[AttributeUsage(
-		AttributeTargets.Constructor | AttributeTargets.Method |
-		AttributeTargets.Property | AttributeTargets.Delegate)]
+		 AttributeTargets.Constructor | AttributeTargets.Method |
+		 AttributeTargets.Property | AttributeTargets.Delegate)]
 	public sealed class StringFormatMethodAttribute : Attribute
 	{
 		/// <param name="formatParameterName">
@@ -350,7 +350,7 @@ namespace SpaceInvaders.Annotations
 	/// </code>
 	/// </example>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-	[BaseTypeRequired(typeof (Attribute))]
+	[BaseTypeRequired(typeof(Attribute))]
 	public sealed class BaseTypeRequiredAttribute : Attribute
 	{
 		public BaseTypeRequiredAttribute([NotNull] Type baseType)
@@ -550,8 +550,8 @@ namespace SpaceInvaders.Annotations
 	/// </code>
 	/// </example>
 	[AttributeUsage(
-		AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter |
-		AttributeTargets.Method)]
+		 AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter |
+		 AttributeTargets.Method)]
 	public sealed class ProvidesContextAttribute : Attribute
 	{
 	}

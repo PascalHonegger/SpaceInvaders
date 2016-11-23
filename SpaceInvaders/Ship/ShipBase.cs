@@ -14,6 +14,7 @@ namespace SpaceInvaders.Ship
 	/// </summary>
 	public abstract class ShipBase : IShip
 	{
+		private readonly Guid _identification = Guid.NewGuid();
 		private readonly double _totalHealth;
 		private double _health;
 		private int _lives;
@@ -56,8 +57,6 @@ namespace SpaceInvaders.Ship
 			ShipType = ShipType.Player;
 			Points = 0;
 		}
-
-		private readonly Guid _identification = Guid.NewGuid();
 
 		/// <summary>
 		///     Die Geschwindigkeit, mit welcher das Schiff sich vortbewegt. Wird in SpaceInvaders-Pixel / Tick angegeben
@@ -157,7 +156,7 @@ namespace SpaceInvaders.Ship
 			get { return _lives; }
 			private set
 			{
-				if(Equals(_lives, value)) return;
+				if (Equals(_lives, value)) return;
 				_lives = value;
 				OnPropertyChanged();
 			}
