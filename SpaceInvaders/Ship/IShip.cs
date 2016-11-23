@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using SpaceInvaders.Enums;
-using SpaceInvaders.EventArgs;
 using SpaceInvaders.Shot;
 
 namespace SpaceInvaders.Ship
@@ -57,8 +56,6 @@ namespace SpaceInvaders.Ship
 		/// <summary>
 		///     Wird aufgerufen, wenn sich das Schiff aktualisieren sollte
 		/// </summary>
-		/// <param name="sender">Event sender</param>
-		/// <param name="e">Die <see cref="ShipChangedEventArgs" /></param>
-		void Update(object sender, ShipChangedEventArgs e);
+		void Update();
 	}
 }

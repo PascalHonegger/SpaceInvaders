@@ -4,15 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpaceInvaders"
-        xmlns:converter="clr-namespace:SpaceInvaders.Control.Converter"
         xmlns:control="clr-namespace:SpaceInvaders.Control"
         mc:Ignorable="d"
         Title="Space Invaders" Height="775" Width="1475"
         d:DataContext="{d:DesignInstance local:SpaceInvadersViewModel}"
         ResizeMode="NoResize">
-	<Window.Resources>
-		<converter:InvertBoolConverter x:Key="InvertBoolConverter" />
-	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
@@ -52,19 +48,19 @@
 					<Setter Property="VerticalAlignment" Value="Center" />
 				</Style>
 			</Grid.Resources>
-			<ListView Grid.ColumnSpan="2" IsEnabled="{Binding GameOver}" ItemsSource="{Binding PlayerSelection}" SelectionMode="Single" SelectedItem="{Binding Player}" >
-				<ListView.View>
-					<GridView>
-						<GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
-						<GridViewColumn Header="Ship">
-							<GridViewColumn.CellTemplate>
-								<DataTemplate>
-									<control:ShipControl DataContext="{Binding}"/>
-								</DataTemplate>
-							</GridViewColumn.CellTemplate>
-						</GridViewColumn>
-					</GridView>
-				</ListView.View>
+			<ListView Grid.IsSharedSizeScope="True" Grid.ColumnSpan="2" IsEnabled="{Binding GameOver}" ItemsSource="{Binding PlayerSelection}" SelectionMode="Single" SelectedItem="{Binding Player}" >
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition SharedSizeGroup="ShipName"/>
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
+							<TextBlock Grid.Column="0" Text="{Binding Name}"/>
+							<control:ShipControl Grid.Column="1" DataContext="{Binding}"/>
+						</Grid>
+					</DataTemplate>
+				</ListView.ItemTemplate>
 			</ListView>
 			<TextBlock Grid.Row="1" Grid.Column="0" Text="Name:"/>
 			<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding PlayerName}" IsEnabled="{Binding GameOver}" FontSize="24" HorizontalAlignment="Stretch" VerticalAlignment="Center" MaxLength="{Binding MaximumPlayerNameLength}" />

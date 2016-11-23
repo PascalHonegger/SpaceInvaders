@@ -136,7 +136,7 @@ namespace SpaceInvaders
 
 		private void OnKeyDown(object sender, KeyEventArgs e)
 		{
-			const double timeToWait = 0.1;
+			const double timeToWait = 0.05;
 
 			if (_lastKeyInput >= DateTime.Now.AddSeconds(-timeToWait))
 			{
@@ -160,9 +160,6 @@ namespace SpaceInvaders
 				case Key.W:
 				case Key.Up:
 					ViewModel.FireShotPlayer();
-					break;
-				default:
-					//Nothing
 					break;
 			}
 		}

@@ -74,8 +74,6 @@
       <DependentUpon>ShipControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Enums\ShipType.cs" />
-    <Compile Include="EventArgs\ShipChangedEventArgs.cs" />
-    <Compile Include="EventArgs\ShotMovedEventArgs.cs" />
     <Compile Include="Enums\Direction.cs" />
     <Compile Include="ExtensionMethods\ImageExtensions.cs" />
     <Compile Include="ExtensionMethods\ListExtensions.cs" />

@@ -10,7 +10,6 @@ using System.Windows;
 using Prism.Commands;
 using SpaceInvaders.Annotations;
 using SpaceInvaders.Enums;
-using SpaceInvaders.EventArgs;
 using SpaceInvaders.ExtensionMethods;
 using SpaceInvaders.Properties;
 using SpaceInvaders.Ship;
@@ -55,14 +54,17 @@ namespace SpaceInvaders
 			ReallyEndGameCommand = new DelegateCommand(ReallyEndGame, () => !GameOver).ObservesProperty(() => GameOver);
 
 			StartGameCommand = new DelegateCommand(StartGame).ObservesCanExecute(o => GameOver);
-
-			PlayerSelection = new ObservableCollection<IShip>
-			{
-				new DefaultPlayer(PlayerSpawn),
-				new FastPlayer(PlayerSpawn)
-			};
+			ResetPlayerSelection();
 
 			_player = PlayerSelection.First();
+		}
+
+		private void ResetPlayerSelection()
+		{
+			PlayerSelection.Clear();
+
+			PlayerSelection.Add(new DefaultPlayer(PlayerSpawn));
+			PlayerSelection.Add(new FastPlayer(PlayerSpawn));
 		}
 
 		/// <summary>
@@ -90,7 +92,7 @@ namespace SpaceInvaders
 		/// <summary>
 		///     Alle Player-Schiffe, welche selektiert werden können
 		/// </summary>
-		public IEnumerable<IShip> PlayerSelection { get; }
+		public ObservableCollection<IShip> PlayerSelection { get; } = new ObservableCollection<IShip>();
 
 		/// <summary>
 		///     Der jetzige Spieler
@@ -102,7 +104,7 @@ namespace SpaceInvaders
 			{
 				if (Equals(_player, value)) return;
 				_player = value;
-				OnShipChangedEventHandler(new ShipChangedEventArgs(_player));
+				_player?.Update();
 				OnPropertyChanged();
 			}
 		}
@@ -165,7 +167,7 @@ namespace SpaceInvaders
 		}
 
 		/// <summary>
-		///     True, wenn das jetzige Spiel fertig ist => der <see cref="Player" /> keine <see cref="CurrentLives" /> übrig
+		///     True, wenn das jetzige Spiel fertig ist => der <see cref="Player" /> keine Respawns übrig
 		///     hat
 		/// </summary>
 		public bool GameOver
@@ -222,24 +224,14 @@ namespace SpaceInvaders
 			if (ship.ShipType == ShipType.Player && PlayerShots.Count < MaximumPlayerShotsAtTheSameTime)
 			{
 				PlayerShots.Add(ship.Shot);
-				OnShotMovedEventHandler(new ShotMovedEventArgs(ship.Shot));
+				ship.Shot.Move();
 			}
 			else if (ship.ShipType == ShipType.Invader || ship.ShipType == ShipType.Boss)
 			{
 				InvaderShots.Add(ship.Shot);
-				OnShotMovedEventHandler(new ShotMovedEventArgs(ship.Shot));
+				ship.Shot.Move();
 			}
 		}
-
-		/// <summary>
-		///     Der EventHandel für die <see cref="ShipChangedEventArgs" />
-		/// </summary>
-		public event EventHandler<ShipChangedEventArgs> ShipChangedEvent;
-
-		/// <summary>
-		///     Der EventHandel für die <see cref="ShotMovedEventArgs" />
-		/// </summary>
-		public event EventHandler<ShotMovedEventArgs> ShotMovedEvent;
 
 		/// <summary>
 		///     Beendet das Spiel
@@ -258,33 +250,35 @@ namespace SpaceInvaders
 				Settings.Default.Save();
 			}
 
+			ResetPlayerSelection();
+
 			DestroyEverything();
 		}
 
-		private void OnShipChangedEventHandler(ShipChangedEventArgs e, bool removeInvader = false)
+		private void RemoveInvader(IShip ship)
 		{
-			if (removeInvader)
-			{
-				ShipChangedEvent -= e.Ship.Update;
-				Invaders.Remove(e.Ship);
+			Invaders.Remove(ship);
 
-				if (!GameOver)
-				{
-					Score += e.Ship.Points;
-				}
+			if (!GameOver)
+			{
+				Score += ship.Points;
 			}
-			ShipChangedEvent?.Invoke(this, e);
 		}
 
-		private void OnShotMovedEventHandler(ShotMovedEventArgs e, bool removeShot = false)
+		private void UpdateShips()
 		{
-			if (removeShot)
+			foreach (var invader in Invaders)
 			{
-				PlayerShots.Remove(e.Shot);
-				InvaderShots.Remove(e.Shot);
+				invader.Update();
 			}
 
-			ShotMovedEvent?.Invoke(this, e);
+			Player.Update();
+		}
+
+		private void RemoveShot(IShot shot)
+		{
+			PlayerShots.Remove(shot);
+			InvaderShots.Remove(shot);
 		}
 
 		/// <summary>
@@ -298,7 +292,7 @@ namespace SpaceInvaders
 
 			_invaderDirection = Direction.Right;
 
-			OnShipChangedEventHandler(new ShipChangedEventArgs(Player));
+			UpdateShips();
 
 			Wave = 0;
 			Score = 0;
@@ -318,17 +312,17 @@ namespace SpaceInvaders
 		{
 			foreach (var invader in Invaders.ToList())
 			{
-				OnShipChangedEventHandler(new ShipChangedEventArgs(invader), true);
+				RemoveInvader(invader);
 			}
 
 			foreach (var shot in PlayerShots.ToList())
 			{
-				OnShotMovedEventHandler(new ShotMovedEventArgs(shot), true);
+				RemoveShot(shot);
 			}
 
 			foreach (var shot in InvaderShots.ToList())
 			{
-				OnShotMovedEventHandler(new ShotMovedEventArgs(shot), true);
+				RemoveShot(shot);
 			}
 		}
 
@@ -338,15 +332,12 @@ namespace SpaceInvaders
 
 			foreach (var invader in Invaders)
 			{
-				OnShipChangedEventHandler(new ShipChangedEventArgs(invader), true);
+				RemoveInvader(invader);
 			}
 
 			Invaders.AddRange(CreateNewAttackWave());
 
-			foreach (var invader in Invaders)
-			{
-				OnShipChangedEventHandler(new ShipChangedEventArgs(invader));
-			}
+			UpdateShips();
 		}
 
 		private IEnumerable<IShip> CreateNewAttackWave()
@@ -361,7 +352,6 @@ namespace SpaceInvaders
 					var x = _playArea.Width / InvaderColumns * row;
 					var y = _playArea.Height / InvaderRows / 3 * column;
 					var invader = new Ufo(new Point(x, y));
-					ShipChangedEvent += invader.Update;
 					attackers.Add(invader);
 				}
 			}
@@ -387,7 +377,7 @@ namespace SpaceInvaders
 				Player.Move(InvertDirection(direction));
 			}
 
-			OnShipChangedEventHandler(new ShipChangedEventArgs(Player));
+			Player.Update();
 		}
 
 		private Direction InvertDirection(Direction direction)
@@ -422,14 +412,14 @@ namespace SpaceInvaders
 				NextWave();
 			}
 
-			var shots = InvaderShots.ToList();
-
-			shots.AddRange(PlayerShots.ToList());
-
-			foreach (var shot in shots)
+			foreach (var shot in InvaderShots.Concat(PlayerShots))
 			{
 				shot.Move();
-				OnShotMovedEventHandler(new ShotMovedEventArgs(shot), IsOutOfBounds(shot.Rect));
+
+				if (IsOutOfBounds(shot.Rect))
+				{
+					RemoveShot(shot);
+				}
 			}
 
 			CheckForInvaderCollision();
@@ -517,11 +507,6 @@ namespace SpaceInvaders
 					invader.Move(Direction.Down);
 				}
 			}
-
-			foreach (var invader in Invaders)
-			{
-				OnShipChangedEventHandler(new ShipChangedEventArgs(invader));
-			}
 		}
 
 		private void CheckForInvaderCollision()
@@ -531,15 +516,18 @@ namespace SpaceInvaders
 				foreach (var shot in PlayerShots.ToList().Where(shot => RectsOverlap(invader.Rect, shot.Rect)))
 				{
 					invader.Health -= shot.Damage;
-					OnShipChangedEventHandler(new ShipChangedEventArgs(invader), invader.Health <= 0);
-					OnShotMovedEventHandler(new ShotMovedEventArgs(shot), true);
+					if (invader.Health <= 0)
+					{
+						RemoveInvader(invader);
+					}
+
+					RemoveShot(shot);
 				}
 
 				if (RectsOverlap(invader.Rect, Player.Rect))
 				{
 					Player.Health -= invader.Health;
-					OnShipChangedEventHandler(new ShipChangedEventArgs(invader), true);
-					OnShipChangedEventHandler(new ShipChangedEventArgs(Player));
+					RemoveInvader(invader);
 				}
 			}
 		}
@@ -549,8 +537,7 @@ namespace SpaceInvaders
 			foreach (var shot in InvaderShots.Where(shot => RectsOverlap(Player.Rect, shot.Rect)).ToList())
 			{
 				Player.Health -= shot.Damage;
-				OnShipChangedEventHandler(new ShipChangedEventArgs(Player));
-				OnShotMovedEventHandler(new ShotMovedEventArgs(shot), true);
+				RemoveShot(shot);
 			}
 		}
 
@@ -605,8 +592,6 @@ namespace SpaceInvaders
 				DestroyEverything();
 				_invaderLastMoved = DateTime.MinValue;
 				Player = null;
-				ShipChangedEvent = null;
-				ShotMovedEvent = null;
 			}
 
 			// Unmanaged Resources

@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using SpaceInvaders.Annotations;
 using SpaceInvaders.Enums;
-using SpaceInvaders.EventArgs;
 using SpaceInvaders.Shot;
 
 namespace SpaceInvaders.Ship
@@ -58,7 +57,7 @@ namespace SpaceInvaders.Ship
 			Points = 0;
 		}
 
-		private Guid Identification { get; } = Guid.NewGuid();
+		private readonly Guid _identification = Guid.NewGuid();
 
 		/// <summary>
 		///     Die Geschwindigkeit, mit welcher das Schiff sich vortbewegt. Wird in SpaceInvaders-Pixel / Tick angegeben
@@ -145,14 +144,9 @@ namespace SpaceInvaders.Ship
 		/// <summary>
 		///     Wird aufgerufen, wenn sich das Schiff aktualisieren sollte
 		/// </summary>
-		/// <param name="sender">Event sender</param>
-		/// <param name="e">Die <see cref="ShipChangedEventArgs" /></param>
-		public void Update(object sender, ShipChangedEventArgs e)
+		public void Update()
 		{
-			if (Equals(e.Ship, this))
-			{
-				OnPropertyChanged(nameof(CurrentTexture));
-			}
+			OnPropertyChanged(nameof(CurrentTexture));
 		}
 
 		/// <summary>
@@ -202,7 +196,7 @@ namespace SpaceInvaders.Ship
 			var shipBase = obj as ShipBase;
 			if (shipBase == null) return false;
 
-			return Equals(Identification, shipBase.Identification);
+			return Equals(_identification, shipBase._identification);
 		}
 
 		/// <summary>
@@ -214,7 +208,7 @@ namespace SpaceInvaders.Ship
 		/// <filterpriority>2</filterpriority>
 		public override int GetHashCode()
 		{
-			return Identification.GetHashCode();
+			return _identification.GetHashCode();
 		}
 	}
 }
