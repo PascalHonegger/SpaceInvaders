@@ -25,8 +25,6 @@ namespace SpaceInvaders
 	public sealed class SpaceInvadersViewModel : IDisposable, INotifyPropertyChanged
 	{
 		private const int MaximumPlayerShotsAtTheSameTime = 3;
-		private const int InvaderColumns = 4;
-		private const int InvaderRows = 3;
 		private readonly Rect _playArea = new Rect(new Size(1074, 587));
 		private bool _gameOver = true;
 		private Direction _invaderDirection = Direction.Right;
@@ -39,7 +37,7 @@ namespace SpaceInvaders
 		/// <summary>
 		///     Der Updatetimer bestimmt die Tickrate
 		/// </summary>
-		public Timer UpdateTimer = new Timer(100);
+		public Timer UpdateTimer = new Timer(5);
 
 		/// <summary>
 		///     Constructor
@@ -53,6 +51,13 @@ namespace SpaceInvaders
 
 			_player = PlayerSelection.First();
 		}
+
+
+		private readonly List<WaveInformation> _availableInvaders = new List<WaveInformation>
+		{
+			new WaveInformation(3, 3, p => new Ufo(p)),
+			new WaveInformation(5, 3, p => new Alien(p))
+		};
 
 		/// <summary>
 		///     Command für <see cref="ReallyEndGame" />
@@ -272,6 +277,12 @@ namespace SpaceInvaders
 			Player.Update();
 		}
 
+		private void UpdateShots()
+		{
+			foreach (var shot in PlayerShots.Concat(InvaderShots))
+				shot.Update();
+		}
+
 		private void RemoveShot(IShot shot)
 		{
 			PlayerShots.Remove(shot);
@@ -288,8 +299,6 @@ namespace SpaceInvaders
 			DestroyEverything();
 
 			_invaderDirection = Direction.Right;
-
-			UpdateShips();
 
 			Wave = 0;
 			Score = 0;
@@ -325,8 +334,6 @@ namespace SpaceInvaders
 				RemoveInvader(invader);
 
 			Invaders.AddRange(CreateNewAttackWave());
-
-			UpdateShips();
 		}
 
 		private IEnumerable<IShip> CreateNewAttackWave()
@@ -334,12 +341,17 @@ namespace SpaceInvaders
 			_invaderDirection = Direction.Right;
 			IList<IShip> attackers = new List<IShip>();
 
-			for (var row = 0; row < InvaderColumns; row++)
-			for (var column = 0; column < InvaderRows; column++)
+			var waveInformation = _availableInvaders.PickRandom();
+
+			var invaderColumns = waveInformation.WaveColumns;
+			var invaderRows = waveInformation.WaveRows;
+
+			for (var row = 0; row < invaderColumns; row++)
+			for (var column = 0; column < invaderRows; column++)
 			{
-				var x = _playArea.Width / InvaderColumns * row;
-				var y = _playArea.Height / InvaderRows / 3 * column;
-				var invader = new Ufo(new Point(x, y));
+				var x = _playArea.Width / invaderColumns * row;
+				var y = _playArea.Height / invaderRows / 3 * column;
+				var invader = waveInformation.CreateShip(new Point(x, y));
 				attackers.Add(invader);
 			}
 
@@ -391,7 +403,7 @@ namespace SpaceInvaders
 			if (Invaders.Count == 0)
 				NextWave();
 
-			foreach (var shot in InvaderShots.Concat(PlayerShots))
+			foreach (var shot in InvaderShots.Concat(PlayerShots).ToList())
 			{
 				shot.Move();
 
@@ -408,6 +420,8 @@ namespace SpaceInvaders
 			InvaderReturnFire();
 
 			UpdateShips();
+
+			UpdateShots();
 		}
 
 		/// <summary>

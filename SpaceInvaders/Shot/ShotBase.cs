@@ -98,6 +98,11 @@ namespace SpaceInvaders.Shot
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
+		public void Update()
+		{
+			OnPropertyChanged(nameof(CurrentTexture));
+		}
+
 		/// <summary>
 		///     Bestimmt, ob das angegebene Objekt mit dem aktuellen Objekt identisch ist.
 		/// </summary>

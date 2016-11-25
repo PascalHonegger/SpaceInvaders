@@ -25,5 +25,7 @@ namespace SpaceInvaders.Shot
 		///     Bewegt den Schuss in die <see cref="Direction" />
 		/// </summary>
 		void Move();
+
+		void Update();
 	}
 }

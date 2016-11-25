@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance ship:ShipBase }">
 	<StackPanel>
-		<ProgressBar Minimum="0" Maximum="{Binding MaxHealth}" Value="{Binding Health}" Height="15" HorizontalAlignment="Stretch"/>
+		<ProgressBar Minimum="0" Maximum="{Binding MaxHealth}" Value="{Binding Health}" Height="15" Width="75" HorizontalAlignment="Center"/>
 		<Image Stretch="Fill" Source="{Binding CurrentTexture}" Width="{Binding Rect.Width}" Height="{Binding Rect.Height}" />
 	</StackPanel>
 </UserControl>

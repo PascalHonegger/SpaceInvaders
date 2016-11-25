@@ -18,7 +18,7 @@ namespace SpaceInvaders.Ship.Invaders
 		private const string DefaultName = "Player of Doom";
 
 		private const int DefaultPoints = 40;
-		private static readonly Size DefaultSize = new Size(50, 100);
+		private static readonly Size DefaultSize = new Size(50, 50);
 
 		/// <summary>
 		///     Der Konstruktor für <see cref="Ufo" />
@@ -31,14 +31,14 @@ namespace SpaceInvaders.Ship.Invaders
 		/// <summary>
 		///     Der Schuss des Schiffes, welcher beim Schiessen geschossen wird
 		/// </summary>
-		public override IShot Shot => new StrongInvaderShot(Rect.Location, Direction.Down);
+		public override IShot Shot => new WeakInvaderShot(Rect.Location, Direction.Down);
 
 		/// <summary>
 		///     Die Textur des Schiffes, welche im View angezeigt wird
 		/// </summary>
 		public override BitmapSource CurrentTexture
 			=>
-			DateTime.Now.Second < 5
+			DateTime.Now.Second % 3 == 0 || DateTime.Now.Second % 4 == 0
 				? Resources.invader1_animation_one.ToBitmapSource()
 				: Resources.invader1_animation_two.ToBitmapSource();
 	}
