@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Timers;
 using System.Windows;
 using Prism.Commands;
-using SpaceInvaders.Annotations;
 using SpaceInvaders.Enums;
 using SpaceInvaders.ExtensionMethods;
+using SpaceInvaders.Infrastruktur;
 using SpaceInvaders.Properties;
 using SpaceInvaders.Ship;
 using SpaceInvaders.Ship.Invaders;
@@ -22,7 +20,7 @@ namespace SpaceInvaders
 	/// <summary>
 	///     Das ViewModel des gesamten SpaceInvaders
 	/// </summary>
-	public sealed class SpaceInvadersViewModel : IDisposable, INotifyPropertyChanged
+	public sealed class SpaceInvadersViewModel : PropertyChangedBase, IDisposable
 	{
 		private const int MaximumPlayerShotsAtTheSameTime = 3;
 		private readonly Rect _playArea = new Rect(new Size(1074, 587));
@@ -179,11 +177,6 @@ namespace SpaceInvaders
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
-
-		/// <summary>
-		///     OnPropertyChanged Event
-		/// </summary>
-		public event PropertyChangedEventHandler PropertyChanged;
 
 		private void ResetPlayerSelection()
 		{
@@ -580,16 +573,6 @@ namespace SpaceInvaders
 		{
 			// Useless
 			Dispose(false);
-		}
-
-		/// <summary>
-		///     Notifies the GUI, that the Porperty changed
-		/// </summary>
-		/// <param name="propertyName">The name of the Property, which got changed</param>
-		[NotifyPropertyChangedInvocator]
-		private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

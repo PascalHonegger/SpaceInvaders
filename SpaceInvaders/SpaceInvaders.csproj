@@ -78,6 +78,7 @@
     <Compile Include="Enums\Direction.cs" />
     <Compile Include="ExtensionMethods\ImageExtensions.cs" />
     <Compile Include="ExtensionMethods\ListExtensions.cs" />
+    <Compile Include="Infrastruktur\PropertyChangedBase.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Ship\Invaders\Alien.cs" />
     <Compile Include="Ship\Invaders\WaveInformation.cs" />

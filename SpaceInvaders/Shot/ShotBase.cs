@@ -1,10 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using SpaceInvaders.Annotations;
 using SpaceInvaders.Enums;
+using SpaceInvaders.Infrastruktur;
 using SpaceInvaders.Ship;
 
 namespace SpaceInvaders.Shot
@@ -12,7 +10,7 @@ namespace SpaceInvaders.Shot
 	/// <summary>
 	///     Die Grundimplementation des Schusses
 	/// </summary>
-	public abstract class ShotBase : IShot
+	public abstract class ShotBase : PropertyChangedBase, IShot
 	{
 		/// <summary>
 		///     Der Base-Konstruktor für alle Schüsse.
@@ -84,20 +82,8 @@ namespace SpaceInvaders.Shot
 		}
 
 		/// <summary>
-		///     Tritt ein, wenn sich ein Eigenschaftswert ändert.
+		///     Sagt dem Schuss sich zu aktualisieren
 		/// </summary>
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		/// <summary>
-		///     Notifies the GUI, that the Porperty changed
-		/// </summary>
-		/// <param name="propertyName">The name of the Property, which got changed</param>
-		[NotifyPropertyChangedInvocator]
-		public void OnPropertyChanged([CallerMemberName] string propertyName = null)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-
 		public void Update()
 		{
 			OnPropertyChanged(nameof(CurrentTexture));

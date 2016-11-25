@@ -26,6 +26,9 @@ namespace SpaceInvaders.Shot
 		/// </summary>
 		void Move();
 
+		/// <summary>
+		///     Sagt dem Schuss sich zu aktualisieren
+		/// </summary>
 		void Update();
 	}
 }

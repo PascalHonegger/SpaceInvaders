@@ -1,10 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using SpaceInvaders.Annotations;
 using SpaceInvaders.Enums;
+using SpaceInvaders.Infrastruktur;
 using SpaceInvaders.Shot;
 
 namespace SpaceInvaders.Ship
@@ -12,17 +10,16 @@ namespace SpaceInvaders.Ship
 	/// <summary>
 	///     Die Grundimplementation des Schiffes
 	/// </summary>
-	public abstract class ShipBase : IShip
+	public abstract class ShipBase : PropertyChangedBase, IShip
 	{
 		private readonly Guid _identification = Guid.NewGuid();
-		private readonly double _totalHealth;
 		private double _health;
 		private int _lives;
 
 		/// <summary>
 		///     Das maximale Leben eines Schiffes.
 		/// </summary>
-		public double MaxHealth => _totalHealth;
+		public double MaxHealth { get; }
 
 		/// <summary>
 		///     Der Base-Konstruktor für alle Invader.
@@ -34,7 +31,7 @@ namespace SpaceInvaders.Ship
 		protected ShipBase(string name, double health, int points, Rect rect)
 		{
 			Name = name;
-			Health = _totalHealth = health;
+			Health = MaxHealth = health;
 			Points = points;
 			Rect = rect;
 
@@ -55,7 +52,7 @@ namespace SpaceInvaders.Ship
 		{
 			Lives = totalLives;
 			Name = name;
-			Health = _totalHealth = health;
+			Health = MaxHealth = health;
 			Speed = speed;
 			Rect = rect;
 
@@ -74,11 +71,6 @@ namespace SpaceInvaders.Ship
 		public abstract BitmapSource CurrentTexture { get; }
 
 		/// <summary>
-		///     Tritt ein, wenn sich ein Eigenschaftswert ändert.
-		/// </summary>
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		/// <summary>
 		///     Das Leben eines Schiffes. Wird bei einem Treffer reduziert. Unabhängig von den Respawns des Spielers!
 		/// </summary>
 		public double Health
@@ -91,7 +83,7 @@ namespace SpaceInvaders.Ship
 				if (_health <= 0 && Lives > 0)
 				{
 					Lives--;
-					_health = _totalHealth;
+					_health = MaxHealth;
 				}
 
 				OnPropertyChanged();
@@ -176,16 +168,6 @@ namespace SpaceInvaders.Ship
 		///     Der Schifftyp, welcher darüber entscheided ob dieses Schiff durch den Spieler gelenkt wird
 		/// </summary>
 		public ShipType ShipType { get; }
-
-		/// <summary>
-		///     Notifies the GUI, that the Porperty changed
-		/// </summary>
-		/// <param name="propertyName">The name of the Property, which got changed</param>
-		[NotifyPropertyChangedInvocator]
-		private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
 
 		/// <summary>
 		///     Bestimmt, ob das angegebene Objekt mit dem aktuellen Objekt identisch ist.
