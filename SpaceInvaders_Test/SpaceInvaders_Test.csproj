@@ -83,7 +83,7 @@
     <Compile Include="Ship\Players\DefaultPlayerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBases\UnitTestBase.cs" />
-    <Compile Include="ViewModel\SpaceInvadersViewModelTest.cs" />
+    <Compile Include="ViewModel\PlayFieldViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -12,9 +12,9 @@ using SpaceInvaders.Shot;
 namespace SpaceInvaders
 {
 	/// <summary>
-	///     Interaction logic for MainWindow.xaml
+	///     Interaction logic for PlayFieldView.xaml
 	/// </summary>
-	public partial class MainWindow
+	public partial class PlayFieldView
 	{
 		private readonly Dictionary<IShip, ShipControl> _shipWithControls = new Dictionary<IShip, ShipControl>();
 		private readonly Dictionary<IShot, ShotControl> _shotWithControls = new Dictionary<IShot, ShotControl>();
@@ -22,15 +22,15 @@ namespace SpaceInvaders
 		private KeyValuePair<IShip, ShipControl> _playerWithControl;
 
 		/// <summary>
-		///     Constructor for MainWindow
+		///     Constructor for PlayFieldView
 		/// </summary>
-		public MainWindow()
+		public PlayFieldView()
 		{
 			InitializeComponent();
 
 			KeyDown += OnKeyDown;
 
-			DataContext = new SpaceInvadersViewModel();
+			DataContext = new PlayFieldViewModel();
 
 			ViewModel.UpdateTimer.Elapsed += (sender, e) =>
 			{
@@ -45,7 +45,7 @@ namespace SpaceInvaders
 			};
 		}
 
-		private SpaceInvadersViewModel ViewModel => DataContext as SpaceInvadersViewModel;
+		private PlayFieldViewModel ViewModel => DataContext as PlayFieldViewModel;
 
 		/// <summary>
 		///     Das <see cref="Dictionary{TKey,TValue}" /> mit dem Schiff und dem dazugehörigen Control

@@ -10,7 +10,7 @@
   <Class Name="SpaceInvaders.Shot.ShotBase">
     <Position X="2.75" Y="11" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>QAAAAACBAIAAAAAAoCAAAAABgCAAAIAAAAAAAAAAAAA=</HashCode>
+      <HashCode>QAQAAACBAIAAAAAAgCAAAAABACAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>Shot\ShotBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -105,7 +105,7 @@
   <Class Name="SpaceInvaders.Ship.ShipBase">
     <Position X="4.5" Y="1" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>QAQACACBAIEAgABAoAAAAQQBgCAIAIACAAAAAAAAAAA=</HashCode>
+      <HashCode>QAQACAAAAIEAiABAgAAAAQQBACAIAIACAEAAAAAAAAA=</HashCode>
       <FileName>Ship\ShipBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -127,7 +127,7 @@
   <Class Name="SpaceInvaders.MainWindow" BaseTypeListCollapsed="true">
     <Position X="23.5" Y="4" Width="3.75" />
     <TypeIdentifier>
-      <HashCode>QABAACAgAAAAAAAgCCAAAAAAEAJAAAAAAABAgAABAAA=</HashCode>
+      <HashCode>QAAAAAAAAAAAAAAgCCAAAAAAEAJAAAAAAABAgAABAAA=</HashCode>
       <FileName>MainWindow.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -135,7 +135,7 @@
   <Class Name="SpaceInvaders.SpaceInvadersViewModel" BaseTypeListCollapsed="true">
     <Position X="12.75" Y="1" Width="4.5" />
     <TypeIdentifier>
-      <HashCode>BBUAgIAIBKBAJigAIAAAKYoohAkNCAAQhhAMAQAQB0A=</HashCode>
+      <HashCode>BBUAgAAIAKAAJigAAAgAKQoqFAkJCAASBhAIAQBYBUA=</HashCode>
       <FileName>SpaceInvadersViewModel.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -143,14 +143,14 @@
   <Interface Name="SpaceInvaders.Shot.IShot">
     <Position X="20.75" Y="9.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAACAAIAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAQAAACAAIAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Shot\IShot.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="SpaceInvaders.Ship.IShip">
     <Position X="18.25" Y="9.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAQACAAAAIAAgABAAAAAAAQAACAIAAACAAAAAAAAAAA=</HashCode>
+      <HashCode>AAQACAAAAIAAiABAAAAAAAQAACAIAAACAAAAAAAAAAA=</HashCode>
       <FileName>Ship\IShip.cs</FileName>
     </TypeIdentifier>
   </Interface>

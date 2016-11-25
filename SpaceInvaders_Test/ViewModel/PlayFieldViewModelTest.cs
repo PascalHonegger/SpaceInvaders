@@ -9,9 +9,9 @@ using SpaceInvaders_Test.TestBases;
 
 namespace SpaceInvaders_Test.ViewModel
 {
-	public class SpaceInvadersViewModelTest : UnitTestBase
+	public class PlayFieldViewModelTest : UnitTestBase
 	{
-		private SpaceInvadersViewModel _unitUnderTest;
+		private PlayFieldViewModel _unitUnderTest;
 
 		[TestCase("Pascal", ExpectedResult = true)]
 		[TestCase("20zeichenqqqqqqqqqqq", ExpectedResult = false)]
@@ -28,7 +28,7 @@ namespace SpaceInvaders_Test.ViewModel
 
 		protected override void OnSetUp()
 		{
-			_unitUnderTest = new SpaceInvadersViewModel();
+			_unitUnderTest = new PlayFieldViewModel();
 		}
 
 		protected override void OnTearDown()
@@ -80,7 +80,7 @@ namespace SpaceInvaders_Test.ViewModel
 		public void TestFireShotBoss()
 		{
 			// Arrange
-			_unitUnderTest = new SpaceInvadersViewModel();
+			_unitUnderTest = new PlayFieldViewModel();
 			var bossMock = new Mock<IShip>();
 			var shotMock = new Mock<IShot>();
 
@@ -132,7 +132,7 @@ namespace SpaceInvaders_Test.ViewModel
 		public void TestIsOutOfBounds()
 		{
 			// Arrang
-			_unitUnderTest = new SpaceInvadersViewModel();
+			_unitUnderTest = new PlayFieldViewModel();
 
 			// Act
 

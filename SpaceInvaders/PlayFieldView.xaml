@@ -1,4 +1,4 @@
-﻿<Window x:Class="SpaceInvaders.MainWindow"
+﻿<Window x:Class="SpaceInvaders.PlayFieldView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
         xmlns:control="clr-namespace:SpaceInvaders.Control"
         mc:Ignorable="d"
         Title="Space Invaders" Height="775" Width="1475"
-        d:DataContext="{d:DesignInstance local:SpaceInvadersViewModel}"
+        d:DataContext="{d:DesignInstance local:PlayFieldViewModel}"
         ResizeMode="NoResize">
 	<Grid>
 		<Grid.RowDefinitions>

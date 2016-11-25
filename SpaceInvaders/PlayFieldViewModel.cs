@@ -20,7 +20,7 @@ namespace SpaceInvaders
 	/// <summary>
 	///     Das ViewModel des gesamten SpaceInvaders
 	/// </summary>
-	public sealed class SpaceInvadersViewModel : PropertyChangedBase, IDisposable
+	public sealed class PlayFieldViewModel : PropertyChangedBase, IDisposable
 	{
 		private const int MaximumPlayerShotsAtTheSameTime = 3;
 		private readonly Rect _playArea = new Rect(new Size(1074, 587));
@@ -40,7 +40,7 @@ namespace SpaceInvaders
 		/// <summary>
 		///     Constructor
 		/// </summary>
-		public SpaceInvadersViewModel()
+		public PlayFieldViewModel()
 		{
 			ReallyEndGameCommand = new DelegateCommand(ReallyEndGame, () => !GameOver).ObservesProperty(() => GameOver);
 
@@ -569,7 +569,7 @@ namespace SpaceInvaders
 		///     Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage
 		///     collection.
 		/// </summary>
-		~SpaceInvadersViewModel()
+		~PlayFieldViewModel()
 		{
 			// Useless
 			Dispose(false);
