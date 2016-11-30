@@ -1,6 +1,4 @@
-﻿using SpaceInvaders.Ship;
-
-namespace SpaceInvaders.Control
+﻿namespace SpaceInvaders.Control
 {
 	/// <summary>
 	///     Interaction logic for ShipControl.xaml
@@ -13,14 +11,6 @@ namespace SpaceInvaders.Control
 		public ShipControl()
 		{
 			InitializeComponent();
-		}
-
-		/// <summary>
-		///     Constructor for ShipControl
-		/// </summary>
-		public ShipControl(IShip datacontext) : this()
-		{
-			DataContext = datacontext;
 		}
 	}
 }

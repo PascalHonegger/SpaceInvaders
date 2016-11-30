@@ -1,6 +1,4 @@
-﻿using SpaceInvaders.Shot;
-
-namespace SpaceInvaders.Control
+﻿namespace SpaceInvaders.Control
 {
 	/// <summary>
 	///     Interaction logic for ShipControl.xaml
@@ -10,11 +8,9 @@ namespace SpaceInvaders.Control
 		/// <summary>
 		///     Constructor for ShotControl
 		/// </summary>
-		public ShotControl(IShot datacontext)
+		public ShotControl()
 		{
 			InitializeComponent();
-
-			DataContext = datacontext;
 		}
 	}
 }

@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media.Imaging;
 using SpaceInvaders.Enums;
-using SpaceInvaders.Infrastruktur;
+using SpaceInvaders.Infrastructure;
 using SpaceInvaders.Shot;
 
 namespace SpaceInvaders.Ship
@@ -15,11 +15,15 @@ namespace SpaceInvaders.Ship
 		private readonly Guid _identification = Guid.NewGuid();
 		private double _health;
 		private int _lives;
+		private double _x;
+		private double _y;
 
 		/// <summary>
 		///     Das maximale Leben eines Schiffes.
 		/// </summary>
 		public double MaxHealth { get; }
+
+		protected abstract Size Size { get; }
 
 		/// <summary>
 		///     Der Base-Konstruktor für alle Invader.
@@ -27,13 +31,14 @@ namespace SpaceInvaders.Ship
 		/// <param name="health">Ändert das <see cref="Health" /></param>
 		/// <param name="name">Ändert den <see cref="Name" /></param>
 		/// <param name="points">Ändert die <see cref="Points" /></param>
-		/// <param name="rect">Ändert die <see cref="Rect" /></param>
-		protected ShipBase(string name, double health, int points, Rect rect)
+		/// <param name="location">Ändert die <see cref="Rect" /></param>
+		protected ShipBase(string name, double health, int points, Point location)
 		{
 			Name = name;
 			Health = MaxHealth = health;
 			Points = points;
-			Rect = rect;
+			X = location.X;
+			Y = location.Y;
 
 			Speed = 30;
 			ShipType = ShipType.Invader;
@@ -47,14 +52,15 @@ namespace SpaceInvaders.Ship
 		/// <param name="name">Ändert den <see cref="Name" /></param>
 		/// <param name="health">Ändert das <see cref="Health" /></param>
 		/// <param name="speed">Ändert den <see cref="Speed" /></param>
-		/// <param name="rect">Ändert die <see cref="Rect" /></param>
-		protected ShipBase(int totalLives, string name, double health, int speed, Rect rect)
+		/// <param name="location">Ändert die <see cref="Rect" /></param>
+		protected ShipBase(int totalLives, string name, double health, int speed, Point location)
 		{
 			Lives = totalLives;
 			Name = name;
 			Health = MaxHealth = health;
 			Speed = speed;
-			Rect = rect;
+			X = location.X;
+			Y = location.Y;
 
 			ShipType = ShipType.Player;
 			Points = 0;
@@ -95,11 +101,13 @@ namespace SpaceInvaders.Ship
 		/// </summary>
 		public abstract IShot Shot { get; }
 
+		protected Point ShotSpawnPoint => new Point(X + Size.Width / 2, Y);
+
 		/// <summary>
 		///     Die Location <see cref="Point" /> (top-left corner) und die Grösse <see cref="Size" /> des Schiffes in
 		///     SpaceInvaders-Pixel
 		/// </summary>
-		public Rect Rect { get; private set; }
+		public Rect Rect => new Rect(new Point(X, Y), Size);
 
 
 		/// <summary>
@@ -108,33 +116,29 @@ namespace SpaceInvaders.Ship
 		public string Name { get; }
 
 		/// <summary>
-		///     Bewegt das Schiff in die gewünschte Richtung, indem es den <see cref="IShip.Rect" /> verändert. Kann beliebig oft
+		///     Bewegt das Schiff in die gewünschte Richtung, indem es den <see cref="IGameObject.Rect" /> verändert. Kann beliebig oft
 		///     aufgerufen werden (kein Cooldown)
 		/// </summary>
 		/// <param name="direction">Die Richtung, in welche sich das Schiff bewegt</param>
 		public void Move(Direction direction)
 		{
-			var newX = Rect.X;
-			var newY = Rect.Y;
-
 			switch (direction)
 			{
 				case Direction.Left:
-					newX -= Speed;
+					X -= Speed;
 					break;
 				case Direction.Right:
-					newX += Speed;
+					X += Speed;
 					break;
 				case Direction.Up:
-					newY -= Speed;
+					Y -= Speed;
 					break;
 				case Direction.Down:
-					newY += Speed;
+					Y += Speed;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
 			}
-			Rect = new Rect(new Point(newX, newY), Rect.Size);
 		}
 
 		/// <summary>
@@ -195,6 +199,30 @@ namespace SpaceInvaders.Ship
 		public override int GetHashCode()
 		{
 			return _identification.GetHashCode();
+		}
+
+		public double X
+		{
+			get { return _x; }
+			set
+			{
+				if (value.Equals(_x)) return;
+				_x = value;
+				OnPropertyChanged();
+				OnPropertyChanged(nameof(Rect));
+			}
+		}
+
+		public double Y
+		{
+			get { return _y; }
+			set
+			{
+				if (value.Equals(_y)) return;
+				_y = value;
+				OnPropertyChanged();
+				OnPropertyChanged(nameof(Rect));
+			}
 		}
 	}
 }

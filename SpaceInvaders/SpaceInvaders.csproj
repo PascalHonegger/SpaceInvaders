@@ -36,6 +36,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>SpaceInvaders.App</StartupObject>
@@ -48,6 +49,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,11 +76,13 @@
     <Compile Include="Control\ShipControl.xaml.cs">
       <DependentUpon>ShipControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\TemplateSelector\GameObjectTemplateSelector.cs" />
     <Compile Include="Enums\ShipType.cs" />
     <Compile Include="Enums\Direction.cs" />
     <Compile Include="ExtensionMethods\ImageExtensions.cs" />
     <Compile Include="ExtensionMethods\ListExtensions.cs" />
-    <Compile Include="Infrastruktur\PropertyChangedBase.cs" />
+    <Compile Include="Infrastructure\IGameObject.cs" />
+    <Compile Include="Infrastructure\PropertyChangedBase.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Ship\Invaders\Alien.cs" />
     <Compile Include="Ship\Invaders\WaveInformation.cs" />

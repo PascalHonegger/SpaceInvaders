@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using Moq;
 using NUnit.Framework;
 using SpaceInvaders;
@@ -63,8 +64,8 @@ namespace SpaceInvaders_Test.ViewModel
 			var invaderMock = new Mock<IShip>();
 			var shotMock = new Mock<IShot>();
 
-			_unitUnderTest.Invaders.Add(invaderMock.Object);
-			_unitUnderTest.InvaderShots.Add(shotMock.Object);
+			_unitUnderTest.GameObjects.Add(invaderMock.Object);
+			_unitUnderTest.GameObjects.Add(shotMock.Object);
 
 			invaderMock.Setup(pl => pl.ShipType).Returns(ShipType.Invader);
 
@@ -72,8 +73,8 @@ namespace SpaceInvaders_Test.ViewModel
 			_unitUnderTest.DestroyEverything();
 
 			// Assert
-			Assert.That(_unitUnderTest.InvaderShots.Count, Is.EqualTo(0));
-			Assert.That(_unitUnderTest.Invaders.Count, Is.EqualTo(0));
+			Assert.That(_unitUnderTest.Shots.Count(), Is.EqualTo(0));
+			Assert.That(_unitUnderTest.Invaders.Count(), Is.EqualTo(0));
 		}
 
 		[Test]
@@ -91,7 +92,7 @@ namespace SpaceInvaders_Test.ViewModel
 			_unitUnderTest.FireShot(bossMock.Object);
 
 			// Assert
-			Assert.That(_unitUnderTest.InvaderShots.Count, Is.EqualTo(1));
+			Assert.That(_unitUnderTest.Shots.Count, Is.EqualTo(1));
 		}
 
 		[Test]
@@ -108,7 +109,7 @@ namespace SpaceInvaders_Test.ViewModel
 			_unitUnderTest.FireShot(invaderMock.Object);
 
 			// Assert
-			Assert.That(_unitUnderTest.InvaderShots.Count, Is.EqualTo(1));
+			Assert.That(_unitUnderTest.Shots.Count, Is.EqualTo(1));
 		}
 
 		[Test]
@@ -125,7 +126,7 @@ namespace SpaceInvaders_Test.ViewModel
 			_unitUnderTest.FireShot(playerMock.Object);
 
 			// Assert
-			Assert.That(_unitUnderTest.PlayerShots.Count, Is.EqualTo(1));
+			Assert.That(_unitUnderTest.Shots.Count, Is.EqualTo(1));
 		}
 
 		[Test]

@@ -8,7 +8,7 @@ using System.Windows;
 using Prism.Commands;
 using SpaceInvaders.Enums;
 using SpaceInvaders.ExtensionMethods;
-using SpaceInvaders.Infrastruktur;
+using SpaceInvaders.Infrastructure;
 using SpaceInvaders.Properties;
 using SpaceInvaders.Ship;
 using SpaceInvaders.Ship.Invaders;
@@ -22,20 +22,18 @@ namespace SpaceInvaders
 	/// </summary>
 	public sealed class PlayFieldViewModel : PropertyChangedBase, IDisposable
 	{
-		private const int MaximumPlayerShotsAtTheSameTime = 3;
-		private readonly Rect _playArea = new Rect(new Size(1074, 587));
+		private readonly Rect _playArea = new Rect(new Size(1075, 575));
 		private bool _gameOver = true;
 		private Direction _invaderDirection = Direction.Right;
 		private DateTime _invaderLastFired = DateTime.MinValue;
 		private DateTime _invaderLastMoved = DateTime.MinValue;
-		private IShip _player;
 		private int _score;
 		private int _wave;
 
 		/// <summary>
 		///     Der Updatetimer bestimmt die Tickrate
 		/// </summary>
-		public Timer UpdateTimer = new Timer(5);
+		private Timer _updateTimer = new Timer(100);
 
 		/// <summary>
 		///     Constructor
@@ -47,7 +45,7 @@ namespace SpaceInvaders
 			StartGameCommand = new DelegateCommand(StartGame).ObservesCanExecute(o => GameOver);
 			ResetPlayerSelection();
 
-			_player = PlayerSelection.First();
+			Player = PlayerSelection.First();
 		}
 
 
@@ -73,19 +71,16 @@ namespace SpaceInvaders
 		public static int MaximumPlayerNameLength => 20;
 
 		/// <summary>
-		///     Liste aller aktiven Schüsse der Invader
+		///     Liste aller aktiven Schüsse
 		/// </summary>
-		public List<IShot> InvaderShots { get; } = new List<IShot>();
+		public IList<IShot> Shots => GameObjects.OfType<IShot>().ToList();
 
 		/// <summary>
-		///     Liste aller aktiven Schüsse des Spielers
+		///     Liste aller aktiven Schiffef
 		/// </summary>
-		public List<IShot> PlayerShots { get; } = new List<IShot>();
+		public IList<IShip> Invaders => GameObjects.OfType<IShip>().Where(s => s.ShipType != ShipType.Player).ToList();
 
-		/// <summary>
-		///     Liste aller aktiven Invader
-		/// </summary>
-		public List<IShip> Invaders { get; } = new List<IShip>();
+		public ObservableCollection<IGameObject> GameObjects { get; } = new ObservableCollection<IGameObject>();
 
 		private Point PlayerSpawn => new Point(_playArea.Width / 2, _playArea.Height - 175);
 
@@ -99,12 +94,15 @@ namespace SpaceInvaders
 		/// </summary>
 		public IShip Player
 		{
-			get { return _player; }
+			get { return GameObjects.OfType<IShip>().FirstOrDefault(s => s.ShipType == ShipType.Player); }
 			set
 			{
-				if (Equals(_player, value)) return;
-				_player = value;
-				_player?.Update();
+				var selectedPlayer = Player;
+				if (selectedPlayer != null)
+				{
+					GameObjects.Remove(selectedPlayer);
+				}
+				GameObjects.Add(value);
 				OnPropertyChanged();
 			}
 		}
@@ -190,7 +188,7 @@ namespace SpaceInvaders
 
 		private void ReallyEndGame()
 		{
-			UpdateTimer.Stop();
+			_updateTimer.Stop();
 
 			var rsltMessageBox =
 				MessageBox.Show("Sind Sie sicher, dass Sie das jetzige Spiel beenden möchten? Ihr Highscore wird gespeichert!",
@@ -205,7 +203,7 @@ namespace SpaceInvaders
 				case MessageBoxResult.Cancel:
 				case MessageBoxResult.None:
 				case MessageBoxResult.OK:
-					UpdateTimer.Start();
+					_updateTimer.Start();
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
@@ -219,16 +217,10 @@ namespace SpaceInvaders
 		public void FireShot(IShip ship)
 		{
 			if (IsOutOfBounds(ship.Shot.Rect)) return;
-			if (ship.ShipType == ShipType.Player && PlayerShots.Count < MaximumPlayerShotsAtTheSameTime)
-			{
-				PlayerShots.Add(ship.Shot);
-				ship.Shot.Move();
-			}
-			else if (ship.ShipType == ShipType.Invader || ship.ShipType == ShipType.Boss)
-			{
-				InvaderShots.Add(ship.Shot);
-				ship.Shot.Move();
-			}
+
+			GameObjects.Add(ship.Shot);
+
+			ship.Shot.Move();
 		}
 
 		/// <summary>
@@ -239,8 +231,8 @@ namespace SpaceInvaders
 			if (GameOver) return;
 			GameOver = true;
 
-			UpdateTimer.Elapsed -= UpdateEvent;
-			UpdateTimer.Stop();
+			_updateTimer.Elapsed -= UpdateEvent;
+			_updateTimer.Stop();
 
 			//TODO Highscore-service inklusive Username
 			if (Settings.Default.HighScore < Score)
@@ -249,14 +241,14 @@ namespace SpaceInvaders
 				Settings.Default.Save();
 			}
 
-			Application.Current.Dispatcher.Invoke(ResetPlayerSelection);
+			ResetPlayerSelection();
 
 			DestroyEverything();
 		}
 
 		private void RemoveInvader(IShip ship)
 		{
-			Invaders.Remove(ship);
+			GameObjects.Remove(ship);
 
 			if (!GameOver)
 				Score += ship.Points;
@@ -272,14 +264,13 @@ namespace SpaceInvaders
 
 		private void UpdateShots()
 		{
-			foreach (var shot in PlayerShots.Concat(InvaderShots))
+			foreach (var shot in Shots)
 				shot.Update();
 		}
 
 		private void RemoveShot(IShot shot)
 		{
-			PlayerShots.Remove(shot);
-			InvaderShots.Remove(shot);
+			GameObjects.Remove(shot);
 		}
 
 		/// <summary>
@@ -298,24 +289,21 @@ namespace SpaceInvaders
 
 			NextWave();
 
-			UpdateTimer.Elapsed += UpdateEvent;
-			UpdateTimer.Start();
+			_updateTimer.Elapsed += UpdateEvent;
+			_updateTimer.Start();
 		}
 
-		private void UpdateEvent(object sender, ElapsedEventArgs args) => Update();
+		private void UpdateEvent(object sender, ElapsedEventArgs args) => Application.Current?.Dispatcher?.Invoke(Update);
 
 		/// <summary>
 		///     Zertört alle Einheiten auf dem Spielfeld
 		/// </summary>
 		public void DestroyEverything()
 		{
-			foreach (var invader in Invaders.ToList())
+			foreach (var invader in Invaders)
 				RemoveInvader(invader);
 
-			foreach (var shot in PlayerShots.ToList())
-				RemoveShot(shot);
-
-			foreach (var shot in InvaderShots.ToList())
+			foreach (var shot in Shots)
 				RemoveShot(shot);
 		}
 
@@ -326,7 +314,10 @@ namespace SpaceInvaders
 			foreach (var invader in Invaders)
 				RemoveInvader(invader);
 
-			Invaders.AddRange(CreateNewAttackWave());
+			foreach (var createdInvader in CreateNewAttackWave())
+			{
+				GameObjects.Add(createdInvader);
+			}
 		}
 
 		private IEnumerable<IShip> CreateNewAttackWave()
@@ -386,17 +377,20 @@ namespace SpaceInvaders
 		}
 
 		/// <summary>
-		///     Aktualisiert das Spiel. Wird von <see cref="UpdateTimer" /> aufgerufen
+		///     Aktualisiert das Spiel. Wird von <see cref="_updateTimer" /> aufgerufen
 		/// </summary>
 		public void Update()
 		{
 			if (Player.Lives <= 0)
+			{
 				EndGame();
+				return;
+			}
 
-			if (Invaders.Count == 0)
+			if (!Invaders.Any())
 				NextWave();
 
-			foreach (var shot in InvaderShots.Concat(PlayerShots).ToList())
+			foreach (var shot in Shots)
 			{
 				shot.Move();
 
@@ -483,9 +477,9 @@ namespace SpaceInvaders
 
 		private void CheckForInvaderCollision()
 		{
-			foreach (var invader in Invaders.ToList())
+			foreach (var invader in Invaders)
 			{
-				foreach (var shot in PlayerShots.ToList().Where(shot => RectsOverlap(invader.Rect, shot.Rect)))
+				foreach (var shot in Shots.Where(shot => RectsOverlap(invader.Rect, shot.Rect)))
 				{
 					invader.Health -= shot.Damage;
 					if (invader.Health <= 0)
@@ -504,7 +498,7 @@ namespace SpaceInvaders
 
 		private void CheckForPlayerCollision()
 		{
-			foreach (var shot in InvaderShots.Where(shot => RectsOverlap(Player.Rect, shot.Rect)).ToList())
+			foreach (var shot in Shots.Where(shot => RectsOverlap(Player.Rect, shot.Rect)))
 			{
 				Player.Health -= shot.Damage;
 				RemoveShot(shot);
@@ -553,8 +547,8 @@ namespace SpaceInvaders
 			if (disposing)
 			{
 				// Managed Resources
-				UpdateTimer.Dispose();
-				UpdateTimer = null;
+				_updateTimer.Dispose();
+				_updateTimer = null;
 				DestroyEverything();
 				_invaderLastMoved = DateTime.MinValue;
 				Player = null;

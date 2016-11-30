@@ -14,7 +14,7 @@ namespace SpaceInvaders.Shot
 	{
 		private const double DefaultDamage = 10;
 		private const int DefaultSpeed = 15;
-		private static readonly Size DefaultSize = new Size(20, 40);
+		protected override Size Size => new Size(20, 40);
 
 		/// <summary>
 		///     Der Base-Konstruktor für alle Schüsse.
@@ -22,7 +22,7 @@ namespace SpaceInvaders.Shot
 		/// <param name="location">Ändert die <see cref="IShot.Rect" /></param>
 		/// <param name="direction">Ändert die <see cref="ShotBase.Direction" /></param>
 		public WeakInvaderShot(Point location, Direction direction)
-			: base(new Rect(location, DefaultSize), direction, DefaultDamage, DefaultSpeed)
+			: base(location, direction, DefaultDamage, DefaultSpeed)
 		{
 		}
 
@@ -32,7 +32,7 @@ namespace SpaceInvaders.Shot
 		public override BitmapSource CurrentTexture
 			=>
 			DateTime.Now.Second % 2 == 0
-				? Resources.shot1_animation_one.ToBitmapSource()
-				: Resources.shot1_animation_two.ToBitmapSource();
+				? Resources.shot1_animation_one.ToBitmapSource("Shot_Weak1")
+				: Resources.shot1_animation_two.ToBitmapSource("Shot_Weak2");
 	}
 }

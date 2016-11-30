@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using SpaceInvaders.Annotations;
 
-namespace SpaceInvaders.Infrastruktur
+namespace SpaceInvaders.Infrastructure
 {
 	/// <summary>
 	///     Basisimplementation für <see cref="INotifyPropertyChanged"/>

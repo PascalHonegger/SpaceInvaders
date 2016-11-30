@@ -16,25 +16,25 @@ namespace SpaceInvaders.Ship.Players
 		private const int DefaultLives = 3;
 		private const int DefaultHealth = 50;
 		private const string DefaultName = "Player 08/15";
-		private static readonly Size DefaultSize = new Size(100, 150);
+		protected override Size Size => new Size(100, 150);
 
 		/// <summary>
 		///     Der Konstruktor für den <see cref="DefaultPlayer" />
 		/// </summary>
 		/// <param name="location">Die Location, an welcher der Spieler startet</param>
 		public DefaultPlayer(Point location)
-			: base(DefaultLives, DefaultName, DefaultHealth, DefaultSpeed, new Rect(location, DefaultSize))
+			: base(DefaultLives, DefaultName, DefaultHealth, DefaultSpeed, location)
 		{
 		}
 
 		/// <summary>
 		///     Der Schuss des Schiffes, welcher beim Schiessen geschossen wird
 		/// </summary>
-		public override IShot Shot => new DefaultShot(Rect.Location, Direction.Up);
+		public override IShot Shot => new DefaultShot(ShotSpawnPoint, Direction.Up);
 
 		/// <summary>
 		///     Die Textur des Schiffes, welche im View angezeigt wird
 		/// </summary>
-		public override BitmapSource CurrentTexture => Resources.basicship.ToBitmapSource();
+		public override BitmapSource CurrentTexture => Resources.basicship.ToBitmapSource("Player_Default1");
 	}
 }

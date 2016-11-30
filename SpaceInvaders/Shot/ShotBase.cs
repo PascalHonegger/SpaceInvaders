@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media.Imaging;
 using SpaceInvaders.Enums;
-using SpaceInvaders.Infrastruktur;
+using SpaceInvaders.Infrastructure;
 using SpaceInvaders.Ship;
 
 namespace SpaceInvaders.Shot
@@ -12,16 +12,26 @@ namespace SpaceInvaders.Shot
 	/// </summary>
 	public abstract class ShotBase : PropertyChangedBase, IShot
 	{
+		private double _x;
+		private double _y;
+
 		/// <summary>
 		///     Der Base-Konstruktor für alle Schüsse.
 		/// </summary>
-		/// <param name="rect">Ändert die <see cref="Rect" /></param>
+		/// <param name="location">Ändert die <see cref="Rect" /></param>
 		/// <param name="direction">Ändert die <see cref="Direction" /></param>
 		/// <param name="damage">Ändert den <see cref="Damage" /></param>
 		/// <param name="speed">Ändert den <see cref="Speed" /></param>
-		protected ShotBase(Rect rect, Direction direction, double damage, int speed)
+		protected ShotBase(Point location, Direction direction, double damage, int speed)
 		{
-			Rect = rect;
+			X = location.X - Size.Width / 2;
+			var yOffset = Size.Height + 10;
+			if (direction == Direction.Up)
+			{
+				yOffset *= -1;
+			}
+
+			Y = location.Y + yOffset;
 			Direction = direction;
 			Damage = damage;
 			Speed = speed;
@@ -53,15 +63,15 @@ namespace SpaceInvaders.Shot
 		///     Die Location <see cref="Point" /> (top-left corner) und die Grösse <see cref="Size" /> des Schiffes in
 		///     SpaceInvaders-Pixel
 		/// </summary>
-		public Rect Rect { get; private set; }
+		public Rect Rect => new Rect(new Point(X, Y), Size);
+
+		protected abstract Size Size { get; }
 
 		/// <summary>
 		///     Bewegt den Schuss in die <see cref="ShotBase.Direction" /> mit der Hilfe des <see cref="ShotBase.Speed" />
 		/// </summary>
 		public void Move()
 		{
-			double newY;
-
 			switch (Direction)
 			{
 				case Direction.Left:
@@ -69,16 +79,14 @@ namespace SpaceInvaders.Shot
 				case Direction.Right:
 					throw new ArgumentOutOfRangeException(nameof(Direction), Direction, null);
 				case Direction.Up:
-					newY = Rect.Y - Speed;
+					Y -= Speed;
 					break;
 				case Direction.Down:
-					newY = Rect.Y + Speed;
+					Y += Speed;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(Direction), Direction, null);
 			}
-
-			Rect = new Rect(new Point(Rect.X, newY), Rect.Size);
 		}
 
 		/// <summary>
@@ -115,6 +123,30 @@ namespace SpaceInvaders.Shot
 		public override int GetHashCode()
 		{
 			return Identification.GetHashCode();
+		}
+
+		public double X
+		{
+			get { return _x; }
+			set
+			{
+				if (value.Equals(_x)) return;
+				_x = value;
+				OnPropertyChanged();
+				OnPropertyChanged(nameof(Rect));
+			}
+		}
+
+		public double Y
+		{
+			get { return _y; }
+			set
+			{
+				if (value.Equals(_y)) return;
+				_y = value;
+				OnPropertyChanged();
+				OnPropertyChanged(nameof(Rect));
+			}
 		}
 	}
 }

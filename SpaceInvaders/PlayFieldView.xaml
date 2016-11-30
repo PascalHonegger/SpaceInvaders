@@ -5,10 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpaceInvaders"
         xmlns:control="clr-namespace:SpaceInvaders.Control"
+        xmlns:templateSelector="clr-namespace:SpaceInvaders.Control.TemplateSelector"
         mc:Ignorable="d"
         Title="Space Invaders" Height="775" Width="1475"
         d:DataContext="{d:DesignInstance local:PlayFieldViewModel}"
         ResizeMode="NoResize">
+	<Window.Resources>
+		<DataTemplate x:Key="ShipDataTemplate">
+			<control:ShipControl DataContext="{Binding}"/>
+		</DataTemplate>
+		<DataTemplate x:Key="ShotDataTemplate">
+			<control:ShotControl DataContext="{Binding}"/>
+		</DataTemplate>
+		<templateSelector:GameObjectTemplateSelector x:Key="GameObjectTemplateSelector"/>
+	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
@@ -20,13 +30,24 @@
 		</Grid.ColumnDefinitions>
 		<Border BorderBrush="{x:Null}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF2B2B2B"
 		        Grid.ColumnSpan="2">
-			<TextBlock Text="SPACEINVADERS 2.0" Foreground="#FF86FF62"
+			<TextBlock Text="SPACEINVADERS 2.1" Foreground="#FF86FF62"
 			           FontFamily="Showcard Gothic" FontSize="96" FontWeight="Bold" HorizontalAlignment="Center"
 			           VerticalAlignment="Center" />
 		</Border>
-		<Canvas Focusable="True" x:Name="PlayArea51" Grid.Column="0" HorizontalAlignment="Stretch"
-		        VerticalAlignment="Stretch"
-		        Grid.Row="1" Background="LightBlue" />
+
+		<ItemsControl ItemsSource="{Binding GameObjects}" Grid.Row="1" Grid.Column="0" ItemTemplateSelector="{StaticResource GameObjectTemplateSelector}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Canvas Focusable="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemContainerStyle>
+				<Style TargetType="ContentPresenter">
+					<Setter Property="Canvas.Left" Value="{Binding X}" />
+					<Setter Property="Canvas.Top" Value="{Binding Y}" />
+				</Style>
+			</ItemsControl.ItemContainerStyle>
+		</ItemsControl>
 		<Grid Grid.Column="1" HorizontalAlignment="Stretch"
 		      Grid.Row="1" VerticalAlignment="Stretch"
 		      Background="#FF686868">
@@ -78,9 +99,9 @@
 			<TextBlock Grid.Row="5" Grid.Column="0" Text="Lives:" />
 			<TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Player.Lives}" />
 			<Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="Start Game" Command="{Binding StartGameCommand}"
-			        IsDefault="True" />
+			        IsDefault="True" Focusable="False"/>
 			<Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Content="Stop current Game"
-			        Command="{Binding ReallyEndGameCommand}" IsCancel="True" />
+			        Command="{Binding ReallyEndGameCommand}" IsCancel="True" Focusable="False"/>
 		</Grid>
 	</Grid>
 </Window>
